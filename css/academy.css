@@ -1,0 +1,370 @@
+/* =========================================
+   AUREUS ACADEMY / MASTERY CENTER 🎓
+   Premium Redesign
+   ========================================= */
+
+.academy-section {
+    padding: 100px 0;
+    position: relative;
+}
+
+.academy-section .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.academy-section .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.academy-section .section-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text-white, #fff);
+    margin-top: 16px;
+}
+
+.academy-section .section-title .highlight {
+    background: linear-gradient(135deg, #D4F458 0%, #a8e063 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== ACADEMY GRID ===== */
+.academy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+/* ===== ACADEMY CARD - Premium Glass Design ===== */
+.academy-card {
+    background: linear-gradient(145deg,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.academy-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.25) 50%,
+            transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.academy-card:hover {
+    transform: translateY(-12px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.35),
+        0 0 40px rgba(255, 255, 255, 0.03);
+}
+
+.academy-card:hover::before {
+    opacity: 1;
+}
+
+/* ===== CARD IMAGE / ICON AREA ===== */
+.academy-image {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+}
+
+.academy-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    transition: opacity 0.4s ease;
+}
+
+.academy-card:hover .academy-image::before {
+    opacity: 0.25;
+}
+
+/* Card 1 - Finance (Blue/Purple) */
+.academy-image.finance-bg {
+    background: linear-gradient(135deg,
+            rgba(68, 138, 255, 0.1) 0%,
+            rgba(124, 77, 255, 0.15) 100%),
+        url('../assets/images/finance_control_bg.png');
+    background-size: cover;
+    background-position: center;
+    color: #448AFF;
+}
+
+.academy-image.finance-bg::before {
+    background: radial-gradient(circle at 50% 100%,
+            rgba(68, 138, 255, 0.3) 0%,
+            transparent 70%);
+}
+
+/* Card 2 - Nutrition (Green/Lime) */
+.academy-image.nutrition-bg {
+    background: linear-gradient(135deg,
+            rgba(212, 244, 88, 0.1) 0%,
+            rgba(34, 197, 94, 0.15) 100%),
+        url('../assets/images/nutrition_fasting_bg.png');
+    background-size: cover;
+    background-position: center;
+    color: #D4F458;
+}
+
+.academy-image.nutrition-bg::before {
+    background: radial-gradient(circle at 50% 100%,
+            rgba(212, 244, 88, 0.3) 0%,
+            transparent 70%);
+}
+
+/* Card 3 - Wealth (Gold/Amber) */
+.academy-image.metabolic-bg {
+    background: linear-gradient(135deg,
+            rgba(255, 215, 0, 0.1) 0%,
+            rgba(255, 152, 0, 0.15) 100%),
+        url('../assets/images/metabolic_mastery_bg.png');
+    background-size: cover;
+    background-position: center;
+    color: #FFD700;
+}
+
+.academy-image.metabolic-bg::before {
+    background: radial-gradient(circle at 50% 100%,
+            rgba(255, 215, 0, 0.3) 0%,
+            transparent 70%);
+}
+
+/* Icon Animation */
+.academy-image i {
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    z-index: 2;
+}
+
+.academy-card:hover .academy-image i {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* ===== CARD CONTENT ===== */
+.academy-content {
+    padding: 28px;
+}
+
+/* Category Tag */
+.academy-cat {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+/* Category colors */
+.academy-card:nth-child(1) .academy-cat {
+    background: rgba(68, 138, 255, 0.15);
+    color: #448AFF;
+    border: 1px solid rgba(68, 138, 255, 0.3);
+}
+
+.academy-card:nth-child(2) .academy-cat {
+    background: rgba(212, 244, 88, 0.15);
+    color: #D4F458;
+    border: 1px solid rgba(212, 244, 88, 0.3);
+}
+
+.academy-card:nth-child(3) .academy-cat {
+    background: rgba(255, 215, 0, 0.15);
+    color: #FFD700;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Card Title */
+.academy-content h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-white, #fff);
+    margin-bottom: 12px;
+    line-height: 1.3;
+    transition: color 0.3s ease;
+}
+
+/* Card Description */
+.academy-content p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.academy-card:hover .academy-content p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Read More Link */
+.academy-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.academy-card:nth-child(1) .academy-link {
+    color: #448AFF;
+}
+
+.academy-card:nth-child(2) .academy-link {
+    color: #D4F458;
+}
+
+.academy-card:nth-child(3) .academy-link {
+    color: #FFD700;
+}
+
+.academy-link i {
+    transition: transform 0.3s ease;
+}
+
+.academy-link:hover {
+    gap: 14px;
+}
+
+.academy-link:hover i {
+    transform: translateX(4px);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 1024px) {
+    .academy-section .section-title {
+        font-size: 38px;
+    }
+
+    .academy-grid {
+        gap: 24px;
+    }
+
+    .academy-image {
+        height: 140px;
+        font-size: 40px;
+    }
+
+    .academy-content {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .academy-section {
+        padding: 70px 0;
+    }
+
+    .academy-section .section-title {
+        font-size: 32px;
+    }
+
+    .academy-section .section-header {
+        margin-bottom: 40px;
+    }
+
+    .academy-grid {
+        grid-template-columns: 1fr;
+        max-width: 450px;
+        margin: 0 auto;
+        gap: 20px;
+    }
+
+    .academy-card {
+        display: flex;
+        flex-direction: row;
+        border-radius: 20px;
+    }
+
+    .academy-card:hover {
+        transform: translateY(-6px);
+    }
+
+    .academy-image {
+        width: 120px;
+        min-width: 120px;
+        height: auto;
+        font-size: 32px;
+        border-radius: 20px 0 0 20px;
+    }
+
+    .academy-content {
+        padding: 20px;
+        flex: 1;
+    }
+
+    .academy-content h4 {
+        font-size: 17px;
+    }
+
+    .academy-content p {
+        font-size: 14px;
+        margin-bottom: 14px;
+    }
+
+    .academy-cat {
+        font-size: 10px;
+        padding: 5px 10px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .academy-section .section-title {
+        font-size: 26px;
+    }
+
+    .academy-card {
+        flex-direction: column;
+    }
+
+    .academy-image {
+        width: 100%;
+        min-width: unset;
+        height: 120px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .academy-content {
+        padding: 18px;
+    }
+
+    .academy-content h4 {
+        font-size: 16px;
+    }
+
+    .academy-content p {
+        font-size: 13px;
+    }
+}

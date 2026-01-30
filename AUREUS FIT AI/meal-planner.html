@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Nutrición AI - Meal Planner</title>
+    <link rel="icon" type="image/png" href="images/logo.webp">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css?v=9.1">
+    <link rel="stylesheet" href="modal-styles.css?v=9.1">
+    <link rel="stylesheet" href="../css/sync-status.css">
+    <style>
+        .library-filters {
+            display: flex !important;
+            flex-direction: row !important;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .library-filters::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari */
+        }
+
+        .filter-pill {
+            flex-shrink: 0;
+            padding: 6px 16px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            /* var(--border-color) */
+            color: #A1A1AA;
+            /* var(--text-gray) */
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .filter-pill:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #FAFAFA;
+            /* var(--text-white) */
+        }
+
+        .filter-pill.active {
+            background: #D4F458;
+            /* var(--primary-lime) */
+            color: #000;
+            border-color: #D4F458;
+            box-shadow: 0 0 10px rgba(212, 244, 88, 0.4);
+        }
+    </style>
+
+    <!-- Drag and Drop (Optional, but good for planner) -->
+    <!-- We'll stick to vanilla JS for now -->
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.webp" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Food Log</span>
+                </a>
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span>Fasting Timer</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="#" class="nav-item active">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span>Meal Planner</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span>Food Database</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/users/item_profile.webp" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">Invitado</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+                </div>
+
+                <!-- User Switcher Popover moved out for global accessibility -->
+                <!-- User Switcher Popover (Managed by js/profile-hub.js) -->
+                <script src="../js/profile-hub.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        ProfileHub.init({ currentApp: 'fit' });
+                    });
+                </script>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                    <div class="logo-text">
+                        <span class="brand" style="font-size: 16px;">AUREUS</span>
+                        <span class="tagline" style="font-size: 9px; margin-top: 0;">Clinical Nutrition</span>
+                    </div>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <div class="plan-week-badge"><span data-i18n="meal_planner.plan_week">PLAN: WEEK</span> <span
+                            id="currentWeekNum">42</span> • <span id="weekDateRange">Oct 16 - Oct 22</span></div>
+                    <h1 data-i18n="meal_planner.title">Weekly Planner</h1>
+                    <div class="date-subtitle" data-i18n="meal_planner.subtitle">View and manage your entire week's
+                        meals. Ensure your macros and purines
+                        are balanced.</div>
+                </div>
+
+                <div class="header-right-column">
+                    <div class="header-actions">
+                        <button class="btn-primary-action small" id="btnShoppingList">
+                            <i class="fa-solid fa-cart-shopping"></i> <span
+                                data-i18n="meal_planner.shopping_list">Shopping List</span>
+                        </button>
+
+                        <button class="btn-header-dark" title="Generate PDF Report" id="btnExportPDF">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <div class="btn-col-text">
+                                <span>PDF</span>
+                                <span data-i18n="meal_planner.pdf_report">Report</span>
+                            </div>
+                        </button>
+
+                        <button id="globalSaveBtn" class="btn-save">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span data-i18n="meal_planner.save_changes">Save Changes</span>
+                        </button>
+                    </div>
+
+                    <!-- Macro Targets Banner moved below actions -->
+                    <div id="plannerMacroTargets" class="macro-targets-banner"></div>
+                </div>
+            </header>
+
+            <!-- Planner Split Layout -->
+            <div class="planner-container">
+
+                <!-- LEFT PANEL COLUMN -->
+                <div class="planner-left-column">
+
+                    <!-- NEW: Plan Templates -->
+                    <div class="plan-templates-card">
+                        <div class="templates-header">
+                            <div class="t-title">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span data-i18n="meal_planner.templates_title">Plantillas de Plan</span>
+                            </div>
+                            <a href="#" class="btn-manage" data-i18n="meal_planner.manage">Gestionar</a>
+                        </div>
+                        <div class="template-list" id="templateList">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- EXISTING: Food Library -->
+                    <div class="planner-library-panel">
+                        <h3 data-i18n="meal_planner.food_library">Biblioteca de Alimentos</h3>
+
+                        <div class="library-search-box">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="librarySearch" placeholder="Search foods..."
+                                data-i18n="meal_planner.search_placeholder">
+                        </div>
+
+                        <div class="library-filters">
+                            <button class="filter-pill active" data-filter="all"
+                                data-i18n="meal_planner.filters.all">Todos</button>
+                            <button class="filter-pill" data-filter="favorites"
+                                data-i18n="meal_planner.filters.favorites">★ Favorites</button>
+                            <button class="filter-pill" data-filter="Meats"
+                                data-i18n="meal_planner.filters.meats">Meats</button>
+                            <button class="filter-pill" data-filter="Poultry"
+                                data-i18n="meal_planner.filters.poultry">Poultry</button>
+                            <button class="filter-pill" data-filter="Seafood"
+                                data-i18n="meal_planner.filters.seafood">Seafood</button>
+                            <button class="filter-pill" data-filter="Veggies"
+                                data-i18n="meal_planner.filters.veggies">Veggies</button>
+                            <button class="filter-pill" data-filter="Dairy"
+                                data-i18n="meal_planner.filters.dairy">Dairy</button>
+                            <button class="filter-pill" data-filter="Fruits"
+                                data-i18n="meal_planner.filters.fruits">Fruits</button>
+                            <button class="filter-pill" data-filter="Nuts"
+                                data-i18n="meal_planner.filters.nuts">Nuts</button>
+                            <button class="filter-pill" data-filter="Drinks"
+                                data-i18n="meal_planner.filters.drinks">Drinks</button>
+                            <button class="filter-pill" data-filter="Fast Food"
+                                data-i18n="meal_planner.filters.fast_food">Fast Food</button>
+                        </div>
+
+                        <div class="library-list" id="libraryList">
+                            <!-- Items injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: Weekly Grid -->
+                <div class="planner-grid-panel">
+                    <div class="weekly-grid-header">
+                        <div class="corner-cell">
+                            <i class="fa-regular fa-clock" style="margin-right: 8px; font-size: 1.1rem;"></i> <span
+                                data-i18n="meal_planner.weekly_grid_title">Weekly Planner Meal</span>
+                        </div>
+                        <div class="day-col-header" data-day="mon">
+                            <span class="day-name" data-i18n="meal_planner.days.mon">MON</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-mon"></div>
+                        </div>
+                        <div class="day-col-header" data-day="tue">
+                            <span class="day-name" data-i18n="meal_planner.days.tue">TUE</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-tue"></div>
+                        </div>
+                        <div class="day-col-header" data-day="wed">
+                            <span class="day-name" data-i18n="meal_planner.days.wed">WED</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-wed"></div>
+                        </div>
+                        <div class="day-col-header" data-day="thu">
+                            <span class="day-name" data-i18n="meal_planner.days.thu">THU</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-thu"></div>
+                        </div>
+                        <div class="day-col-header" data-day="fri">
+                            <span class="day-name" data-i18n="meal_planner.days.fri">FRI</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-fri"></div>
+                        </div>
+                        <div class="day-col-header" data-day="sat">
+                            <span class="day-name" data-i18n="meal_planner.days.sat">SAT</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-sat"></div>
+                        </div>
+                        <div class="day-col-header" data-day="sun">
+                            <span class="day-name" data-i18n="meal_planner.days.sun">SUN</span>
+                            <span class="day-num">--</span>
+                            <div class="day-summary" id="summary-sun"></div>
+                        </div>
+                    </div>
+
+                    <div class="weekly-grid-body" id="weeklyGridBody">
+                        <!-- Breakfast Row -->
+                        <!-- Lunch Row -->
+                        <!-- Dinner Row -->
+                        <!-- Rows injected via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div> <!-- End App Container -->
+
+    <!-- Save Template Modal -->
+    <div id="saveTemplateModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 400px;">
+            <div class="modal-header">
+                <h2 data-i18n="meal_planner.modals.save_template_title">Save Plan Template</h2>
+                <button class="close-modal-save"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label data-i18n="meal_planner.modals.template_name">Template Name</label>
+                    <input type="text" id="templateNameInput" placeholder="e.g., Strict Keto Week 1"
+                        data-i18n="meal_planner.modals.template_name">
+                </div>
+                <div class="input-group">
+                    <label data-i18n="meal_planner.modals.template_desc">Description (Optional)</label>
+                    <input type="text" id="templateDescInput" placeholder="e.g., Low Purine, 1800kcal"
+                        data-i18n="meal_planner.modals.template_desc">
+                </div>
+
+                <!-- Existing Templates List (New Feature) -->
+                <div class="input-group" style="margin-top: 10px;">
+                    <label style="margin-bottom: 8px; display: block;"><span
+                            data-i18n="meal_planner.modals.saved_templates">Saved Templates</span> <span
+                            style="font-weight: 400; color: #71717a; font-size: 11px;"
+                            data-i18n="meal_planner.modals.overwrite_hint">(Click to
+                            overwrite)</span></label>
+                    <div id="modalTemplateList" class="modal-template-list-container">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel close-modal-save" data-i18n="meal_planner.modals.cancel">Cancel</button>
+                    <button class="btn-save" id="confirmSaveTemplate" data-i18n="meal_planner.modals.save_template">Save
+                        Template</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping List Modal -->
+    <div id="shoppingListModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-cart-shopping" style="color:var(--primary-lime); margin-right:10px;"></i>
+                    <span data-i18n="meal_planner.modals.shopping_list_title">Shopping List</span>
+                </h2>
+                <button class="close-modal-shopping"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="color:#aaa; font-size:13px; margin-bottom:15px;" data-i18n="meal_planner.modals.based_on">
+                    Based on your Weekly Meal Plan:</p>
+                <div class="shopping-list-container" id="shoppingListContainer"
+                    style="max-height: 400px; overflow-y: auto; display:flex; flex-direction:column; gap:8px;">
+                    <!-- Items injected by JS -->
+                </div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button class="btn-cancel close-modal-shopping" data-i18n="meal_planner.modals.close">Close</button>
+                    <button class="btn-save" id="btnPrintShopping"><i class="fa-solid fa-print"></i> <span
+                            data-i18n="meal_planner.modals.print_copy">Print /
+                            Copy</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Editor Modal -->
+    <div id="foodEditorModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal">
+            <div class="modal-header">
+                <h2>Editar Alimento</h2>
+                <button class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="foodEditorForm">
+                <input type="hidden" id="editIndex">
+
+                <div class="modal-body">
+                    <div class="editor-main">
+                        <div class="icon-selector-section">
+                            <div class="current-icon-display" id="iconDisplay">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <button type="button" class="btn-change-icon" id="btnChangeIcon">Cambiar Icono</button>
+
+                            <!-- Icon Picker (Hidden by default) -->
+                            <div id="iconPicker" class="icon-picker-grid hidden">
+                                <i class="fa-solid fa-drumstick-bite" data-icon="fa-drumstick-bite"></i>
+                                <i class="fa-solid fa-fish" data-icon="fa-fish"></i>
+                                <i class="fa-solid fa-carrot" data-icon="fa-carrot"></i>
+                                <i class="fa-solid fa-cheese" data-icon="fa-cheese"></i>
+                                <i class="fa-solid fa-apple-whole" data-icon="fa-apple-whole"></i>
+                                <i class="fa-solid fa-seedling" data-icon="fa-seedling"></i>
+                                <i class="fa-solid fa-burger" data-icon="fa-burger"></i>
+                                <i class="fa-solid fa-glass-water" data-icon="fa-glass-water"></i>
+                                <i class="fa-solid fa-utensils" data-icon="fa-utensils"></i>
+                                <i class="fa-solid fa-egg" data-icon="fa-egg"></i>
+                                <i class="fa-solid fa-wheat-awn" data-icon="fa-wheat-awn"></i>
+                                <i class="fa-solid fa-ice-cream" data-icon="fa-ice-cream"></i>
+                            </div>
+                        </div>
+
+                        <div class="editor-fields">
+                            <div class="input-group">
+                                <label>Nombre</label>
+                                <input type="text" id="editName" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Imagen (URL / Link)</label>
+                                <input type="text" id="editImage" placeholder="https://ejemplo.com/imagen.png">
+                            </div>
+                            <div class="editor-row">
+                                <div class="input-group">
+                                    <label>Categoría</label>
+                                    <select id="editCategory">
+                                        <option value="Meats">Carnes</option>
+                                        <option value="Poultry">Aves</option>
+                                        <option value="Seafood">Mariscos</option>
+                                        <option value="Veggies">Verduras</option>
+                                        <option value="Dairy">Lácteos</option>
+                                        <option value="Fruits">Frutas</option>
+                                        <option value="Nuts">Frutos Secos</option>
+                                        <option value="Drinks">Bebidas</option>
+                                        <option value="Fast Food">Comida Rápida</option>
+                                        <option value="Others">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Estado</label>
+                                    <select id="editStatus">
+                                        <option value="safe">Seguro (Verde)</option>
+                                        <option value="caution">Precaución (Amarillo)</option>
+                                        <option value="avoid">Evitar (Rojo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="macro-stats-editor">
+                        <div class="input-group small">
+                            <label>Purinas (mg)</label>
+                            <input type="number" id="editPurines">
+                        </div>
+                        <div class="input-group small">
+                            <label>Carbs (g)</label>
+                            <input type="number" step="0.1" id="editCarbs">
+                        </div>
+                        <div class="input-group small">
+                            <label>Proteína (g)</label>
+                            <input type="number" step="0.1" id="editProt">
+                        </div>
+                        <div class="input-group small">
+                            <label>Grasa (g)</label>
+                            <input type="number" step="0.1" id="editFat">
+                        </div>
+                        <div class="input-group small">
+                            <label>Calorías</label>
+                            <input type="number" id="editCal">
+                        </div>
+                    </div>
+
+                    <!-- Glycemic Factor Section (New) -->
+                    <div class="glycemic-section"
+                        style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                        <label
+                            style="color: #A1A1AA; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">GLYCEMIC
+                            FACTOR</label>
+
+                        <div style="display: flex; gap: 15px; align-items: flex-end;">
+                            <div style="flex: 1;">
+                                <input type="number" id="editGI" placeholder="0"
+                                    style="font-size: 24px; font-weight: 700; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px; width: 100%; color: #fff;">
+                            </div>
+                            <div style="flex: 1; text-align: right;">
+                                <label
+                                    style="display: block; font-size: 12px; color: #A1A1AA; margin-bottom: 4px;">Daily
+                                    Glycemic Load</label>
+                                <span id="displayGL" style="font-size: 20px; font-weight: 700; color: #fff;">--</span>
+                            </div>
+                        </div>
+
+                        <div class="gl-progress-container"
+                            style="margin-top: 12px; height: 6px; background: #333; border-radius: 3px; position: relative; overflow: hidden;">
+                            <div id="glProgressBar"
+                                style="width: 0%; height: 100%; background: #EF4444; border-radius: 3px; transition: width 0.3s ease, background 0.3s ease;">
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px;">
+                            <span id="glRiskLabel" style="color: #4ade80; font-weight: 600;">Low/No Risk</span>
+                            <span style="color: #71717a;">Escala: 0-20+</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group text-area">
+                        <label>Consejo / Nota</label>
+                        <textarea id="editTip" rows="2"></textarea>
+                    </div>
+
+                    <!-- INGREDIENTES Section -->
+                    <div class="ingredients-section" style="margin-top: 20px;">
+                        <label
+                            style="color: #A1A1AA; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block;">INGREDIENTES</label>
+                        <div class="ingredients-grid" id="editIngredientsGrid"></div>
+                        <button type="button" class="btn-add-ingredient" id="btnAddIngredient">
+                            <i class="fa-solid fa-plus"></i> Añadir Ingrediente
+                        </button>
+                    </div>
+
+                    <!-- Ingredient Mini-Modal -->
+                    <div class="ingredient-mini-modal hidden" id="ingredientMiniModal">
+                        <div class="ing-mini-content">
+                            <div class="ing-mini-header">
+                                <span id="miniModalTitle">Añadir Ingrediente</span>
+                                <button type="button" class="btn-close-mini" id="closeIngModal"><i
+                                        class="fa-solid fa-xmark"></i></button>
+                            </div>
+                            <div class="ing-mini-body">
+                                <div class="input-group">
+                                    <label>Nombre del Ingrediente</label>
+                                    <input type="text" id="ingEditName" placeholder="ej: Pollo">
+                                </div>
+                                <div class="input-group">
+                                    <label>Cantidad</label>
+                                    <input type="text" id="ingEditAmount" placeholder="ej: 150g">
+                                </div>
+                            </div>
+                            <div class="ing-mini-footer">
+                                <button type="button" class="btn-delete-ing" id="btnDeleteIng" style="display: none;"><i
+                                        class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn-save-ing" id="btnSaveIng">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer"
+                        style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; gap: 20px;">
+                        <!-- Delete Button (Left) -->
+                        <button type="button" class="btn-action-delete" id="btnDeleteFoodAction">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </button>
+
+                        <div class="action-right" style="display: flex; gap: 20px; align-items: center;">
+                            <button type="button" class="btn-cancel close-modal" id="btnCancelEditFood"
+                                style="background: transparent !important; border: none !important; color: #a1a1aa; padding: 8px 12px; cursor: pointer; font-weight: 500; font-size: 12px; text-decoration: underline; transition: color 0.2s;">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn-save" id="btnSaveEditFood"
+                                style="background: #D4F458; color: #000; border: none; padding: 8px 20px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px; box-shadow: 0 0 15px rgba(212, 244, 88, 0.3); transition: transform 0.1s;">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Meal Modal -->
+    <div id="editMealModal" class="modal-backdrop hidden">
+        <div class="modal-content">
+            <h3 class="modal-title">Edit Meal</h3>
+            <div class="modal-form">
+                <div class="form-group">
+                    <label>Meal Name</label>
+                    <input type="text" id="editMealName" class="modern-input">
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Calories</label>
+                        <input type="number" id="editMealCal" class="modern-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Purines (mg)</label>
+                        <input type="number" id="editMealPurines" class="modern-input">
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>Fat (g)</label>
+                        <input type="number" id="editMealFat" class="modern-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Prot (g)</label>
+                        <input type="number" id="editMealProt" class="modern-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Carb (g)</label>
+                        <input type="number" id="editMealCarb" class="modern-input">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="deleteMealBtn" class="btn-delete">Delete</button>
+                <div class="action-right">
+                    <button id="cancelEditBtn" class="btn-cancel">Cancel</button>
+                    <button id="saveEditBtn" class="btn-save">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Macro Selector Modal -->
+    <div id="macroSelectorModal" class="modal-overlay hidden">
+        <div class="modal-content premium-modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-bullseye" style="color:var(--primary-lime); margin-right:10px;"></i>
+                    <span data-i18n="meal_planner.modals.macro_title">Macro Objective</span>
+                </h2>
+                <button class="close-modal-macro"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="color:#aaa; font-size:13px; margin-bottom:15px;" data-i18n="meal_planner.modals.macro_desc">
+                    Select a dietary protocol to update your daily macro targets. This will affect warnings and
+                    summaries.
+                </p>
+
+                <div class="objectives-list">
+                    <div class="objective-card" data-objective="weight-loss-keto" data-ratio-fat="0.70"
+                        data-ratio-prot="0.25" data-ratio-carb="0.05" data-offset="-500">
+                        <div class="obj-icon">🔥</div>
+                        <div class="obj-info">
+                            <div class="obj-title">Pérdida de Peso (Keto)</div>
+                            <div class="obj-desc">Quema de grasa eficiente. Mantiene saciedad.</div>
+                            <div class="obj-macros">70% FAT • 25% PROT • 5% CARB</div>
+                        </div>
+                        <div class="obj-offset-pill">-500</div>
+                    </div>
+
+                    <div class="objective-card" data-objective="weight-loss-balanced" data-ratio-fat="0.35"
+                        data-ratio-prot="0.30" data-ratio-carb="0.35" data-offset="-500">
+                        <div class="obj-icon">🥗</div>
+                        <div class="obj-info">
+                            <div class="obj-title">Pérdida de Peso (Balanceada)</div>
+                            <div class="obj-desc">Bajar de peso con dieta variada.</div>
+                            <div class="obj-macros">35% FAT • 30% PROT • 35% CARB</div>
+                        </div>
+                        <div class="obj-offset-pill">-500</div>
+                    </div>
+
+                    <div class="objective-card active" data-objective="maintenance" data-ratio-fat="0.70"
+                        data-ratio-prot="0.25" data-ratio-carb="0.05" data-offset="0">
+                        <div class="obj-icon">⚖️</div>
+                        <div class="obj-info">
+                            <div class="obj-title">Mantenimiento (Keto/Actual)</div>
+                            <div class="obj-desc">Mantener peso y energía estable.</div>
+                            <div class="obj-macros">70% FAT • 25% PROT • 5% CARB</div>
+                        </div>
+                        <div class="obj-badge">MAINTENANCE</div>
+                    </div>
+
+                    <div class="objective-card" data-objective="muscle-gain" data-ratio-fat="0.30"
+                        data-ratio-prot="0.30" data-ratio-carb="0.40" data-offset="300">
+                        <div class="obj-icon">💪</div>
+                        <div class="obj-info">
+                            <div class="obj-title">Aumento Masa Muscular</div>
+                            <div class="obj-desc">Volumen limpio, minimizando grasa.</div>
+                            <div class="obj-macros">30% FAT • 30% PROT • 40% CARB</div>
+                        </div>
+                        <div class="obj-offset-pill">+300</div>
+                    </div>
+
+                    <div class="objective-card" data-objective="sport-performance" data-ratio-fat="0.60"
+                        data-ratio-prot="0.30" data-ratio-carb="0.10" data-offset="500">
+                        <div class="obj-icon">⚡</div>
+                        <div class="obj-info">
+                            <div class="obj-title">Rendimiento Deportivo</div>
+                            <div class="obj-desc">Aumento de energía para atletas keto.</div>
+                            <div class="obj-macros">60% FAT • 30% PROT • 10% CARB</div>
+                        </div>
+                        <div class="obj-offset-pill">+500</div>
+                    </div>
+                </div>
+
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button class="btn-cancel close-modal-macro" data-i18n="meal_planner.modals.cancel">Cancel</button>
+                    <button class="btn-save" id="btnSaveMacroObjective">
+                        <i class="fa-solid fa-check"></i> <span data-i18n="meal_planner.modals.apply_targets">Apply
+                            Targets</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                <div class="logo-text">
+                    <span class="brand" style="font-size: 18px;">AUREUS</span>
+                    <span class="tagline" style="font-size: 11px; margin-top: 0;">Clinical Nutrition</span>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="meal-planner.html" class="drawer-item active">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile" id="drawerUserProfileBtn">
+            <img src="images/users/item_profile.webp" alt="Profile" id="drawerAvatar">
+            <div class="d-user-info">
+                <div class="d-name" id="drawerUserName">Invitado</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- App Libraries (Lazy Loaded) -->
+    <script src="../js/lazy-loader.js"></script>
+    <script>LazyLoader.loadAll(['chartjs', 'jspdf', 'autotable']);</script>
+
+
+
+    <!-- App Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="../js/sync-core.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="localization.js"></script>
+    <script src="logo-base64.js"></script>
+    <script src="food-data.js?v=9.1"></script>
+    <!-- Image Preview Modal -->
+    <div id="imagePreviewModal" class="modal-backdrop hidden"
+        style="z-index: 10000; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center;">
+        <div class="modal-content-img"
+            style="position: relative; max-width: 90vw; max-height: 90vh; display: flex; justify-content: center; align-items: center; background: transparent; padding: 0;">
+            <div class="close-img-modal"
+                style="position: absolute; top: -50px; right: -20px; color: #fff; font-size: 36px; cursor: pointer; background: rgba(255,255,255,0.1); border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                &times;
+            </div>
+            <img id="previewImageFull" src="" alt="Full Preview"
+                style="max-width: 100%; max-height: 90vh; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.8); object-fit: contain;">
+        </div>
+    </div>
+
+    <script src="templates.js"></script>
+    <script src="planner-renderer.js?v=9.1"></script>
+    <script src="food-db-renderer.js?v=9.1"></script>
+</body>
+
+</html>

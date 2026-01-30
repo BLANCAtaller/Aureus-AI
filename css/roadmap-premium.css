@@ -1,0 +1,411 @@
+/* =========================================
+   PREMIUM ROADMAP STYLES 🚀
+   ========================================= */
+
+:root {
+    --roadmap-card-bg: rgba(20, 20, 25, 0.6);
+    --roadmap-border: rgba(255, 255, 255, 0.1);
+    --roadmap-glow-active: rgba(255, 215, 0, 0.4);
+    --roadmap-glow-next: rgba(0, 229, 255, 0.4);
+    --roadmap-glow-future: rgba(255, 255, 255, 0.05);
+
+    --gradient-active: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 160, 0, 0.05) 100%);
+    --gradient-next: linear-gradient(135deg, rgba(0, 229, 255, 0.2) 0%, rgba(124, 77, 255, 0.05) 100%);
+    --gradient-future: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+}
+
+.roadmap-section {
+    position: relative;
+    padding: 100px 0;
+    overflow: hidden;
+    /* Background enhancement */
+    background: radial-gradient(circle at 50% 50%, rgba(124, 77, 255, 0.05) 0%, transparent 70%);
+}
+
+.roadmap-wrapper {
+    position: relative;
+    padding: 40px 20px;
+    width: 100%;
+    /* Remove scrollbar styles */
+}
+
+/* Remove custom scrollbar styles as we are going grid */
+.roadmap-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.roadmap-track {
+    display: flex;
+    flex-wrap: wrap;
+    /* Wrap items to next line */
+    justify-content: center;
+    /* Center items in the row */
+    gap: 40px;
+    /* Fixed consistent gap between cards vertical and horizontal */
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Remove the connector line as it doesn't work well in grid */
+.roadmap-track::before {
+    display: none;
+}
+
+/* =========================================
+   STEP CARD BASE
+   ========================================= */
+
+.step-card {
+    width: 370px;
+    /* Wider */
+    min-height: 420px;
+    /* Flexible height */
+    height: auto;
+    /* Allow growth */
+    background: var(--roadmap-card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--roadmap-border);
+    border-radius: 30px;
+    padding: 40px 30px;
+    /* More vertical padding */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* Stack from top */
+    gap: 20px;
+    /* Consistent gap between elements */
+    align-items: center;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-style: preserve-3d;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.step-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    flex-grow: 0;
+    /* Don't stretch */
+    text-align: center !important;
+    width: 100%;
+    margin: 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.step-icon-bottom {
+    font-size: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    /* Fixed spacing from text */
+    margin-bottom: 0;
+    opacity: 0.4;
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* Hover Effect */
+.step-card:hover {
+    transform: translateY(-15px) rotateX(5deg);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Inner Glow Element */
+.step-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 2px;
+    /* Border width */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent);
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    pointer-events: none;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+}
+
+.step-card:hover::before {
+    opacity: 1;
+}
+
+/* =========================================
+   HEADER & TYPOGRAPHY
+   ========================================= */
+
+.step-header {
+    display: flex;
+    flex-direction: column;
+    /* Stack vertically to avoid overlap */
+    gap: 10px;
+    /* Add space between step number and quarter */
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 15px;
+}
+
+.step-number {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    /* Bold but clean */
+    font-size: 20px;
+    /* Reduced for better fit */
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    /* Adjusted spacing */
+    color: rgba(255, 255, 255, 0.3);
+    /* Muted by default */
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    white-space: nowrap;
+    display: block;
+    width: auto;
+    /* Allow shrink wrap */
+    margin: 0 auto;
+    /* Center block in flex container */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.step-quarter {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.step-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1.2;
+    margin: 0 0 15px 0;
+    /* Strict reset */
+    color: #fff;
+    background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center !important;
+    /* Force override */
+    width: 100%;
+    padding: 0;
+}
+
+.step-card p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.6);
+    flex-grow: 1;
+    text-align: center !important;
+    /* Force override */
+    width: 100%;
+    margin: 0;
+    /* Strict margin reset */
+    padding: 0 10px;
+    /* Safe padding */
+    box-sizing: border-box;
+}
+
+/* =========================================
+   ICON & DECORATION
+   ========================================= */
+
+.step-icon-bottom {
+    font-size: 48px;
+    width: 100%;
+    /* Force full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    /* Push to bottom */
+    margin-bottom: 20px;
+    opacity: 0.4;
+    /* Slightly more visible by default */
+    transition: all 0.5s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+/* =========================================
+   FORCE OVERRIDE OF GLOBAL ZIG-ZAG
+   ========================================= */
+.roadmap-step:nth-child(even) .step-header,
+.roadmap-step:nth-child(odd) .step-header,
+.roadmap-step:nth-child(even) h3,
+.roadmap-step:nth-child(odd) h3,
+.roadmap-step:nth-child(even) p,
+.roadmap-step:nth-child(odd) p,
+.roadmap-step:nth-child(even) .step-icon-bottom,
+.roadmap-step:nth-child(odd) .step-icon-bottom {
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    left: auto !important;
+    right: auto !important;
+}
+
+.step-card:hover .step-icon-bottom {
+    opacity: 1;
+    transform: scale(1.2) rotate(-10deg);
+}
+
+.fa-spinner {
+    font-size: 56px;
+    /* Larger spinner */
+    opacity: 1 !important;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.step-card:hover .step-icon-bottom {
+    opacity: 1;
+    transform: scale(1.2) rotate(-10deg);
+}
+
+/* --- STATES: ACTIVE, NEXT, FUTURE --- */
+
+/* Wrapper fix for grid/flex layout */
+.roadmap-step {
+    width: auto;
+    flex: 0 0 auto;
+    /* Prevent growing/shrinking unexpectedly */
+    max-width: 100%;
+}
+
+/* --- ACTIVE (Current Phase - Gold/Premium) --- */
+.roadmap-step.active .step-card {
+    background: var(--gradient-active);
+    border: 2px solid rgba(255, 215, 0, 0.6);
+    /* More visible border */
+    box-shadow: 0 0 50px var(--roadmap-glow-active);
+}
+
+.roadmap-step.active .step-number {
+    background: transparent;
+    color: #FFD700;
+    border: none;
+    box-shadow: none;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+    transform: scale(1.1);
+    /* Slight scaling for emphasis */
+}
+
+.roadmap-step.active .step-quarter {
+    background: rgba(255, 215, 0, 0.2);
+    color: #FFD700;
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.roadmap-step.active .step-icon-bottom {
+    color: #FFD700;
+    opacity: 0.8;
+}
+
+/* Animation for Active card */
+@keyframes pulse-gold {
+    0% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.15), inset 0 0 20px rgba(255, 215, 0, 0.05);
+        border-color: rgba(255, 215, 0, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.4), inset 0 0 40px rgba(255, 215, 0, 0.1);
+        border-color: rgba(255, 215, 0, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.15), inset 0 0 20px rgba(255, 215, 0, 0.05);
+        border-color: rgba(255, 215, 0, 0.4);
+    }
+}
+
+.roadmap-step.active .step-card {
+    animation: pulse-gold 4s infinite ease-in-out;
+}
+
+/* --- NEXT (Upcoming - Cyan/Tech) --- */
+.roadmap-step.next .step-card {
+    background: var(--gradient-next);
+    border-color: rgba(0, 229, 255, 0.3);
+}
+
+.roadmap-step.next .step-quarter {
+    background: rgba(0, 229, 255, 0.15);
+    color: #00E5FF;
+    border-color: rgba(0, 229, 255, 0.4);
+}
+
+.roadmap-step.next .step-icon-bottom {
+    color: #00E5FF;
+    opacity: 0.5;
+}
+
+.roadmap-step.next .step-card:hover {
+    box-shadow: 0 0 40px var(--roadmap-glow-next);
+}
+
+/* --- FUTURE (Distant - Glass/Ghost) --- */
+.roadmap-step.future .step-card {
+    background: var(--gradient-future);
+    opacity: 0.7;
+    filter: grayscale(0.8);
+    transition: all 0.5s ease;
+}
+
+.roadmap-step.future .step-card:hover {
+    opacity: 1;
+    filter: grayscale(0);
+    background: linear-gradient(135deg, rgba(255, 64, 129, 0.1) 0%, rgba(124, 77, 255, 0.05) 100%);
+    border-color: rgba(255, 64, 129, 0.3);
+    box-shadow: 0 0 30px rgba(255, 64, 129, 0.3);
+}
+
+.roadmap-step.future .step-icon-bottom {
+    color: #FF4081;
+    /* Pinkish for future excitement */
+}
+
+/* =========================================
+   CONNECTOR LINES
+   ========================================= */
+
+/* Connector line removed for grid layout */
+
+/* Responsive */
+@media (max-width: 768px) {
+    .step-card {
+        width: 280px;
+        height: 360px;
+    }
+
+    .roadmap-track {
+        gap: 20px;
+        padding: 20px;
+    }
+}

@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Espacio - AUREUS</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase SDK & Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <style>
+        :root {
+            --bg-dark: #070708;
+            --text-white: #FAFAFA;
+            --primary-lime: #D4F458;
+            --accent-gold: #FFD700;
+            --card-bg: rgba(15, 15, 18, 0.4);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --glow-finance: rgba(255, 215, 0, 0.15);
+            --glow-nutrition: rgba(212, 244, 88, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            perspective: 1000px;
+        }
+
+        /* Dynamic Animated Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212, 244, 88, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+                var(--bg-dark);
+            filter: blur(80px);
+            animation: bgShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+
+            50% {
+                transform: scale(1.1) translate(20px, -20px);
+            }
+
+            100% {
+                transform: scale(1) translate(-20px, 20px);
+            }
+        }
+
+        .top-bar {
+            padding: 80px 40px 10px 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            z-index: 100;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* --- NAVBAR PILL STYLES --- */
+        .navbar-pill {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 15px 10px 20px;
+            background: rgba(20, 20, 22, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .nav-brand-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo-pill {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .nav-brand-text-pill {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links-pill a {
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .nav-links-pill a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown-trigger {
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            background: none;
+            border: none;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 100px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .nav-dropdown-trigger:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-dropdown-trigger i {
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        .nav-dropdown:hover .nav-dropdown-trigger i {
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(15, 15, 18, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 12px;
+            min-width: 300px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-dropdown:hover .nav-dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-item-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dropdown-item-logo {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        .dropdown-item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dropdown-item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .dropdown-item-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-actions-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lang-toggle-pill {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .lang-toggle-pill:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .btn-pill-cta {
+            padding: 10px 24px;
+            background: #fff;
+            color: #000;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-pill-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .mobile-menu-btn-pill {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-nav-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-nav-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background: rgba(15, 15, 18, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            transition: right 0.3s ease;
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .mobile-nav-drawer.active {
+            right: 0;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .drawer-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+
+        .drawer-header span {
+            font-weight: 800;
+            font-size: 18px;
+            flex: 1;
+        }
+
+        .drawer-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .drawer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .drawer-nav a {
+            padding: 14px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .drawer-nav a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .mobile-dropdown {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-dropdown-trigger {
+            padding: 14px 16px;
+            color: rgba(255, 255, 255, 0.7);
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 12px;
+            font-family: inherit;
+        }
+
+        .mobile-dropdown-trigger:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .mobile-dropdown-content {
+            display: none;
+            flex-direction: column;
+            padding-left: 16px;
+            gap: 4px;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-content {
+            display: flex;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-trigger i {
+            transform: rotate(180deg);
+        }
+
+        .mobile-app-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .mobile-app-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .mobile-app-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .btn-drawer-cta {
+            margin-top: auto;
+            padding: 14px;
+            background: var(--primary-lime);
+            color: #000;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links-pill {
+                display: none;
+            }
+
+            .lang-toggle-pill {
+                display: none;
+            }
+
+            .btn-pill-cta {
+                display: none;
+            }
+
+            .mobile-menu-btn-pill {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .navbar-pill {
+                width: calc(100% - 32px);
+                justify-content: space-between;
+            }
+
+            .top-bar {
+                padding: 90px 20px 10px 20px;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-lime), var(--accent-gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: 800;
+            box-shadow: 0 0 15px rgba(212, 244, 88, 0.3);
+        }
+
+        .selector-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+            margin-top: -20px;
+            /* Bring cards slightly up */
+        }
+
+        .app-card {
+            width: 420px;
+            height: 540px;
+            border-radius: 40px;
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .app-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .app-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) rotateX(10deg);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        .app-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.05) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .app-card:hover {
+            transform: translateY(-25px) scale(1.05) rotateY(5deg);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 0 40px rgba(255, 255, 255, 0.05);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* --- STANDARD USER PROFILE PILL (Copied from subscription.html) --- */
+        .user-profile-pill {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 100;
+        }
+
+        .user-profile-pill:hover,
+        .user-profile-pill.active {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .pill-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .pill-status {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-lime, #D4F458);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-lime, #D4F458);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 244, 88, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(212, 244, 88, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 244, 88, 0);
+            }
+        }
+
+        /* --- DROPDOWN CARD (Replacing old popover) --- */
+        .user-popover {
+            /* Legacy override */
+            display: none;
+            /* We will use .profile-dropdown-card instead, but let's restyle this block to match new design */
+        }
+
+        .profile-dropdown-card {
+            position: absolute;
+            top: 70px;
+            /* Below pill */
+            right: 0;
+            width: 260px;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 99;
+            pointer-events: none;
+        }
+
+        .profile-dropdown-card.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px) rotateY(0deg);
+            }
+
+            50% {
+                transform: translateY(-10px) rotateY(2deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotateY(0deg);
+            }
+        }
+
+        .app-card {
+            animation: fadeInUp 1s ease-out both, float 6s ease-in-out infinite 1s;
+        }
+
+        /* Ambient Glow per card */
+        .card-bg-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140%;
+            height: 140%;
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: blur(80px);
+            z-index: -1;
+        }
+
+        .card-finance:hover .card-bg-glow {
+            background: radial-gradient(circle at center, var(--glow-finance), transparent 70%);
+            opacity: 1;
+        }
+
+        .card-nutrition:hover .card-bg-glow {
+            background: radial-gradient(circle at center, var(--glow-nutrition), transparent 70%);
+            opacity: 1;
+        }
+
+        /* Content Reveal */
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 40px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+            z-index: 3;
+        }
+
+        .app-card:hover .app-icon {
+            transform: translateZ(50px) scale(1.1);
+            filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+        }
+
+        .app-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-white);
+            letter-spacing: -1px;
+            z-index: 3;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .app-card:hover .app-title {
+            transform: translateZ(30px);
+        }
+
+        .app-subtitle {
+            color: #A1A1AA;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 48px;
+            max-width: 85%;
+            z-index: 3;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .app-card:hover .app-subtitle {
+            transform: translateZ(20px);
+        }
+
+        .btn-enter {
+            padding: 16px 40px;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid transparent;
+            z-index: 3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-finance .btn-enter {
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--accent-gold);
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .card-finance:hover .btn-enter {
+            background: var(--accent-gold);
+            color: #000;
+            transform: translateZ(40px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .card-nutrition .btn-enter {
+            background: rgba(212, 244, 88, 0.08);
+            color: var(--primary-lime);
+            border-color: rgba(212, 244, 88, 0.2);
+        }
+
+        .card-nutrition:hover .btn-enter {
+            background: var(--primary-lime);
+            color: #000;
+            transform: translateZ(40px);
+            box-shadow: 0 10px 30px rgba(212, 244, 88, 0.4);
+        }
+
+        .section-label {
+            position: absolute;
+            top: 48px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 800;
+            z-index: 3;
+        }
+
+        /* Glint Animation */
+        .app-card::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(45deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.03) 45%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0.03) 55%,
+                    transparent 100%);
+            transform: rotate(-45deg);
+            z-index: 4;
+            pointer-events: none;
+            transition: all 0s;
+        }
+
+        .app-card:hover::after {
+            top: 100%;
+            left: 100%;
+            transition: all 0.8s ease-in-out;
+        }
+    </style>
+
+    <!-- Supabase Scripts Moved to Head (Early Loading) -->
+</head>
+
+<body>
+    <div class="bg-mesh"></div>
+
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <img src="assets/images/logo.png" alt="AUREUS" class="nav-logo-pill">
+            <span class="nav-brand-text-pill">AUREUS</span>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features">Características</a>
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc">Nutrición clínica, macros, ayuno y planificación</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc">Control financiero, presupuestos e inversiones</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="index.html#pricing">Precios</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="dashboard-select.html" class="btn-pill-cta" id="navAuthBtn">Mi Panel</a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <img src="assets/images/logo.png" alt="AUREUS" class="drawer-logo">
+            <span>AUREUS</span>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="landing.html#features">Características</a>
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-trigger">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    <a href="fit-ai-info.html" class="mobile-app-link">
+                        <img src="AUREUS FIT AI/images/logo.png" class="mobile-app-logo">
+                        AUREUS Nutrición AI
+                    </a>
+                    <a href="finance-os-info.html" class="mobile-app-link">
+                        <img src="assets/images/logo-finance.svg" class="mobile-app-logo">
+                        AUREUS Finance OS
+                    </a>
+                </div>
+            </div>
+            <a href="landing.html#pricing">Precios</a>
+        </nav>
+        <a href="dashboard-select.html" class="btn-drawer-cta" id="drawerAuthBtn">Mi Panel</a>
+    </div>
+
+    <div class="top-bar">
+
+        <div style="width: 40px;"></div> <!-- Spacer to balance the layout -->
+
+        <!-- User Profile with Popover -->
+        <!-- User Profile with Popover -->
+        <div class="user-profile-wrapper" style="position: relative;">
+            <!-- Updated to match Subscription Page Design -->
+            <div class="user-profile-pill" id="userProfileBtn">
+                <span class="pill-name" id="userName">Cargando...</span>
+                <div class="pill-status"></div>
+            </div>
+
+            <!-- Dropdown Card -->
+            <div class="profile-dropdown-card" id="userPopover">
+                <!-- Main Menu -->
+                <div class="popover-menu" id="popoverMainMenu">
+                    <!-- Main Menu -->
+                    <div class="popover-menu" id="popoverMainMenu">
+                        <div class="menu-item" onclick="window.location.href='user-selection.html'">
+                            <div class="menu-icon-box" style="background: rgba(255, 255, 255, 0.1); color: #fff;">
+                                <i class="fa-solid fa-circle-user"></i>
+                            </div>
+                            <span>Cambiar Perfil</span>
+                        </div>
+
+                        <div class="menu-item" onclick="window.location.href='subscription.html'">
+                            <div class="menu-icon-box" style="background: rgba(212, 244, 88, 0.1); color: #D4F458;">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+                            <span style="flex:1">Mi Suscripción</span>
+                        </div>
+
+                        <div class="menu-divider"></div>
+
+                        <div class="menu-item logout" onclick="handleLogout()">
+                            <div class="menu-icon-box" style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d;">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </div>
+                            <span>Cerrar sesión</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer User Card -->
+                    <div class="popover-footer-user">
+                        <div class="footer-avatar">B</div>
+                        <div class="footer-user-info">
+                            <span class="footer-user-name" id="popoverName">Cargando...</span>
+                            <span class="footer-user-badge">Pro Member</span>
+                        </div>
+                        <i class="fa-solid fa-ellipsis-vertical" style="color: #666; cursor: pointer;"></i>
+                    </div>
+
+                    <div class="settings-view" id="settingsView">
+                        <div class="settings-header">
+                            <button class="view-back-btn" onclick="toggleSettingsView()">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <span>Ajustes de Perfil</span>
+                        </div>
+                        <div class="settings-content">
+                            <div class="profile-avatar-edit"
+                                onclick="document.getElementById('avatarFileInput').click()">
+                                <div class="avatar-large">
+                                    <img id="profileAvatarImg" src=""
+                                        style="display:none; width:100%; height:100%; object-fit:cover;">
+                                    <span id="profileAvatarInitial">B</span>
+                                </div>
+                                <div class="avatar-overlay">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
+                            </div>
+                            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;"
+                                onchange="handleAvatarChange(event)">
+
+                            <div class="input-group">
+                                <label>Nombre de usuario</label>
+                                <input type="text" id="profileNameInput" class="premium-input" placeholder="Tu nombre">
+                            </div>
+
+                            <div class="input-group">
+                                <label>Correo Electrónico</label>
+                                <div class="read-only-box">
+                                    <span id="profileUser">user@aureus.ai</span>
+                                    <i class="fa-solid fa-lock" style="font-size: 10px;"></i>
+                                </div>
+                            </div>
+
+                            <button class="btn-save-settings" onclick="saveProfileName()">
+                                Guardar Cambios
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="selector-container">
+
+        <!-- Finance Card -->
+        <div class="app-card card-finance" onclick="window.location.href='AUREUS FINANCE AI/index.html'">
+            <div class="card-bg-glow"></div>
+            <span class="section-label">Wealth Management</span>
+            <img src="assets/images/logo-finance.svg" class="app-icon">
+            <h2 class="app-title">Finance OS</h2>
+            <p class="app-subtitle">Control total de tus activos, inversiones y flujo de efectivo.</p>
+            <span class="btn-enter">Ingresar <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+        <!-- Nutrition Card -->
+        <div class="app-card card-nutrition" onclick="window.location.href='AUREUS FIT AI/index.html'">
+            <div class="card-bg-glow"></div>
+            <span class="section-label">Health & Performance</span>
+            <img src="AUREUS FIT AI/images/logo.png" class="app-icon">
+            <h2 class="app-title">Nutrition AI</h2>
+            <p class="app-subtitle">Planes nutricionales adaptativos y seguimiento biométrico.</p>
+            <span class="btn-enter">Ingresar <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+    </div>
+
+    <style>
+        /* --- MODERN USER PROFILE & POPOVER --- */
+        .user-profile-wrapper {
+            position: relative;
+        }
+
+        .user-profile {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 100px;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .user-popover {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            width: 320px;
+            background: rgba(15, 15, 18, 0.98);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            overflow: hidden;
+            animation: popoverEntry 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .user-popover.active {
+            display: flex;
+        }
+
+        @keyframes popoverEntry {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .popover-header {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .popover-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-lime), var(--accent-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            color: #000;
+            box-shadow: 0 10px 20px rgba(212, 244, 88, 0.2);
+        }
+
+        .popover-user-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .popover-user-email {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: -8px;
+        }
+
+        .popover-menu {
+            padding: 12px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+            opacity: 0.7;
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 8px 16px;
+        }
+
+        .menu-item.logout {
+            color: #ff4d4d;
+        }
+
+        .menu-item.logout:hover {
+            background: rgba(255, 77, 77, 0.1);
+        }
+
+        /* Menu Icons */
+        .menu-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer User Card */
+        .popover-footer-user {
+            margin-top: 8px;
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .footer-user-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-user-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-user-badge {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* --- CLEAN SETTINGS MODAL --- */
+        .settings-view {
+            position: absolute;
+            inset: 0;
+            /* Cover entire popover */
+            background: #0d0d0f;
+            z-index: 1001;
+            display: none;
+            flex-direction: column;
+            animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .settings-view.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        .settings-header {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .settings-content {
+            flex: 1;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            overflow: hidden;
+            /* Prevent parent scroll */
+        }
+
+        .profile-avatar-edit {
+            align-self: center;
+            position: relative;
+            cursor: pointer;
+            width: 110px;
+            height: 110px;
+            flex-shrink: 0;
+        }
+
+        .avatar-large {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-lime), var(--accent-gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            font-weight: 800;
+            color: #000;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(212, 244, 88, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 50%;
+        }
+
+        .profile-avatar-edit:hover .avatar-overlay {
+            opacity: 1;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .premium-input {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .premium-input:focus {
+            border-color: var(--primary-lime);
+            background: rgba(212, 244, 88, 0.03);
+            box-shadow: 0 0 20px rgba(212, 244, 88, 0.05);
+        }
+
+        .read-only-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-save-settings {
+            margin-top: auto;
+            background: var(--primary-lime);
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-save-settings:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 244, 88, 0.3);
+        }
+    </style>
+
+    <script>
+        // Check auth state and redirect if not logged in
+        // Check auth state and redirect if not logged in
+        if (window.supabaseClient) {
+            window.supabaseClient.auth.onAuthStateChange((event, session) => {
+                const user = session?.user;
+                const localUser = JSON.parse(localStorage.getItem('aureus_active_user'));
+
+                if (localUser && localUser.name) {
+                    updateProfileUI(localUser, true);
+                    return;
+                }
+
+                if (!user && event !== 'INITIAL_SESSION') {
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                if (user) {
+                    // Try to resolve a better name for the active user
+                    let resolvedName = user.user_metadata?.full_name || user.email.split('@')[0];
+
+                    // Priority fallbacks for local profiles
+                    if (resolvedName === user.email.split('@')[0]) {
+                        // Check if this is the primary user and if they have a custom name
+                        const user1Name = localStorage.getItem('aureus_name_user1');
+                        if (user1Name && user1Name !== 'Invitado' && user1Name !== 'User') {
+                            resolvedName = user1Name;
+                        } else {
+                            // Check for any stored "last known name"
+                            const lastKnown = localStorage.getItem('aureus_last_known_name');
+                            if (lastKnown) resolvedName = lastKnown;
+                        }
+                    }
+
+                    let activeUser = {
+                        name: resolvedName,
+                        email: user.email,
+                        avatar: user.user_metadata?.avatar_url || 'assets/images/users/item_profile.png',
+                        status: 'Conectado'
+                    };
+
+                    localStorage.setItem('aureus_active_user', JSON.stringify(activeUser));
+                    updateProfileUI(activeUser, false);
+                }
+            });
+        }
+
+        function updateProfileUI(user, isLocal = false) {
+            const displayName = user.name || user.displayName || 'Usuario';
+            const initial = displayName.charAt(0).toUpperCase();
+            let photoURL = user.avatar || user.photoURL;
+
+            // Fix broken relative paths from legacy sessions
+            if (photoURL === 'item_profile.webp' || photoURL === 'item_profile.png') {
+                photoURL = 'images/users/item_profile.webp';
+            }
+
+            // Header Elements (Main Button)
+            const headerName = document.getElementById('userName');
+            const headerAvatar = document.getElementById('userAvatar');
+            const statusDot = document.querySelector('.pill-status');
+
+            if (headerName) headerName.innerText = displayName;
+
+            // Apply custom color if exists
+            if (user.color) {
+                if (statusDot) {
+                    statusDot.style.background = user.color;
+                    statusDot.style.boxShadow = `0 0 10px ${user.color}`;
+                }
+                if (headerAvatar) {
+                    headerAvatar.style.borderColor = user.color;
+                }
+            }
+
+            if (headerAvatar) {
+                if (photoURL) {
+                    headerAvatar.innerHTML = `<img src="${photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover; border: 2px solid ${user.color || 'var(--primary-lime)'};">`;
+                } else {
+                    headerAvatar.innerText = initial;
+                }
+            }
+
+            // Popover Header Elements
+            const popoverName = document.getElementById('popoverName');
+            const popoverEmail = document.getElementById('popoverEmail');
+            const popoverAvatar = document.getElementById('popoverAvatar');
+            if (popoverName) popoverName.innerText = displayName;
+            if (popoverEmail) popoverEmail.innerText = user.email;
+            if (popoverAvatar) {
+                if (photoURL) {
+                    popoverAvatar.innerHTML = `<img src="${photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+                } else {
+                    popoverAvatar.innerText = initial;
+                    popoverAvatar.style.background = 'linear-gradient(135deg, var(--primary-lime), var(--accent-gold))';
+                }
+            }
+
+            // Settings View Elements
+            const nameInput = document.getElementById('profileNameInput');
+            const profileUser = document.getElementById('profileUser');
+            const profileAvatarImg = document.getElementById('profileAvatarImg');
+            const profileAvatarInitial = document.getElementById('profileAvatarInitial');
+
+            if (nameInput) nameInput.value = displayName;
+            if (profileUser) profileUser.innerText = user.email;
+
+            if (photoURL) {
+                if (profileAvatarImg) {
+                    profileAvatarImg.src = photoURL;
+                    profileAvatarImg.style.display = 'block';
+                }
+                if (profileAvatarInitial) profileAvatarInitial.style.display = 'none';
+            } else {
+                if (profileAvatarImg) profileAvatarImg.style.display = 'none';
+                if (profileAvatarInitial) {
+                    profileAvatarInitial.style.display = 'flex';
+                    profileAvatarInitial.innerText = initial;
+                }
+            }
+
+            // Sync to localStorage for cross-tab availability
+            // Merge to preserve all fields (color, status, id)
+            const userToSave = {
+                ...user,
+                name: displayName,
+                avatar: photoURL || 'assets/images/users/item_profile.png'
+            };
+            if (user.email) userToSave.email = user.email;
+
+            localStorage.setItem('aureus_active_user', JSON.stringify(userToSave));
+
+            // Store last known name for cross-app fallbacks
+            localStorage.setItem('aureus_last_known_name', displayName);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('userProfileBtn');
+            const popover = document.getElementById('userPopover');
+            const settingsView = document.getElementById('settingsView');
+
+            // Toggle Popover
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                popover.classList.toggle('active');
+                // Don't auto-close settings if it's open, but if popover is closing, maybe it should?
+                // Actually, settings is INSIDE popover now, so if popover closes, settings is hidden too.
+            });
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (popover && !popover.contains(e.target) && !btn.contains(e.target)) {
+                    popover.classList.remove('active');
+                    // Reset settings view when closing popover
+                    if (settingsView) settingsView.classList.remove('active');
+                }
+            });
+        });
+
+        /* [INJECTED] FIREBASE SDK */
+        /* Firebase SDK */
+    </script>
+    <!-- Firebase Scripts Moved to Head -->
+    <script>
+
+        function toggleSettingsView() {
+            const settingsView = document.getElementById('settingsView');
+            settingsView.classList.toggle('active');
+        }
+
+        async function handleLogout() {
+            try {
+                console.log("Processing Logout...");
+                localStorage.removeItem('aureus_active_user');
+
+                if (window.supabaseClient) {
+                    await window.supabaseClient.auth.signOut();
+                    console.log("Supabase Signed Out");
+                }
+            } catch (e) {
+                console.error('Logout error:', e);
+                localStorage.removeItem('aureus_active_user');
+            }
+            window.location.href = 'login.html';
+        }
+
+        async function compressImage(file, maxWidth = 64, maxHeight = 64) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height *= maxWidth / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width *= maxHeight / height;
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Iteratively reduce quality until under 2048 characters (Local limit)
+                        let quality = 0.5;
+                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+
+                        while (dataUrl.length > 2000 && quality > 0.1) {
+                            quality -= 0.1;
+                            dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        }
+
+                        console.log("Compressed avatar length:", dataUrl.length, "at quality:", quality);
+                        resolve(dataUrl);
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+
+        async function handleAvatarChange(event) {
+            const file = event.target.files[0];
+            if (!file || !window.supabaseClient) return;
+
+            try {
+                // Compress image before updating profile
+                const compressedDataUrl = await compressImage(file);
+
+                const { data, error } = await window.supabaseClient.auth.updateUser({
+                    data: { avatar_url: compressedDataUrl }
+                });
+
+                if (error) throw error;
+
+                if (data.user) {
+                    updateProfileUI(data.user);
+                    showToast('Imagen actualizada');
+                }
+            } catch (err) {
+                console.error("Error updating avatar:", err);
+                alert("Error al actualizar la foto. Intente con una imagen más pequeña.");
+            }
+        }
+
+        async function saveProfileName() {
+            const nameInput = document.getElementById('profileNameInput');
+            const newName = nameInput.value.trim();
+            if (!newName || !window.supabaseClient) return;
+
+            try {
+                const { data, error } = await window.supabaseClient.auth.updateUser({
+                    data: { full_name: newName }
+                });
+
+                if (error) throw error;
+
+                if (data.user) {
+                    updateProfileUI(data.user);
+                    showToast('Nombre guardado');
+                }
+            } catch (err) {
+                console.error("Error updating name:", err);
+                alert("Error al actualizar el nombre.");
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+                background: rgba(34, 197, 94, 0.9); color: white; padding: 12px 24px;
+                border-radius: 12px; z-index: 1100; font-size: 14px; font-weight: 600;
+                display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+                animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            `;
+            toast.innerHTML = `<i class="fa-solid fa-check"></i> ${msg}`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'toastOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Animation Styles
+        const animStyles = document.createElement('style');
+        animStyles.innerText = `
+            @keyframes toastIn { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+            @keyframes toastOut { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, 20px); } }
+        `;
+        document.head.appendChild(animStyles);
+
+        // Mobile Menu Functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const drawerClose = document.getElementById('drawerClose');
+        const mobileDropdowns = document.querySelectorAll('.mobile-dropdown');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileNavOverlay.classList.add('active');
+                mobileNavDrawer.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        function closeMobileMenu() {
+            mobileNavOverlay.classList.remove('active');
+            mobileNavDrawer.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', closeMobileMenu);
+        if (drawerClose) drawerClose.addEventListener('click', closeMobileMenu);
+
+        // Mobile dropdown toggle
+        mobileDropdowns.forEach(dropdown => {
+            const trigger = dropdown.querySelector('.mobile-dropdown-trigger');
+            if (trigger) {
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+            }
+        });
+
+        // Close drawer when clicking links
+        document.querySelectorAll('.drawer-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+    </script>
+</body>
+
+</html>

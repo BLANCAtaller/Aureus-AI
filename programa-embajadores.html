@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Ambassador Elite - El Próximo Nivel de Influencia</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <style>
+        :root {
+            --primary-current: #D4F458;
+            --primary-glow-current: rgba(212, 244, 88, 0.4);
+            --accent-purple: #a855f7;
+            --accent-gold: #FFD700;
+            --deep-blue: #6366f1;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes meshShift {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(5%, -5%) scale(1.1) rotate(2deg);
+            }
+
+            66% {
+                transform: translate(-3%, 7%) scale(0.95) rotate(-1deg);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 5px var(--primary-glow-current));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px var(--primary-glow-current));
+            }
+        }
+
+        @keyframes revealUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- ADVANCED BACKGROUND --- */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: #030304;
+        }
+
+        .mesh-gradient {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            top: -25%;
+            left: -25%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212, 244, 88, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.12) 0%, transparent 40%);
+            filter: blur(100px);
+            animation: meshShift 25s infinite linear;
+        }
+
+        .micro-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+
+        /* --- NAVBAR PILL OVERRIDE --- */
+        .back-nav {
+            position: fixed;
+            top: 32px;
+            left: 32px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 12px 24px;
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .back-nav:hover {
+            background: #fff;
+            color: #000;
+            transform: translateX(5px);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-ambassador {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            text-align: center;
+            padding: 0 24px;
+        }
+
+        .badge-elite {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(212, 244, 88, 0.1);
+            border: 1px solid rgba(212, 244, 88, 0.2);
+            padding: 10px 20px;
+            border-radius: 100px;
+            color: var(--primary-current);
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: glowPulse 3s infinite;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 10vw, 90px);
+            font-weight: 950;
+            line-height: 1;
+            letter-spacing: -4px;
+            margin-bottom: 32px;
+            background: linear-gradient(to right, #fff, var(--primary-current), var(--accent-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 2vw, 24px);
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 800px;
+            margin: 0 auto 48px;
+            line-height: 1.5;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-elite {
+            padding: 20px 48px;
+            border-radius: 100px;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .btn-primary {
+            background: var(--primary-current);
+            color: #000;
+            box-shadow: 0 10px 40px var(--primary-glow-current);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 60px var(--primary-glow-current);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* --- FEATURE GLASS CARDS --- */
+        .features-section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 0 24px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            color: var(--primary-current);
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 3px;
+            font-size: 12px;
+            margin-bottom: 24px;
+            padding: 8px 24px;
+            background: rgba(212, 244, 88, 0.05);
+            border: 1px solid rgba(212, 244, 88, 0.15);
+            border-radius: 100px;
+            backdrop-filter: blur(5px);
+        }
+
+        .section-title {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .feature-card {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(20px);
+            padding: 50px 30px;
+            border-radius: 32px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Animated Gradient Border Effect */
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            background: linear-gradient(135deg,
+                    transparent 40%,
+                    rgba(212, 244, 88, 0.3),
+                    rgba(168, 85, 247, 0.3),
+                    transparent 60%);
+            background-size: 200% 200%;
+            animation: shimmerBorder 6s infinite linear;
+            border-radius: 32px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        @keyframes shimmerBorder {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
+            border-color: rgba(212, 244, 88, 0.2);
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        /* MOUSE FOLLOW SPOTLIGHT */
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--x, 50%) var(--y, 50%), rgba(212, 244, 88, 0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ICON STYLING */
+        .feature-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary-current);
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            /* Continuous Float Animation */
+            animation: iconFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .feature-card:hover .feature-icon {
+            background: var(--primary-current);
+            color: #111;
+            box-shadow: 0 0 50px rgba(212, 244, 88, 0.5);
+            transform: scale(1.1) rotate(5deg);
+            border-color: transparent;
+            animation: none;
+            /* Stop floating on hover for direct feedback */
+        }
+
+        .feature-card h3 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #fff, #ccc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+            font-size: 17px;
+            max-width: 90%;
+        }
+
+        /* --- HOW IT WORKS (STEPS) --- */
+        .steps-section {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .steps-section {
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .steps-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            padding: 60px 24px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        /* Connecting Line for Desktop */
+        .steps-container::before {
+            content: '';
+            position: absolute;
+            top: 100px;
+            /* Align with numbers */
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-current), transparent);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            /* Default Color fallback */
+            --step-color: var(--primary-current);
+        }
+
+        /* PER-STEP COLORIZATION */
+        .step-item:nth-child(1) {
+            --step-color: #00E5FF;
+        }
+
+        /* Cyan */
+        .step-item:nth-child(2) {
+            --step-color: #D4F458;
+        }
+
+        /* Lime */
+        .step-item:nth-child(3) {
+            --step-color: #D500F9;
+        }
+
+        /* Purple */
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: #09090b;
+            border: 2px solid var(--step-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--step-color);
+            margin-bottom: -35px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 30px var(--step-color), inset 0 0 20px var(--step-color);
+            transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 0 10px var(--step-color);
+        }
+
+        .step-item:hover .step-number {
+            transform: scale(1.1) rotate(10deg);
+            background: var(--step-color);
+            color: #000;
+            box-shadow: 0 0 60px var(--step-color);
+            text-shadow: none;
+        }
+
+        .step-content {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid var(--step-color);
+            border-radius: 32px;
+            padding: 80px 24px 40px;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(20px);
+            transition: 0.5s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* COLORFUL GRADIENT BACKGROUND */
+        .step-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, var(--step-color), transparent 60%);
+            opacity: 0.1;
+            transition: 0.5s;
+        }
+
+        .step-item:hover .step-content {
+            transform: translateY(-10px);
+            border-color: var(--step-color);
+            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.8), 0 0 30px var(--step-color);
+        }
+
+        .step-item:hover .step-content::before {
+            opacity: 0.2;
+        }
+
+        .step-icon {
+            font-size: 42px;
+            color: var(--step-color);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px var(--step-color));
+            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.03);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .step-item:hover .step-icon {
+            transform: scale(1.1);
+            background: var(--step-color);
+            color: #000;
+            box-shadow: 0 0 40px var(--step-color);
+            filter: none;
+        }
+
+        .step-content h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .step-content p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 28px;
+        }
+
+        .step-details {
+            margin-top: auto;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .step-details>span {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--step-color);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 16px;
+            border-radius: 100px;
+            border: 1px solid var(--step-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .step-details>span i {
+            font-size: 10px;
+            opacity: 0.9;
+        }
+
+        .step-details>span:hover {
+            background: rgba(var(--step-color-rgb, 255, 255, 255), 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 900px) {
+            .steps-container {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+
+            .steps-container::before {
+                width: 2px;
+                height: 80%;
+                left: 50%;
+                top: 0;
+                background: linear-gradient(to bottom, transparent, #333, transparent);
+            }
+        }
+
+        /* --- RANK SCALING --- */
+        .ranks-section {
+            padding: 150px 0;
+        }
+
+        .rank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .rank-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 60px 40px;
+            border-radius: 48px;
+            text-align: center;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        .rank-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--glow-color, var(--primary-current)), transparent 40%);
+            opacity: 0;
+            transition: 0.5s;
+            animation: rotate 4s infinite linear;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rank-card:hover::after {
+            opacity: 0.2;
+        }
+
+        .rank-card:hover {
+            transform: scale(1.05);
+            border-color: var(--glow-color, var(--primary-current));
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .rank-card.bronze {
+            --glow-color: #cd7f32;
+            background: linear-gradient(180deg, rgba(205, 127, 50, 0.05), transparent);
+        }
+
+        .rank-card.silver {
+            --glow-color: #c0c0c0;
+            background: linear-gradient(180deg, rgba(192, 192, 192, 0.05), transparent);
+        }
+
+        .rank-card.gold {
+            --glow-color: #ffd700;
+            background: linear-gradient(180deg, rgba(255, 215, 0, 0.05), transparent);
+        }
+
+        .rank-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--glow-color);
+            border: 1px solid var(--glow-color);
+        }
+
+        .rank-reward {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 24px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: inline-block;
+        }
+
+        .rank-emoji {
+            font-size: 80px;
+            margin-bottom: 32px;
+            display: block;
+            filter: drop-shadow(0 0 15px var(--glow-color));
+        }
+
+        .rank-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 24px;
+            color: var(--glow-color);
+        }
+
+        .benefit-list {
+            list-style: none;
+            text-align: left;
+            margin-top: 32px;
+        }
+
+        .benefit-item {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .benefit-item i {
+            color: var(--glow-color);
+        }
+
+        /* --- FOOTER CTA --- */
+        .cta-footer-section {
+            padding: 150px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .glow-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow-current) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* --- UTILS --- */
+        .visible {
+            opacity: 1 !important;
+            transform: translate(0, 0) !important;
+            animation: revealUp 0.8s forwards ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .step-item {
+                gap: 20px;
+            }
+
+            .step-number {
+                width: 50px;
+                height: 50px;
+                min-width: 50px;
+                font-size: 20px;
+                border-radius: 15px;
+            }
+
+            .steps-container::before {
+                left: 49px;
+            }
+
+            .hero-title {
+                font-size: 44px;
+            }
+
+            .badge-elite {
+                font-size: 12px;
+            }
+
+            .btn-elite {
+                padding: 16px 32px;
+                font-size: 16px;
+            }
+        }
+
+
+        /* ... existing styles ... */
+
+        /* CINEMATIC NOISE TEXTURE */
+        .bg-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* AMBIENT ORBS */
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 10s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-current);
+            top: 10%;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--accent-purple);
+            bottom: 20%;
+            right: -150px;
+            animation-delay: -2s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--deep-blue);
+            top: 50%;
+            left: 30%;
+            animation-delay: -5s;
+            opacity: 0.1;
+        }
+
+        @keyframes floatOrb {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(40px, -40px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-noise"></div>
+    <div class="bg-canvas">
+        <div class="mesh-gradient"></div>
+        <div class="micro-grid"></div>
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div> <!-- Top Navigation Bar -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="assets/images/LOGO AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+                <span class="nav-brand-text-pill">AUREUS</span>
+            </a>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger">
+                    <span data-i18n="nav.apps">Aplicaciones</span> <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos e inversiones</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn">
+                <span data-i18n="nav.login">Iniciar Sesión</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo">
+                <img src="assets/images/LOGO AUREUS.png" alt="Aureus Logo" class="nav-logo-pill">
+                <span>AUREUS</span>
+            </div>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Mobile Apps Accordion -->
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    <a href="fit-ai-info.html" class="mobile-app-link">
+                        <img src="AUREUS FIT AI/images/logo.png" class="mobile-app-logo">
+                        AUREUS Nutrición AI
+                    </a>
+                    <a href="finance-os-info.html" class="mobile-app-link">
+                        <img src="assets/images/logo-finance.svg" class="mobile-app-logo">
+                        AUREUS Finance OS
+                    </a>
+                    <a href="programa-embajadores.html" class="mobile-app-link">
+                        <i class="fas fa-users" style="margin-right: 12px; font-size: 20px;"></i>
+                        <span data-i18n="footer.link_ambassadors">Embajadores</span>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="pricing.html#faq" data-i18n="nav.faq">FAQ</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        </nav>
+        <a href="login.html" class="btn-drawer-cta" id="drawerAuthBtn" data-i18n="nav.login">Iniciar Sesión</a>
+    </div>
+    <!-- HERO -->
+    <section class="hero-ambassador">
+        <div class="hero-container">
+            <div class="badge-elite">
+                <i class="fas fa-gem"></i>
+                <span data-i18n="ambassadors.hero_badge">Acceso Selectivo</span>
+            </div>
+            <h1 class="hero-title" data-i18n="ambassadors.hero_title">Impulsa tu Impacto.<br>Sé un Ambassador Elite.
+            </h1>
+            <p class="hero-subtitle" data-i18n="ambassadors.hero_subtitle">No buscamos vendedores,
+                buscamos visionarios. Únete a la red exclusiva de AUREUS y disfruta de la app gratis mientras
+                transformas vidas con la IA más avanzada en salud y finanzas. </p>
+            <div class="hero-cta-group">
+                <a href="login.html" class="btn-elite btn-primary">
+                    <span data-i18n="ambassadors.hero_cta_primary">Unirme Ahora</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+                <a href="#how-it-works" class="btn-elite btn-secondary">
+                    <span data-i18n="ambassadors.hero_cta_secondary">Ver Mecánica</span>
+                    <i class="fas fa-info-circle"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- KEY BENEFITS -->
+    <section class="features-section">
+        <div class="section-header"><span class="section-tag" data-i18n="ambassadors.features_tag">Privilegios</span>
+            <h2 class="section-title" data-i18n="ambassadors.features_title">¿Por qué ser un Ambassador?</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-gift"></i></div>
+                <h3 data-i18n="ambassadors.feature1_title">Semanas Premium</h3>
+                <p data-i18n="ambassadors.feature1_desc">Obtén semanas de acceso total gratuito por cada referido
+                    activo. Vive la experiencia AUREUS
+                    sin costo.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3 data-i18n="ambassadors.feature2_title">Estatus Verificado</h3>
+                <p data-i18n="ambassadors.feature2_desc">Obtén el check dorado en tu perfil global de AUREUS y destaca
+                    como una autoridad en la
+                    comunidad.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3 data-i18n="ambassadors.feature3_title">Formación de Élite</h3>
+                <p data-i18n="ambassadors.feature3_desc">Acceso a seminarios exclusivos de Biohacking,
+                    Finanzas Descentralizadas y Estrategias de Crecimiento. </p>
+            </div>
+        </div>
+    </section>
+    <!-- STEPS -->
+    <section class="steps-section" id="how-it-works">
+        <div class="section-header"><span class="section-tag" data-i18n="ambassadors.steps_tag">El Camino</span>
+            <h2 class="section-title" data-i18n="ambassadors.steps_title">Cómo Formar Parte</h2>
+        </div>
+        <div class="steps-container">
+            <div class="step-item reveal">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-user-circle"></i></div>
+                    <h3 data-i18n="ambassadors.step1_title">Tu Cuenta</h3>
+                    <p data-i18n="ambassadors.step1_desc">Crea tu cuenta en AUREUS. Automáticamente tendrás habilitada
+                        la opción de "Referir" en tu perfil
+                        personal.</p>
+                    <div class="step-details">
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step1_detail1">Acceso
+                                Inmediato</span></span>
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step1_detail2">Sin
+                                Formularios</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item reveal">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-share-nodes"></i></div>
+                    <h3 data-i18n="ambassadors.step2_title">Comparte</h3>
+                    <p data-i18n="ambassadors.step2_desc">Encuentra tu código único o enlace en tu dashboard. Compártelo
+                        con tu red de futuros visionarios.
+                    </p>
+                    <div class="step-details">
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step2_detail1">Código
+                                Único</span></span>
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step2_detail2">Invita
+                                Fácil</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="step-item reveal">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-icon"><i class="fas fa-users-viewfinder"></i></div>
+                    <h3 data-i18n="ambassadors.step3_title">Conexión</h3>
+                    <p data-i18n="ambassadors.step3_desc">Al registrarse, tu invitado ingresa tu código de referido. La
+                        conexión se valida al instante y
+                        ambos ganan.</p>
+                    <div class="step-details">
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step3_detail1">Validación
+                                Real</span></span>
+                        <span><i class="fas fa-check"></i><span data-i18n="ambassadors.step3_detail2">Recompensa
+                                Auto</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- RANKS -->
+    <section class="ranks-section">
+        <div class="section-header"><span class="section-tag" data-i18n="ambassadors.ranks_tag">Progresión</span>
+            <h2 class="section-title" data-i18n="ambassadors.ranks_title">Tiers de Influencia</h2>
+        </div>
+        <div class="rank-grid">
+            <div class="rank-card bronze reveal">
+                <div class="rank-badge" data-i18n="ambassadors.rank1_badge">Tier 1</div><span
+                    class="rank-emoji">🥉</span>
+                <h3 class="rank-title" data-i18n="ambassadors.rank1_title">Ambassador</h3>
+                <div class="rank-reward" data-i18n="ambassadors.rank1_reward">1 Semana Premium / Referido</div>
+                <ul class="benefit-list">
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank1_feat1">Dashboard de Impacto</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank1_feat2">Acceso a la Academia</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank1_feat3">Acceso a Versiones Beta</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank1_feat4">Canal Discord Exclusivo</span></li>
+                </ul>
+            </div>
+            <div class="rank-card silver reveal">
+                <div class="rank-badge" data-i18n="ambassadors.rank2_badge">Tier 2</div><span
+                    class="rank-emoji">🥈</span>
+                <h3 class="rank-title" data-i18n="ambassadors.rank2_title">Silver Elite</h3>
+                <div class="rank-reward" data-i18n="ambassadors.rank2_reward">1 Semana Premium / Referido</div>
+                <ul class="benefit-list">
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank2_feat1">Soporte Prioritario 24/7</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank2_feat2">Eventos Presenciales</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank2_feat3">Insignia de Perfil Silver</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank2_feat4">Descuento en Masterclasses</span></li>
+                </ul>
+            </div>
+            <div class="rank-card gold reveal">
+                <div class="rank-badge" data-i18n="ambassadors.rank3_badge">Tier 3</div><span
+                    class="rank-emoji">🥇</span>
+                <h3 class="rank-title" data-i18n="ambassadors.rank3_title">Gold Master</h3>
+                <div class="rank-reward" data-i18n="ambassadors.rank3_reward">2 Semanas Premium / Referido</div>
+                <ul class="benefit-list">
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank3_feat1">Perfil Verificado Global</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank3_feat2">Voz en el Roadmap de IA</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank3_feat3">Sesión 1v1 Trimestral</span></li>
+                    <li class="benefit-item"><i class="fas fa-check-circle"></i><span
+                            data-i18n="ambassadors.rank3_feat4">Invitación a Retiros Anuales</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- FINAL CTA -->
+    <section class="cta-footer-section">
+        <div class="glow-orb"></div>
+        <h2 class="hero-title" data-i18n="ambassadors.cta_title">¿Listo para Trascender?</h2>
+        <p class="hero-subtitle" data-i18n="ambassadors.cta_subtitle">El futuro no se espera,
+            se construye. Empieza hoy tu camino con AUREUS.</p><a href="login.html" class="btn-elite btn-primary"
+            data-i18n="ambassadors.cta_btn">Unirme
+            al Programa Elite</a>
+    </section>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo-wrapper"
+                    style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="footer-logo">
+                    <span class="footer-brand-text">AUREUS</span>
+                </div>
+                <p class="footer-tagline" data-i18n="footer.tagline">Tu bienestar, simplificado.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="footer.product">Producto</h4>
+                    <a href="index.html#features" data-i18n="footer.link_features">Características</a>
+                    <a href="pricing.html" data-i18n="footer.link_pricing">Precios</a>
+                    <a href="index.html#faq" data-i18n="footer.link_faq">FAQ</a>
+                    <a href="blog.html" data-i18n="footer.link_blog">Blog</a>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.apps">Aplicaciones</h4>
+                    <a href="fit-ai-info.html" data-i18n="footer.link_nutrition">AUREUS Nutrición AI</a>
+                    <a href="finance-os-info.html" data-i18n="footer.link_finance">AUREUS Finance OS</a>
+                    <a href="programa-embajadores.html" data-i18n="footer.link_ambassadors">Embajadores</a>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <a href="https://www.instagram.com/aureus_fit_ai/" class="social-link" target="_blank"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.facebook.com/profile.php?id=61571689840242" class="social-link" target="_blank"><i
+                        class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.linkedin.com/company/aureus-software-inc/" class="social-link" target="_blank"><i
+                        class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 AUREUS. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+        </div>
+    </footer>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/landing-script.js"></script>
+    <script src="js/main.js"></script>
+    <script> // Reveal on Scroll
+
+        const observerOptions = {
+            threshold: 0.1
+        }
+
+            ;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }
+
+            , observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Glass tilt effect simulation
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+                const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+
+                card.style.setProperty('--x', `$ {
+                                x
+                            }
+
+                            %`);
+
+                card.style.setProperty('--y', `$ {
+                                y
+                            }
+
+                            %`);
+            });
+        });
+    </script>
+</body>
+
+</html>

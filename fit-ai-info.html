@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Nutrición AI - Nutrición Clínica e Inteligencia Artificial</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <style>
+        :root {
+            --primary-current: var(--primary-lime);
+            --primary-glow-current: var(--primary-glow);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            position: relative;
+        }
+
+        .micro-grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-info {
+            padding: 160px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-info-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 244, 88, 0.1);
+            border: 1px solid rgba(212, 244, 88, 0.2);
+            padding: 8px 16px;
+            border-radius: 100px;
+            color: var(--primary-lime);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero-info-title {
+            font-size: clamp(40px, 8vw, 72px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #fff 0%, var(--primary-lime) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-info-subtitle {
+            font-size: 20px;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .feature-showcase {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .showcase-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            transition: all 0.3s ease;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-lime);
+            background: var(--bg-card-hover);
+        }
+
+        .showcase-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 244, 88, 0.1);
+            color: var(--primary-lime);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .showcase-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .showcase-card p {
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        .back-to-landing {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 1001;
+            background: rgba(20, 20, 22, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 100px;
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .back-to-landing:hover {
+            background: var(--text-white);
+            color: var(--bg-dark);
+        }
+
+        .cta-section {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .btn-launch-large {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--primary-lime);
+            color: var(--bg-dark);
+            padding: 20px 48px;
+            border-radius: 100px;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(212, 244, 88, 0.3);
+        }
+
+        .btn-launch-large:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(212, 244, 88, 0.5);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .deep-dive {
+            padding: 120px 0;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 120px 24px;
+        }
+
+        .deep-dive-row {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            margin-bottom: 120px;
+        }
+
+        .deep-dive-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .deep-dive-content {
+            flex: 1;
+        }
+
+        .deep-dive-visual {
+            flex: 1;
+            position: relative;
+            max-width: 600px;
+        }
+
+        .premium-image-container {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-card);
+            position: relative;
+        }
+
+        .premium-image-container img,
+        .premium-image-container video {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .premium-image-container:hover img,
+        .premium-image-container:hover video {
+            transform: scale(1.05);
+        }
+
+        .hero-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            object-fit: cover;
+            opacity: 0.3;
+        }
+
+        .feature-tag {
+            color: var(--primary-lime);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .deep-dive-content h3 {
+            font-size: 36px;
+            margin-bottom: 24px;
+            font-weight: 800;
+        }
+
+        .deep-dive-content p {
+            color: var(--text-gray);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .process-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .process-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .process-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-lime);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .process-text h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .process-text p {
+            font-size: 15px;
+            margin-bottom: 0;
+        }
+
+        /* ========== Premium Monarch-Style Content ========== */
+        .monarch-section {
+            padding: 100px 0;
+            background: var(--bg-dark);
+            color: var(--text-white);
+            position: relative;
+        }
+
+        .monarch-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+        }
+
+        .monarch-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .monarch-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .monarch-grid.reverse {
+            direction: rtl;
+        }
+
+        .monarch-grid.reverse>* {
+            direction: ltr;
+        }
+
+        .monarch-content {
+            max-width: 480px;
+        }
+
+        .monarch-tag {
+            color: var(--primary-lime);
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .monarch-title {
+            font-size: clamp(32px, 4vw, 42px);
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text-white);
+            margin-bottom: 24px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .monarch-description {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-gray);
+            margin-bottom: 32px;
+        }
+
+        .monarch-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .monarch-feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .monarch-feature-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-lime);
+            flex-shrink: 0;
+            margin-top: 4px;
+            font-size: 18px;
+        }
+
+        .monarch-feature-text {
+            font-size: 16px;
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        .monarch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--primary-lime);
+            color: var(--bg-dark);
+            padding: 16px 32px;
+            border-radius: var(--radius-full);
+            font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 12px;
+            box-shadow: 0 8px 24px var(--primary-glow);
+        }
+
+        .monarch-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(212, 244, 88, 0.4);
+            background: #e2ff62;
+        }
+
+        /* Goals Cards - Fitness Style */
+        .goals-cards-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .goal-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 244, 88, 0.05), transparent);
+            transition: 0.5s;
+        }
+
+        .goal-card:hover::before {
+            left: 100%;
+        }
+
+        .goal-card:hover {
+            transform: translateX(12px) translateY(-5px);
+            border-color: rgba(212, 244, 88, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 244, 88, 0.1);
+        }
+
+        .goal-image {
+            width: 72px;
+            height: 72px;
+            border-radius: 18px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .goal-info {
+            flex: 1;
+        }
+
+        .goal-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+
+        .goal-date {
+            font-size: 13px;
+            color: var(--primary-lime);
+            font-weight: 600;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .goal-amount {
+            text-align: right;
+            min-width: 140px;
+        }
+
+        .goal-current {
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text-white);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .goal-target {
+            font-size: 11px;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .goal-progress {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-full);
+            margin-top: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .goal-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d4f458, #ffffff, #d4f458);
+            background-size: 200% 100%;
+            animation: glow-shimmer 3s infinite linear;
+            border-radius: var(--radius-full);
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(212, 244, 88, 0.4);
+        }
+
+        @keyframes glow-shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .goal-status-badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 10px;
+            background: rgba(74, 222, 128, 0.1);
+            color: #4ade80;
+            padding: 4px 10px;
+            border-radius: 100px;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Dashboard Widgets - Fitness Analytics */
+        .dashboard-widgets {
+            position: relative;
+            min-height: 420px;
+        }
+
+        .widget-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            position: absolute;
+            transition: all 0.4s ease;
+        }
+
+        .widget-networth {
+            top: 0;
+            left: 0;
+            width: 300px;
+            z-index: 2;
+        }
+
+        .widget-spending {
+            bottom: 20px;
+            right: 0;
+            width: 280px;
+            z-index: 3;
+        }
+
+        .widget-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary-lime);
+            z-index: 4;
+        }
+
+        .widget-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 6px;
+        }
+
+        .widget-change {
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .widget-change.positive {
+            color: #4ade80;
+        }
+
+        .widget-change.negative {
+            color: #f87171;
+        }
+
+        .widget-chart {
+            height: 140px;
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            padding: 10px 0;
+        }
+
+        .chart-bar-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-bar {
+            width: 100%;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 4px;
+        }
+
+        .bar-segment {
+            width: 100%;
+            border-radius: 4px;
+            transition: height 0.6s ease;
+        }
+
+        .bar-segment.protein {
+            background: var(--primary-lime);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .bar-segment.carbs {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .bar-segment.fats {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .chart-label {
+            font-size: 11px;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .spending-chart {
+            height: 100px;
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .spending-line {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, var(--primary-glow), transparent);
+            position: relative;
+        }
+
+        .spending-line::after {
+            content: '';
+            position: absolute;
+            top: 30%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-lime);
+            box-shadow: 0 0 15px var(--primary-lime);
+            border-radius: var(--radius-full);
+            clip-path: polygon(0 80%, 20% 60%, 40% 90%, 60% 40%, 80% 70%, 100% 20%, 100% 100%, 0% 100%);
+        }
+
+        /* Food Log Table */
+        .budget-mockup {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            max-width: 580px;
+        }
+
+        .budget-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .budget-header-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .budget-header-dot.red {
+            background: #ff5f56;
+        }
+
+        .budget-header-dot.yellow {
+            background: #ffbd2e;
+        }
+
+        .budget-header-dot.green {
+            background: #27c93f;
+        }
+
+        .budget-content {
+            padding: 32px;
+        }
+
+        .budget-summary {
+            background: linear-gradient(135deg, var(--primary-lime), #e2ff62);
+            color: var(--bg-dark);
+            padding: 24px;
+            border-radius: var(--radius-md);
+            text-align: right;
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        .budget-summary-amount {
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .budget-summary-label {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .budget-table {
+            width: 100%;
+        }
+
+        .budget-row {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .budget-row:last-child {
+            border-bottom: none;
+        }
+
+        .budget-category {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .budget-category-icon {
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .budget-category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+
+        .budget-values {
+            display: flex;
+            gap: 32px;
+            font-size: 15px;
+        }
+
+        .budget-value {
+            width: 80px;
+            text-align: right;
+            color: var(--text-gray);
+            font-weight: 500;
+        }
+
+        .budget-remaining {
+            width: 80px;
+            text-align: right;
+            font-weight: 800;
+        }
+
+        .budget-remaining.positive {
+            color: #4ade80;
+        }
+
+        .budget-remaining.negative {
+            color: #f87171;
+        }
+
+        .budget-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-full);
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .budget-bar-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+        }
+
+        .budget-bar-fill.under {
+            background: var(--primary-lime);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .budget-bar-fill.over {
+            background: #f87171;
+        }
+
+        /* How It Works - Fitness Format */
+        .how-it-works {
+            padding: 100px 0;
+            background: var(--bg-dark);
+            position: relative;
+        }
+
+        .how-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-white);
+            margin-bottom: 64px;
+            text-align: center;
+        }
+
+        .how-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .how-card {
+            background: rgba(20, 20, 22, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .how-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 244, 88, 0.1) 0%, rgba(212, 244, 88, 0) 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .how-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(135deg, var(--primary-lime), transparent, var(--primary-lime));
+            z-index: 0;
+            border-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .how-card:hover::after {
+            opacity: 0.5;
+        }
+
+        .how-card:hover::before {
+            opacity: 1;
+        }
+
+        .how-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(212, 244, 88, 0.5);
+            box-shadow: 0 20px 40px rgba(212, 244, 88, 0.1), inset 0 0 20px rgba(212, 244, 88, 0.05);
+        }
+
+        @keyframes pulse-soft {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 244, 88, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(212, 244, 88, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 244, 88, 0);
+            }
+        }
+
+        .how-step-number {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 80px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            line-height: 1;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.4s;
+        }
+
+        .how-card:hover .how-step-number {
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(212, 244, 88, 0.3);
+            transform: scale(1.1) rotate(-5deg);
+            background: linear-gradient(180deg, var(--primary-lime) 0%, transparent 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            opacity: 0.2;
+        }
+
+        .how-icon-wrapper {
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .how-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(212, 244, 88, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary-lime);
+            margin: 0;
+            transition: all 0.3s;
+            border: 1px solid rgba(212, 244, 88, 0.1);
+        }
+
+        .how-card:hover .how-icon {
+            background: var(--primary-lime);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(212, 244, 88, 0.6);
+            transform: scale(1.1);
+            animation: pulse-soft 2s infinite;
+        }
+
+        .how-card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-white);
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .how-card-text {
+            font-size: 16px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 992px) {
+
+            .monarch-grid,
+            .monarch-grid.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr;
+                gap: 60px;
+            }
+
+            .monarch-content {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            .monarch-feature-item {
+                justify-content: center;
+                text-align: left;
+            }
+
+            .dashboard-widgets {
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+                min-height: auto;
+            }
+
+            .widget-card {
+                position: static;
+                width: 100% !important;
+            }
+
+            .how-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .budget-mockup {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 992px) {
+
+            .deep-dive-row,
+            .deep-dive-row.reverse {
+                flex-direction: column;
+                gap: 48px;
+                text-align: center;
+            }
+
+            .process-item {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="micro-grid-overlay"></div>
+
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <a href="index.html"
+                style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                <img src="assets/images/LOGO AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+                <span class="nav-brand-text-pill">AUREUS</span>
+            </a>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación de comidas</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos y ahorros</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn" data-i18n="nav.login">Iniciar Sesión <i
+                    class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero-info">
+        <video autoplay muted loop playsinline class="hero-video-bg">
+            <source src="AUREUS FIT AI/videos/Scene_a_showcase_1080p_202601211431.mp4" type="video/mp4">
+        </video>
+        <div class="hero-info-container">
+            <div class="hero-info-badge">
+                <i class="fa-solid fa-heart-pulse"></i> <span data-i18n="fitai.hero_badge">Nutrición Clínica
+                    Inteligente</span>
+            </div>
+            <h1 class="hero-info-title">
+                <span class="text-gradient" data-i18n="fitai.hero_title">AUREUS Nutrición AI: Ingeniería Humana
+                    Alimentada por IA</span>
+            </h1>
+            <p class="hero-info-subtitle" data-i18n="fitai.hero_subtitle">
+                La plataforma definitiva para el control nutricional avanzado. Diseñada para deportistas, pacientes
+                clínicos y entusiastas de la salud que buscan precisión milimétrica en su alimentación.
+            </p>
+            <div class="hero-cta-group" style="justify-content: center;">
+                <a href="login.html" class="btn-launch-large">
+                    <span data-i18n="fitai.hero_cta_primary">Comenzar Ahora</span> <i class="fa-solid fa-bolt"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- [6] How it Works -->
+    <section class="how-it-works">
+        <div class="monarch-container">
+            <h2 class="how-title" data-i18n="fitai.how_title">El Protocolo AUREUS: Ciencia en 3 Pasos</h2>
+            <div class="how-grid">
+                <div class="how-card">
+                    <div class="how-step-number">01</div>
+                    <div class="how-icon-wrapper">
+                        <div class="how-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                    </div>
+                    <h3 class="how-card-title" data-i18n="fitai.step1_title">Biometría Inicial</h3>
+                    <p class="how-card-text" data-i18n="fitai.step1_desc">Digitaliza tu perfil fisiológico. Ingresa tus
+                        datos clínicos y deja que
+                        nuestros algoritmos establezcan tu línea base metabólica con precisión de laboratorio.</p>
+                </div>
+
+                <div class="how-card">
+                    <div class="how-step-number">02</div>
+                    <div class="how-icon-wrapper">
+                        <div class="how-icon"><i class="fa-solid fa-qrcode"></i></div>
+                    </div>
+                    <h3 class="how-card-title" data-i18n="fitai.step2_title">Ingesta Inteligente</h3>
+                    <p class="how-card-text" data-i18n="fitai.step2_desc">Registro sin esfuerzo: Fotografía tu plato,
+                        usa comandos de voz o
+                        selecciona de tus favoritos. Nuestra IA procesa todo al instante, eliminando las búsquedas
+                        manuales.</p>
+                </div>
+
+                <div class="how-card">
+                    <div class="how-step-number">03</div>
+                    <div class="how-icon-wrapper">
+                        <div class="how-icon"><i class="fa-solid fa-sliders"></i></div>
+                    </div>
+                    <h3 class="how-card-title" data-i18n="fitai.step3_title">Calibración Dinámica</h3>
+                    <p class="how-card-text" data-i18n="fitai.step3_desc">El plan evoluciona contigo. La IA recalibra
+                        tus macros semanalmente
+                        basándose en tu progreso real y bio-feedback, garantizando resultados continuos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [2] IA Assistant -->
+    <section class="deep-dive" id="ai-assistant">
+        <div class="section-header">
+            <span class="feature-tag" data-i18n="fitai.ai_tag">IA Generativa</span>
+            <h2 data-i18n="fitai.ai_title">El Nutriólogo que Vive en tu Bolsillo</h2>
+        </div>
+        <div class="deep-dive-row reverse">
+            <div class="deep-dive-content">
+                <span class="feature-tag" data-i18n="fitai.ai_tag">IA Generativa</span>
+                <h3 data-i18n="fitai.ai_planning_title">Planificación Inteligente</h3>
+                <p data-i18n="fitai.ai_planning_desc">Nuestra Inteligencia Artificial avanzada no solo registra;
+                    planifica. Basándose en tus objetivos
+                    clínicos y preferencias, genera planes de alimentación dinámicos que se adaptan a tu ritmo de vida.
+                </p>
+                <div class="process-list">
+                    <div class="process-item">
+                        <div class="process-number">1</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.ai_item1_title">Análisis de Inventario</h4>
+                            <p data-i18n="fitai.ai_item1_desc">Sugerencias basadas en lo que tienes disponible en tu
+                                despensa.</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">2</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.ai_item2_title">Optimización de Macros</h4>
+                            <p data-i18n="fitai.ai_item2_desc">Ajuste en tiempo real para asegurar que cumples tus metas
+                                diarias.</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">3</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.ai_item3_title">Listas Inteligentes</h4>
+                            <p data-i18n="fitai.ai_item3_desc">Exportación automática de ingredientes necesarios para la
+                                semana.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="deep-dive-visual">
+                <div class="premium-image-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="AUREUS FIT AI/videos/Scene_a_showcase_1080p_202601211431 (2).mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [9] Detailed Feature Showcase -->
+    <section class="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="feature-tag" data-i18n="fitai.features_tag">Capacidades Avanzadas</span>
+                <h2 class="section-title" data-i18n="fitai.features_title">Ecosistema de Salud de <span
+                        class="highlight">Siguiente Generación</span>
+                </h2>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card featured">
+                    <div class="feature-icon cal">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <h3 data-i18n="features.macros_title">Seguimiento de Macros</h3>
+                    <p data-i18n="features.macros_desc">Monitorea calorías, proteínas, carbohidratos y grasas con
+                        visualizaciones avanzadas tipo radar.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon prot">
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <h3 data-i18n="features.fasting_title">Timer de Ayuno</h3>
+                    <p data-i18n="features.fasting_desc">Protocolos 16:8, 12:12, 20:4 con interfaz circular premium y
+                        seguimiento de progreso.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon carb">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+                    <h3 data-i18n="features.planner_title">Planificador de Comidas</h3>
+                    <p data-i18n="features.planner_desc">Organiza tu semana con planes personalizados y genera reportes
+                        PDF profesionales.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon fat">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <h3 data-i18n="features.hydration_title">Hidratación</h3>
+                    <p data-i18n="features.hydration_desc">Visualización interactiva de consumo de agua con
+                        recordatorios inteligentes.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon purine">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h3 data-i18n="features.glycemic_title">Carga Glucémica</h3>
+                    <p data-i18n="features.glycemic_desc">Monitorea el impacto en tu azúcar en sangre. Ideal para
+                        diabéticos y prediabéticos.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon special">
+                        <i class="fa-solid fa-shield-heart"></i>
+                    </div>
+                    <h3 data-i18n="features.purine_title">Control de Purinas</h3>
+                    <p data-i18n="features.purine_desc">Predicción de ácido úrico para prevención de gota. Único en el
+                        mercado.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon special">
+                        <i class="fa-solid fa-dna"></i>
+                    </div>
+                    <h3 data-i18n="showcase.nutri_title">Bio-Individualidad</h3>
+                    <p data-i18n="showcase.nutri_desc">Nutrición de precisión adaptada a tu metabolismo y objetivos
+                        vitales.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon pink">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 data-i18n="showcase.metabolic_title">Metabolic Control</h3>
+                    <p data-i18n="showcase.metabolic_desc">Protocolos de ayuno personalizados para optimizar tu
+                        longevidad y energía.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon special" style="background: rgba(68, 138, 255, 0.15); color: #448AFF;">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                    </div>
+                    <h3 data-i18n="features.sync_title">Sincronización Total</h3>
+                    <p data-i18n="features.sync_desc">Conexión bidireccional con Apple Health y Google Fit para integrar
+                        tu actividad física en tus cálculos metabólicos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [4] Goals -->
+    <section class="monarch-section" id="monarch-goals">
+        <div class="monarch-container">
+            <div class="monarch-grid">
+                <div class="monarch-content">
+                    <span class="monarch-tag" data-i18n="fitai.goals_tag">Metas</span>
+                    <h2 class="monarch-title" data-i18n="fitai.goals_title">Tus Metas, Cuantificadas</h2>
+                    <p class="monarch-description" data-i18n="fitai.goals_desc">
+                        Define metas de peso, porcentaje de grasa, hidratación o marcas atléticas. AUREUS Nutrición AI
+                        calcula
+                        el camino óptimo para lograrlas de forma saludable y sostenible.
+                    </p>
+
+                </div>
+                <div class="goals-cards-stack">
+                    <div class="goal-card">
+                        <div class="goal-status-badge" data-i18n="fitai.goal_status_in_progress">EN PROGRESO</div>
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=150&q=80"
+                            alt="Weight Loss" class="goal-image">
+                        <div class="goal-info">
+                            <div class="goal-name" data-i18n="fitai.goal1_name">Pérdida de Peso</div>
+                            <div class="goal-date" data-i18n="fitai.goal1_target">Objetivo: 75kg</div>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar" style="width: 65%;"></div>
+                            </div>
+                        </div>
+                        <div class="goal-amount">
+                            <div class="goal-current">78.5 kg</div>
+                            <div class="goal-target" data-i18n="fitai.goal_initial">84 kg INICIAL</div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=150&q=80"
+                            alt="Hydration" class="goal-image">
+                        <div class="goal-info">
+                            <div class="goal-name" data-i18n="fitai.goal2_name">Hidratación Diaria</div>
+                            <div class="goal-date">3.5 Litros</div>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div class="goal-amount">
+                            <div class="goal-current">3.0 L</div>
+                            <div class="goal-target" data-i18n="fitai.goal_meta_daily">META DIARIA</div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=150&q=80"
+                            alt="Muscle" class="goal-image">
+                        <div class="goal-info">
+                            <div class="goal-name" data-i18n="fitai.goal3_name">Aumento de Masa</div>
+                            <div class="goal-date" data-i18n="fitai.goal3_date">Mantenimiento</div>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                        <div class="goal-amount">
+                            <div class="goal-current">+1.2 kg</div>
+                            <div class="goal-target" data-i18n="fitai.goal_this_quarter">ESTE TRIMESTRE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [7] Clinical Control -->
+    <section class="deep-dive" id="clinical-control">
+        <div class="section-header">
+            <span class="feature-tag" data-i18n="fitai.clinical_tag">Análisis Profundo</span>
+            <h2 data-i18n="fitai.clinical_title">Biomarcadores y Precisión Clínica</h2>
+        </div>
+        <div class="deep-dive-row">
+            <div class="deep-dive-content">
+                <span class="feature-tag" data-i18n="fitai.clinical_subtag">Control Clínico</span>
+                <h3 data-i18n="fitai.clinical_subtitle">Carga Glucémica y PRAL</h3>
+                <p data-i18n="fitai.clinical_desc">No se trata solo de calorías. AUREUS Nutrición AI analiza el impacto
+                    metabólico real de cada
+                    alimento.
+                    Nuestro algoritmo calcula la Carga Glucémica para prevenir picos de insulina y el PRAL para
+                    monitorizar la carga renal ácida.</p>
+                <div class="process-list">
+                    <div class="process-item">
+                        <div class="process-number">1</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.clinical_item1_title">Monitorización de Insulina</h4>
+                            <p data-i18n="fitai.clinical_item1_desc">Evita inflamación sistémica controlando el índice
+                                glucémico diario.</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">2</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.clinical_item2_title">Equilibrio Renal</h4>
+                            <p data-i18n="fitai.clinical_item2_desc">Optimiza tu pH corporal monitorizando el equilibrio
+                                ácido-base (PRAL).</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">3</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.clinical_item3_title">Prevención de Gota</h4>
+                            <p data-i18n="fitai.clinical_item3_desc">Control exhaustivo de Purinas y Oxalatos para salud
+                                articular.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="deep-dive-visual">
+                <div class="premium-image-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="AUREUS FIT AI/videos/Scene_a_showcase_1080p_202601211431 (1).mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [3] Dashboard -->
+    <section class="monarch-section" id="monarch-dashboard">
+        <div class="monarch-container">
+            <div class="monarch-grid reverse">
+                <div class="monarch-content">
+                    <span class="monarch-tag" data-i18n="fitai.dashboard_tag">Análisis</span>
+                    <h2 class="monarch-title" data-i18n="fitai.dashboard_title">Bio-Dashboard: Análisis Metabólico en
+                        Tiempo Real</h2>
+                    <ul class="monarch-features">
+                        <li class="monarch-feature-item">
+                            <div class="monarch-feature-icon"><i class="fa-solid fa-dna"></i></div>
+                            <div class="monarch-feature-text" data-i18n="fitai.dashboard_item1">Visualiza tu
+                                distribución de macros y micro-nutrientes en
+                                tiempo real.</div>
+                        </li>
+                        <li class="monarch-feature-item">
+                            <div class="monarch-feature-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                            <div class="monarch-feature-text" data-i18n="fitai.dashboard_item2">Monitorea tu balance
+                                calórico diario vs. gasto energético
+                                basal.</div>
+                        </li>
+                        <li class="monarch-feature-item">
+                            <div class="monarch-feature-icon"><i class="fa-solid fa-droplet"></i></div>
+                            <div class="monarch-feature-text" data-i18n="fitai.dashboard_item3">Insights profundos sobre
+                                hidratación y carga glucémica.
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="dashboard-widgets">
+                    <div class="widget-card widget-networth">
+                        <div class="widget-title" data-i18n="fitai.widget_macros">Distribución de Macros</div>
+                        <div class="widget-change positive"><i class="fa-solid fa-check"></i> <span
+                                data-i18n="fitai.widget_protein_goal">Meta de Proteína alcanzada</span>
+                        </div>
+                        <div class="widget-chart">
+                            <div class="chart-bar-group">
+                                <div class="chart-bar">
+                                    <div class="bar-segment protein" style="height: 60px;"></div>
+                                    <div class="bar-segment carbs" style="height: 30px;"></div>
+                                    <div class="bar-segment fats" style="height: 10px;"></div>
+                                </div>
+                                <span class="chart-label">Desayuno</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar">
+                                    <div class="bar-segment protein" style="height: 45px;"></div>
+                                    <div class="bar-segment carbs" style="height: 40px;"></div>
+                                    <div class="bar-segment fats" style="height: 15px;"></div>
+                                </div>
+                                <span class="chart-label">Comida</span>
+                            </div>
+                            <div class="chart-bar-group">
+                                <div class="chart-bar">
+                                    <div class="bar-segment protein" style="height: 50px;"></div>
+                                    <div class="bar-segment carbs" style="height: 25px;"></div>
+                                    <div class="bar-segment fats" style="height: 20px;"></div>
+                                </div>
+                                <span class="chart-label">Cena</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-card widget-spending">
+                        <div class="widget-title" data-i18n="fitai.widget_glycemic">Carga Glucémica Diaria</div>
+                        <div class="widget-change positive"><i class="fa-solid fa-chart-line"></i> <span
+                                data-i18n="fitai.widget_glycemic_stat">-15% vs. promedio</span>
+                        </div>
+                        <div class="spending-chart">
+                            <div class="spending-line"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+                            <span class="chart-label">Mañana</span>
+                            <span class="chart-label">Tarde</span>
+                            <span class="chart-label">Noche</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [5] Vitality -->
+    <section class="deep-dive" id="vitality-performance">
+        <div class="section-header">
+            <span class="feature-tag" data-i18n="fitai.vitality_tag">Vitalidad</span>
+            <h2 data-i18n="fitai.vitality_title">Optimización de Rendimiento y Vitalidad</h2>
+        </div>
+        <div class="deep-dive-row">
+            <div class="deep-dive-content">
+                <span class="feature-tag" data-i18n="fitai.vitality_subtag">Vitalidad</span>
+                <h3 data-i18n="fitai.vitality_subtitle">Rendimiento Atlético</h3>
+                <p data-i18n="fitai.vitality_desc">Mantén tu rendimiento al máximo con un control inteligente de tu
+                    equilibrio hídrico. AUREUS calcula
+                    tus
+                    necesidades exactas basándose en tu nivel de actividad, clima y composición corporal.</p>
+                <div class="process-list">
+                    <div class="process-item">
+                        <div class="process-number">1</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.vitality_item1_title">Recordatorios Inteligentes</h4>
+                            <p data-i18n="fitai.vitality_item1_desc">Notificaciones adaptativas que te aseguran nunca
+                                estar en estado de deshidratación.</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">2</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.vitality_item2_title">Balance Electrolítico</h4>
+                            <p data-i18n="fitai.vitality_item2_desc">Optimiza tu recuperación monitorizando la ingesta
+                                de minerales esenciales.</p>
+                        </div>
+                    </div>
+                    <div class="process-item">
+                        <div class="process-number">3</div>
+                        <div class="process-text">
+                            <h4 data-i18n="fitai.vitality_item3_title">Rendimiento Atlético</h4>
+                            <p data-i18n="fitai.vitality_item3_desc">Visualiza cómo tu hidratación impacta directamente
+                                en tu fuerza y resistencia diaria.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="deep-dive-visual">
+                <div class="premium-image-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="AUREUS FIT AI/videos/Scene_a_showcase_1080p_202601211430.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [8] Caloric Budgeting -->
+    <section class="monarch-section" id="monarch-budgeting">
+        <div class="monarch-container">
+            <div class="monarch-grid">
+                <div class="monarch-content">
+                    <span class="monarch-tag" data-i18n="fitai.budget_tag">Registro</span>
+                    <h2 class="monarch-title" data-i18n="fitai.budget_title">Arquitectura de Nutrientes</h2>
+                    <p class="monarch-description" data-i18n="fitai.budget_desc">
+                        Gestiona tus calorías como si fuera dinero. Distribuye tu energía a lo largo del día y mantente
+                        dentro de tus límites sin renunciar a lo que te gusta.
+                    </p>
+
+                </div>
+                <div class="budget-mockup">
+                    <div class="budget-header">
+                        <div class="budget-header-dot red"></div>
+                        <div class="budget-header-dot yellow"></div>
+                        <div class="budget-header-dot green"></div>
+                        <span style="font-size: 13px; color: #888; font-weight: 500;"
+                            data-i18n="fitai.budget_date">Registro de Hoy - 23 Ene</span>
+                    </div>
+                    <div class="budget-content">
+                        <div class="budget-summary">
+                            <div class="budget-summary-amount">840 kcal</div>
+                            <div class="budget-summary-label" data-i18n="fitai.budget_remaining_label">Restantes (Meta:
+                                2200)</div>
+                        </div>
+                        <div class="budget-table">
+                            <div class="budget-row">
+                                <div class="budget-category">
+                                    <span class="budget-category-icon">🍳</span>
+                                    <span class="budget-category-name"
+                                        data-i18n="fitai.budget_breakfast">Desayuno</span>
+                                </div>
+                                <div class="budget-values">
+                                    <div class="budget-value">450 kcal</div>
+                                    <div class="budget-remaining positive" data-i18n="fitai.budget_status_ok">Ok</div>
+                                </div>
+                            </div>
+                            <div class="budget-bar">
+                                <div class="budget-bar-fill under" style="width: 100%;"></div>
+                            </div>
+
+                            <div class="budget-row">
+                                <div class="budget-category">
+                                    <span class="budget-category-icon">🍗</span>
+                                    <span class="budget-category-name" data-i18n="fitai.budget_lunch">Comida</span>
+                                </div>
+                                <div class="budget-values">
+                                    <div class="budget-value">720 kcal</div>
+                                    <div class="budget-remaining positive" data-i18n="fitai.budget_status_ok">Ok</div>
+                                </div>
+                            </div>
+                            <div class="budget-bar">
+                                <div class="budget-bar-fill under" style="width: 100%;"></div>
+                            </div>
+
+                            <div class="budget-row">
+                                <div class="budget-category">
+                                    <span class="budget-category-icon">🥗</span>
+                                    <span class="budget-category-name" data-i18n="fitai.budget_dinner">Cena
+                                        (Plan)</span>
+                                </div>
+                                <div class="budget-values">
+                                    <div class="budget-value">550 kcal</div>
+                                    <div class="budget-remaining positive" data-i18n="fitai.budget_status_pending">Por
+                                        consumir</div>
+                                </div>
+                            </div>
+                            <div class="budget-bar">
+                                <div class="budget-bar-fill under" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="AUREUS FIT AI/images/logo.png" alt="AUREUS" class="footer-logo">
+                <span class="footer-brand-text">AUREUS</span>
+                <p class="footer-tagline" data-i18n="footer.tagline">Tu bienestar, simplificado.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="footer.product">Producto</h4>
+                    <a href="index.html#features" data-i18n="footer.link_features">Características</a>
+                    <a href="pricing.html" data-i18n="footer.link_pricing">Precios</a>
+                    <a href="index.html#faq" data-i18n="footer.link_faq">FAQ</a>
+                    <a href="blog.html" data-i18n="footer.link_blog">Blog</a>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.apps">Aplicaciones</h4>
+                    <a href="fit-ai-info.html" data-i18n="footer.link_nutrition">AUREUS Nutrición AI</a>
+                    <a href="finance-os-info.html" data-i18n="footer.link_finance">AUREUS Finance OS</a>
+                    <a href="programa-embajadores.html" data-i18n="footer.link_ambassadors">Embajadores</a>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                <a href="https://www.instagram.com/aureus_fit_ai/" class="social-link" target="_blank"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p data-i18n="footer.rights">&copy; 2026 AUREUS. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/landing-script.js"></script>
+</body>
+
+</html>

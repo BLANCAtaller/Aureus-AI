@@ -1,0 +1,392 @@
+/* =========================================
+   SYNERGY / ECOSISTEMA CONECTADO SECTION 🧬
+   Premium Redesign
+   ========================================= */
+
+.synergy-container {
+    margin: 100px auto 80px;
+    padding: 0 24px;
+    max-width: 1300px;
+    position: relative;
+}
+
+/* Header */
+.synergy-header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.synergy-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--text-white, #fff);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+}
+
+.synergy-title .highlight {
+    background: linear-gradient(135deg, #00E5FF 0%, #7C4DFF 50%, #FF4081 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.synergy-subtitle {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+/* Main Visual Container */
+.synergy-main-visual {
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.synergy-image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg,
+            rgba(0, 229, 255, 0.03) 0%,
+            rgba(124, 77, 255, 0.03) 50%,
+            transparent 100%);
+    border-radius: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+}
+
+.synergy-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(from 0deg,
+            transparent 0%,
+            rgba(0, 229, 255, 0.08) 10%,
+            transparent 20%,
+            rgba(124, 77, 255, 0.08) 30%,
+            transparent 40%,
+            rgba(255, 64, 129, 0.08) 50%,
+            transparent 60%,
+            transparent 100%);
+    animation: rotateSynergyGlow 20s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotateSynergyGlow {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.synergy-mockup-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.4));
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.synergy-image-wrapper:hover .synergy-mockup-img {
+    transform: scale(1.03);
+}
+
+.synergy-overlay-glow {
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle,
+            rgba(124, 77, 255, 0.25) 0%,
+            rgba(0, 229, 255, 0.1) 40%,
+            transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ===== SYNERGY CARDS - Premium Glass Design ===== */
+.synergy-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.synergy-card {
+    background: linear-gradient(145deg,
+            rgba(255, 255, 255, 0.07) 0%,
+            rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Centering addition */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.synergy-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.synergy-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+/* Card 1 - Green/Lime accent */
+.synergy-card:nth-child(1)::after {
+    background: radial-gradient(circle at 50% 50%,
+            rgba(34, 197, 94, 0.12) 0%,
+            transparent 50%);
+}
+
+/* Card 2 - Cyan/Blue accent */
+.synergy-card:nth-child(2)::after {
+    background: radial-gradient(circle at 50% 50%,
+            rgba(236, 72, 153, 0.12) 0%,
+            transparent 50%);
+}
+
+/* Card 3 - Purple/Violet accent */
+.synergy-card:nth-child(3)::after {
+    background: radial-gradient(circle at 50% 50%,
+            rgba(124, 77, 255, 0.12) 0%,
+            transparent 50%);
+}
+
+.synergy-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+}
+
+.synergy-card:hover::before {
+    opacity: 1;
+}
+
+.synergy-card:hover::after {
+    opacity: 1;
+}
+
+/* Card Icon */
+.card-icon-small {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Icon colors per card */
+.synergy-card:nth-child(1) .card-icon-small {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(34, 197, 94, 0.05) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22C55E;
+    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.15);
+}
+
+.synergy-card:nth-child(2) .card-icon-small {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(236, 72, 153, 0.05) 100%);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    color: #EC4899;
+    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.15);
+}
+
+.synergy-card:nth-child(3) .card-icon-small {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.15) 0%, rgba(124, 77, 255, 0.05) 100%);
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    color: #7C4DFF;
+    box-shadow: 0 8px 32px rgba(124, 77, 255, 0.15);
+}
+
+/* Hover icon colors - filled backgrounds */
+.synergy-card:nth-child(1):hover .card-icon-small {
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: #fff;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(34, 197, 94, 0.4);
+}
+
+.synergy-card:nth-child(2):hover .card-icon-small {
+    background: linear-gradient(135deg, #EC4899 0%, #DB2777 100%);
+    color: #fff;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(236, 72, 153, 0.4);
+}
+
+.synergy-card:nth-child(3):hover .card-icon-small {
+    background: linear-gradient(135deg, #7C4DFF 0%, #651FFF 100%);
+    color: #fff;
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(124, 77, 255, 0.4);
+}
+
+/* Card Text */
+.synergy-card p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+.synergy-card:hover p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.synergy-card p strong {
+    color: var(--text-white, #fff);
+    font-weight: 700;
+    display: block;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 1024px) {
+    .synergy-title {
+        font-size: 38px;
+    }
+
+    .synergy-cards {
+        gap: 20px;
+    }
+
+    .synergy-card {
+        padding: 28px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .synergy-container {
+        margin: 70px auto 50px;
+    }
+
+    .synergy-title {
+        font-size: 32px;
+    }
+
+    .synergy-subtitle {
+        font-size: 16px;
+    }
+
+    .synergy-cards {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+
+    .synergy-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .card-icon-small {
+        margin-bottom: 0;
+        min-width: 56px;
+        width: 56px;
+        height: 56px;
+    }
+
+    .synergy-card:hover .card-icon-small {
+        transform: scale(1.05);
+    }
+
+    .synergy-image-wrapper {
+        padding: 30px 16px;
+        border-radius: 24px;
+    }
+
+    .synergy-mockup-img {
+        max-height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .synergy-title {
+        font-size: 26px;
+    }
+
+    .synergy-subtitle {
+        font-size: 14px;
+    }
+
+    .synergy-header {
+        margin-bottom: 40px;
+    }
+
+    .synergy-main-visual {
+        margin-bottom: 40px;
+    }
+
+    .synergy-card {
+        padding: 20px;
+        gap: 16px;
+        border-radius: 20px;
+    }
+
+    .card-icon-small {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        font-size: 20px;
+        border-radius: 14px;
+    }
+
+    .synergy-card p {
+        font-size: 14px;
+    }
+
+    .synergy-card p strong {
+        font-size: 15px;
+    }
+}

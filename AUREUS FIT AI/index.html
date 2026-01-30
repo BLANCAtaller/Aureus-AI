@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Nutrición AI - Dashboard</title>
+    <link rel="icon" type="image/png" href="images/logo.webp">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css?v=radar_v3">
+    <link rel="stylesheet" href="modal-styles.css">
+
+    <!-- Charts -->
+    <!-- Lazy Loader -->
+    <script src="../js/lazy-loader.js"></script>
+    <script>LazyLoader.load('chartjs');</script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+
+    <!-- Sync Core (Unified Sync Logic) -->
+    <link rel="stylesheet" href="../css/sync-status.css">
+    <script src="../js/sync-core.js"></script>
+
+    <script src="state_manager.js"></script>
+
+    <!-- Google Login -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <!-- Sync Status Indicator (from sync-core.js) -->
+    <div id="syncStatusIndicator" class="sync-status-indicator" title="Sync Status">
+        <i class="sync-icon"></i>
+        <span class="sync-text"></span>
+    </div>
+    <div id="offlineBanner" class="offline-banner">
+        <i class="fa-solid fa-wifi-slash"></i>
+        <span>You're offline. Changes will sync when connected.</span>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container" style="position: relative; z-index: 1000;">
+                <a href="../dashboard-select.html"
+                    style="display: flex; align-items: center; text-decoration: none; gap: 12px; width: 100%;">
+                    <img src="images/logo.webp" alt="AUREUS" class="logo-img">
+                    <div class="logo-text">
+                        <span class="brand">AUREUS</span>
+                        <span class="tagline">Clinical Nutrition</span>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span data-i18n="nav.dashboard">Dashboard</span>
+                </a>
+                <a href="food-log.html" class="nav-item">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span data-i18n="nav.food_log">Food Log</span>
+                </a>
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span data-i18n="nav.fasting_timer">Fasting Timer</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span data-i18n="nav.meal_planner">Meal Planner</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span data-i18n="nav.food_database">Food Database</span>
+                </a>
+
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span data-i18n="nav.settings">Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/users/item_profile.webp" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="name" id="currentUserName"></div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+                </div>
+
+                <!-- User Switcher Popover (Managed by js/profile-hub.js) -->
+                <script src="../js/profile-hub.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        ProfileHub.init({ currentApp: 'fit' });
+                    });
+                </script>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                    <div class="logo-text">
+                        <span class="brand" style="font-size: 16px;">AUREUS</span>
+                        <span class="tagline" style="font-size: 9px; margin-top: 0;">Clinical Nutrition</span>
+                    </div>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <h1><span data-i18n="header.hello">Hello</span>, <span id="greetingUserName"></span> <span
+                            class="dot">.</span></h1>
+                    <div class="date-display">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span id="current-date">Tuesday, October 24</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span data-i18n="header.save_changes">Save Changes</span>
+                    </button>
+
+                </div>
+            </header>
+
+            <!-- Grid Layout -->
+            <div class="dashboard-grid">
+                <!-- Row 1: Key Stats -->
+                <div class="card stat-card calories-card extended">
+                    <div class="card-header">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <span data-i18n="dashboard.calories_remaining">Calories Remaining</span>
+                            <span id="calGoalBadge" class="badge-tag"
+                                style="display: none; background: var(--macro-cal); color: #000;">MAINTENANCE</span>
+                        </div>
+                        <div class="icon-badge-square"
+                            style="color: var(--macro-cal); background: rgba(0, 230, 118, 0.1);">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value-big" id="calRemValue">
+                        --
+                    </div>
+
+                    <div class="progress-details mb-4">
+                        <div class="detail-row">
+                            <span id="calConsumedText">-- <span data-i18n="dashboard.consumed">consumed</span></span>
+                            <span id="calGoalText"><span data-i18n="dashboard.goal">Goal</span>: --</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="calProgBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Mini Macro Row -->
+                    <div class="mini-macro-row">
+                        <div class="mini-macro-item item-prot" title="Protein">
+                            <div class="dot blue"></div>
+                            <span class="label">PROT</span>
+                            <span class="val" id="miniProtVal">--</span>
+                        </div>
+                        <div class="mini-macro-item item-carb" title="Carbs">
+                            <div class="dot pink"></div>
+                            <span class="label">CARB</span>
+                            <span class="val" id="miniCarbVal">--</span>
+                        </div>
+                        <div class="mini-macro-item item-fat" title="Fat">
+                            <div class="dot yellow"></div>
+                            <span class="label">FAT</span>
+                            <span class="val" id="miniFatVal">--</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card stat-card carbs-card extended">
+                    <div class="card-header">
+                        <div class="header-left-group">
+                            <span data-i18n="dashboard.net_carbs">Net Carbs</span>
+                            <span class="badge-tag" id="carbBadge" style="background: var(--macro-carb); color: #fff;"
+                                data-i18n="dashboard.ketosis">KETOSIS</span>
+                        </div>
+                        <div class="icon-badge-square"
+                            style="color: var(--macro-carb); background: rgba(255, 64, 129, 0.1);">
+                            <i class="fa-solid fa-chart-simple"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-value-big" id="carbValueContainer">
+                        <span id="carbConsumedVal">--</span>g <span class="unit-text" id="carbTargetVal">/ --g</span>
+                    </div>
+
+                    <div class="status-row mt-2" style="color: var(--macro-carb);">
+                        <div class="status-indicator">
+                            <div class="pulsing-dot" id="carbPulseDot"
+                                style="background-color: var(--macro-carb); box-shadow: 0 0 8px var(--macro-carb);">
+                            </div>
+                            <span id="carbStatusText">Loading...</span>
+                        </div>
+                        <span class="sub-text" id="carbLeftText">--g left</span>
+                    </div>
+
+                    <div class="progress-bar-container mt-2 mb-4">
+                        <div class="progress-bar" id="carbProgBar"
+                            style="width: 0%; background: var(--macro-carb); box-shadow: 0 0 10px var(--macro-carb);">
+                        </div>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="gl-premium-container mt-4">
+                        <div class="card-header pb-2" style="border: none; padding: 0;">
+                            <div class="header-left-group">
+                                <span class="label" style="font-size: 11px; letter-spacing: 0.5px;"
+                                    data-tooltip="Glycemic Load (GL) measures the impact on your blood sugar.&#10;< 30: Low | < 80: Medium | > 80: High">
+                                    GLYCEMIC LOAD
+                                </span>
+                                <i class="fa-solid fa-pen" id="btnEditGL"
+                                    style="font-size: 0.8em; margin-left: 8px; opacity: 0.8; cursor: pointer; color: var(--text-gray); position: relative; z-index: 9999; pointer-events: auto;"
+                                    title="Set Limit"
+                                    onclick="console.log('GL Edit Clicked'); if(window.editGLLimit) { window.editGLLimit(); } else { alert('Function not ready, reloading...'); location.reload(); }"></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-value-big green-text" id="glStatusText" style="margin-top: 0;">
+                            Low
+                        </div>
+
+                        <div class="segmented-meter mt-2 mb-3" id="glMeter">
+                            <div class="seg green">
+                                <div class="seg-fill"></div>
+                            </div>
+                            <div class="seg orange">
+                                <div class="seg-fill"></div>
+                            </div>
+                            <div class="seg red">
+                                <div class="seg-fill"></div>
+                            </div>
+                        </div>
+
+                        <div class="status-row">
+                            <span class="sub-text" id="glZoneLabel">Safe Zone</span>
+                            <div class="pill-badge" id="glValuePill">
+                                -- / 100
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card stat-card purine-card extended">
+                    <div class="card-header">
+                        <span><span data-i18n="dashboard.purine_intake">Purine Intake</span> <i class="fa-solid fa-pen"
+                                id="btnEditPurine"
+                                style="font-size: 0.8em; margin-left: 8px; opacity: 0.5; cursor: pointer;"
+                                title="Edit Limit"></i></span>
+                        <div class="icon-badge-square"
+                            style="color: var(--macro-purine); background: rgba(213, 0, 249, 0.1);">
+                            <i class="fa-solid fa-shield-heart" id="purineIcon"></i>
+                        </div>
+                    </div>
+
+                    <div class="stat-value-big" id="purineStatusText" style="color: var(--macro-purine);"
+                        data-i18n="dashboard.low">
+                        Low
+                    </div>
+
+                    <div class="segmented-meter mt-2 mb-4" id="purineMeter">
+                        <div class="seg green">
+                            <div class="seg-fill"></div>
+                        </div>
+                        <div class="seg orange">
+                            <div class="seg-fill"></div>
+                        </div>
+                        <div class="seg red">
+                            <div class="seg-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <span class="sub-text" id="purineZoneLabel" data-i18n="dashboard.safe_zone">Safe Zone</span>
+                        <div class="pill-badge" id="purineValuePill">
+                            --mg / 400mg
+                        </div>
+                    </div>
+
+                    <div class="divider-line"></div>
+
+                    <div class="prediction-text" id="purinePredictionText" data-i18n="dashboard.uric_prediction">
+                        Your uric acid prediction is stable.
+                    </div>
+                </div>
+
+                <!-- Row 2: Macros & Timer -->
+                <div class="card macro-card">
+                    <h3 class="macro-header-title" data-i18n="dashboard.macro_breakdown">Macro Breakdown</h3>
+
+                    <div class="macro-layout-v2">
+                        <div class="chart-container-v2">
+                            <canvas id="macroChart"></canvas>
+                        </div>
+
+                        <!-- Custom Legend -->
+                        <div class="chart-legend-v2">
+                            <div class="legend-item">
+                                <div class="target-box"></div>
+                                <span>Target (100%)</span>
+                            </div>
+                            <div class="legend-item consumed">
+                                <div class="consumed-box"></div>
+                                <span>Consumed</span>
+                            </div>
+                        </div>
+
+                        <div class="macro-stats-footer-v2">
+                            <div class="m-stat-item">
+                                <div class="label" style="color: var(--macro-cal);">Cals</div>
+                                <div class="value" id="macroCalVal">--</div>
+                            </div>
+                            <div class="m-stat-item">
+                                <div class="label" style="color: var(--macro-fat);">Fat</div>
+                                <div class="value" id="macroFatVal">--g</div>
+                            </div>
+                            <div class="m-stat-item">
+                                <div class="label" style="color: var(--macro-prot);">Prot</div>
+                                <div class="value" id="macroProtVal">--g</div>
+                            </div>
+                            <div class="m-stat-item">
+                                <div class="label" style="color: var(--macro-carb);">Carbs</div>
+                                <div class="value" id="macroCarbVal">--g</div>
+                            </div>
+                            <div class="m-stat-item">
+                                <div class="label" style="color: var(--macro-purine);">Purines</div>
+                                <div class="value" id="macroPurineVal">--mg</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vertical-column-stack">
+                    <div class="card timer-card" id="fastingTimerCard" style="position: relative;">
+                        <!-- Tabs -->
+                        <div class="timer-tabs-premium">
+                            <button class="timer-tab-btn active">16:8 TRF</button>
+                            <button class="timer-tab-btn">12:12 Circadian</button>
+                            <button class="timer-tab-btn">20:4 Warrior</button>
+                        </div>
+
+                        <!-- Circular Progress Core -->
+                        <div class="timer-circle-container dashboard-timer-scale">
+                            <svg class="timer-ring-svg" viewBox="0 0 300 300">
+                                <circle class="ring-bg" cx="150" cy="150" r="135"></circle>
+                                <circle class="ring-progress" id="ringProgress" cx="150" cy="150" r="135"></circle>
+                            </svg>
+
+                            <div class="ring-knob-container" id="knobContainer">
+                                <div class="ring-knob"></div>
+                            </div>
+
+                            <div class="timer-inner-content">
+                                <div class="status-badge-neon" id="timerStatusBadge">
+                                    <i class="fa-solid fa-bolt"></i> <span id="badgeText">READY</span>
+                                </div>
+                                <div class="timer-digits-giant" id="timerDigits">00:00:00</div>
+                                <div class="timer-meta-row">
+                                    <span id="targetTimeDisplay">Target: --:--</span>
+                                    <span class="sep">•</span>
+                                    <span id="progressPercentDisplay">0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Controls -->
+                        <button id="btnStartFast" class="btn-pill-white hidden"
+                            style="position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 101;">
+                            Start Fasting
+                        </button>
+
+                        <div id="activeControls" class="timer-controls-premium hidden">
+                            <button id="btnAdjustFast" class="btn-pill-dark">Adjust</button>
+                            <button id="btnEndFast" class="btn-pill-red">End Fast</button>
+                        </div>
+                    </div>
+
+                    <!-- Steps Card (Moved) -->
+                    <div class="card steps-card">
+                        <div class="card-header">
+                            <span data-i18n="dashboard.daily_steps">Daily Steps</span>
+                            <div class="icon-badge-square cyan-bg"
+                                title="Walking is essential for mental clarity and heart health.">
+                                <i class="fa-solid fa-shoe-prints"></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-value-big cyan-text" id="stepsValueDisplay">
+                            0
+                        </div>
+
+                        <div class="progress-details mb-2 mt-2">
+                            <div class="detail-row">
+                                <span class="sub-text" id="stepsProgressText">0 / 5,000</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar cyan-glow" id="stepsProgressBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 4px; margin-bottom: 8px; font-size: 13px; color: var(--text-gray); display: flex; align-items: center;">
+                            <i class="fa-solid fa-fire-flame-curved" style="color: #ff5722; margin-right: 6px;"></i>
+                            <span id="stepsCalDisplay" style="color: var(--text-white); font-weight: 500;">0 kcal</span>
+                            <span style="font-size: 11px; opacity: 0.5; margin-left: 6px;"
+                                title="Approx. 500 kcal burned per 10,000 steps">(Est.)</span>
+                        </div>
+
+                        <div class="steps-footer mt-auto"
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="sub-text" style="font-size: 11px; opacity: 0.6;" id="stepsMessage">Keep
+                                moving!</span>
+                            <button class="btn-icon-small" id="btnUpdateSteps" title="Update Steps">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Hydration Card -->
+                <div class="card hydration-card" id="hydrationCard">
+                    <!-- Header -->
+                    <div class="hydration-header-premium">
+                        <div class="left">
+                            <div class="icon-box-blue-glow">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <span class="card-title" data-i18n="dashboard.hydration">Hydration</span>
+                        </div>
+                        <div class="right-stats">
+                            <div class="main-stat" id="waterVolumeDisplay">0 / 2,500ml</div>
+                        </div>
+                    </div>
+
+                    <!-- Droplets Row -->
+                    <div class="droplets-container" id="waterDropletsRow">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Controls -->
+                    <button class="btn-wide-dashed" id="btnAddWater">
+                        <i class="fa-solid fa-plus"></i> Add Water (250ml)
+                    </button>
+                </div>
+
+                <div class="card quick-add-card">
+                    <div class="card-header simple">
+                        <span data-i18n="dashboard.quick_add">Quick Add Meal</span>
+                        <a href="food-log.html" class="link-yellow" data-i18n="dashboard.view_all">View All</a>
+                    </div>
+                    <div class="meal-buttons">
+                        <div class="meal-btn" data-meal="breakfast">
+                            <div class="icon-circle orange">
+                                <i class="fa-solid fa-egg"></i>
+                            </div>
+                            <span data-i18n="dashboard.breakfast">Breakfast</span>
+                        </div>
+                        <div class="meal-btn" data-meal="lunch">
+                            <div class="icon-circle green">
+                                <i class="fa-solid fa-burger"></i>
+                            </div>
+                            <span data-i18n="dashboard.lunch">Lunch</span>
+                        </div>
+                        <div class="meal-btn" data-meal="dinner">
+                            <div class="icon-circle red">
+                                <i class="fa-solid fa-drumstick-bite"></i>
+                            </div>
+                            <span data-i18n="dashboard.dinner">Dinner</span>
+                        </div>
+                        <div class="meal-btn" data-meal="snacks">
+                            <div class="icon-circle purple">
+                                <i class="fa-solid fa-apple-whole"></i>
+                            </div>
+                            <span data-i18n="dashboard.snack">Snack</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Macro Trend Chart -->
+                <div class="card weekly-macro-card" style="grid-column: 1 / -1;">
+                    <!-- Header with toggle -->
+                    <div class="weekly-macro-header">
+                        <div class="header-left">
+                            <button class="toggle-btn active" id="btnToggleDerings">
+                                <i class="fa-solid fa-circle"></i>
+                                Derings
+                            </button>
+                            <div class="macro-quick-stats">
+                                <span class="qs-item cals">Cals <strong id="weeklyCalsStat">-- / --</strong></span>
+                                <span class="qs-item carbs">Carbs <strong id="weeklyCarbsStat">-- / --</strong></span>
+                                <span class="qs-item prot">Protein <strong id="weeklyProtStat">-- / --</strong></span>
+                                <span class="qs-item fat">Fat <strong id="weeklyFatStat">-- / --</strong></span>
+                                <span class="qs-item purine">Purine <strong id="weeklyPurineStat">-- /
+                                        --</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Range Selector -->
+                        <div class="chart-range-selector">
+                            <button class="range-btn active" data-range="7">1S</button>
+                            <button class="range-btn" data-range="14">2S</button>
+                            <button class="range-btn" data-range="30">1M</button>
+                        </div>
+                    </div>
+
+
+                    <!-- Chart Title -->
+                    <h3 class="weekly-chart-title" data-i18n="dashboard.weekly_macro_breakdown">Weekly Macro Breakdown
+                    </h3>
+
+                    <!-- Chart Container -->
+                    <div class="weekly-chart-container">
+                        <canvas id="weeklyMacroChart"></canvas>
+                    </div>
+
+                    <!-- Week Range Label -->
+                    <div class="week-range-label" id="weekRangeLabel">Week 19/01 - 25/01</div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <!-- Quick Add Modal -->
+    <div id="quickAddModal" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add to Meal</h3>
+                <button id="closeModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="favorites">Favorites</button>
+                <button class="tab-btn" data-tab="manual">Manual Entry</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Favorites Tab -->
+                <div id="tabFavorites" class="tab-content active">
+                    <div id="favoritesList" class="favorites-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Manual Entry Tab -->
+                <div id="tabManual" class="tab-content">
+                    <div class="manual-form">
+                        <div class="form-group">
+                            <label><i class="fa-solid fa-plate-wheat"></i> Food Name</label>
+                            <input type="text" id="manualName" placeholder="e.g., Grilled Chicken Salad">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-fire"></i> Calories</label>
+                                <input type="number" id="manualCals" placeholder="kcal">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-flask"></i> Purines (mg)</label>
+                                <input type="number" id="manualPurine" placeholder="mg">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-wheat-awn"></i> Carbs (g)</label>
+                                <input type="number" id="manualCarb" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-droplet"></i> Fat (g)</label>
+                                <input type="number" id="manualFat" placeholder="g">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa-solid fa-dna"></i> Protein (g)</label>
+                                <input type="number" id="manualProt" placeholder="g">
+                            </div>
+                        </div>
+                        <div class="form-group"
+                            style="flex-direction: row; align-items: center; gap: 8px; margin-top: -10px; margin-bottom: 20px; cursor: pointer;">
+                            <input type="checkbox" id="chkSaveToDb"
+                                style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-lime);">
+                            <label for="chkSaveToDb"
+                                style="margin: 0; font-size: 13px; color: var(--text-white); cursor: pointer; font-weight: 600;">Guardar
+                                en la base de datos de favoritos</label>
+                        </div>
+                        <button id="addManualBtn" class="btn-primary-action">Add Item</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Steps Input Modal -->
+    <div id="stepsModal" class="modal-overlay hidden">
+        <div class="modal-container small">
+            <div class="modal-header">
+                <h3>Update Daily Steps</h3>
+                <button id="closeStepsModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="stepsInputVal"
+                        style="color: var(--text-gray); font-size: 13px; margin-bottom: 8px; display: block; font-weight: 600;">
+                        <i class="fa-solid fa-shoe-prints"></i> TOTAL STEPS TODAY
+                    </label>
+                    <input type="number" id="stepsInputVal" class="modal-input-big" placeholder="0">
+                </div>
+
+                <div class="form-group" style="margin-top: 16px;">
+                    <label for="stepsGoalInput"
+                        style="color: var(--text-gray); font-size: 13px; margin-bottom: 8px; display: block; font-weight: 600;">
+                        <i class="fa-solid fa-bullseye"></i> DAILY GOAL
+                    </label>
+                    <input type="number" id="stepsGoalInput" class="modal-input-big" placeholder="5000">
+                </div>
+
+                <div class="modal-actions" style="margin-top: 24px;">
+                    <button id="cancelStepsBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveStepsBtn" class="btn-primary-action">Update Steps</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Purine Limit Modal -->
+    <div id="purineModal" class="modal-overlay hidden">
+        <div class="modal-container small">
+            <div class="modal-header">
+                <h3>Update Purine Limit</h3>
+                <button id="closePurineModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="purineInputVal"
+                        style="color: var(--text-gray); font-size: 13px; margin-bottom: 8px; display: block; font-weight: 600;">
+                        <i class="fa-solid fa-shield-heart"></i> DAILY LIMIT (mg)
+                    </label>
+                    <input type="number" id="purineInputVal" class="modal-input-big" placeholder="400">
+                </div>
+
+                <div class="modal-actions" style="margin-top: 24px;">
+                    <button id="cancelPurineBtn" class="btn-secondary">Cancel</button>
+                    <button id="savePurineBtn" class="btn-primary-action">Update Limit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GL Limit Modal -->
+    <div id="glModal" class="modal-overlay hidden">
+        <div class="modal-container small">
+            <div class="modal-header">
+                <h3>Update Glycemic Load Limit</h3>
+                <button id="closeGlModalBtn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="glInputVal"
+                        style="color: var(--text-gray); font-size: 13px; margin-bottom: 8px; display: block; font-weight: 600;">
+                        <i class="fa-solid fa-heart-pulse"></i> DAILY LIMIT
+                    </label>
+                    <input type="number" id="glInputVal" class="modal-input-big" placeholder="100">
+                </div>
+
+                <div class="modal-actions" style="margin-top: 24px;">
+                    <button id="cancelGlBtn" class="btn-secondary">Cancel</button>
+                    <button id="saveGlBtn" class="btn-primary-action">Update Limit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="food-data.js?v=8.1"></script>
+    <script src="localization.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="goal-modal.js"></script>
+    <script src="script.js?v=radar_v3"></script>
+    <script src="quick-add-dashboard.js"></script>
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                <div class="logo-text">
+                    <span class="brand" style="font-size: 18px;">AUREUS</span>
+                    <span class="tagline" style="font-size: 11px; margin-top: 0;">Clinical Nutrition</span>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item active">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile" id="drawerUserProfileBtn">
+            <img src="images/users/item_profile.webp" alt="Profile" id="drawerAvatar">
+            <div class="d-user-info">
+                <div class="d-name" id="drawerUserName"></div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+</body>
+
+</html>

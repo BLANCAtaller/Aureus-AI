@@ -1,0 +1,116 @@
+<script>
+    // --- CRITICAL FIX: SIDEBAR TRANSACTION HANDLER ---
+    // Re-implementing this function to ensure data persistence works correctly from the sidebar form.
+
+    function addWalletTransaction() {
+        console.log("🚀 Processing New Transaction from Sidebar...");
+
+        try {
+            // 1. Get DOM Elements
+            const amountEl = document.getElementById('w-amount');
+            const descEl = document.getElementById('w-desc');
+            const dateEl = document.getElementById('w-date');
+            const focusEl = document.getElementById('w-focus');
+            const typeInc = document.getElementById('wt-income');
+            const catInput = document.getElementById('w-category'); // Hidden input from grid
+
+            if (!amountEl || !descEl) {
+                console.error("❌ Missing Form Elements");
+                return;
+            }
+
+            // 2. Validate
+            const amount = parseFloat(amountEl.value);
+            if (isNaN(amount) || amount <= 0) {
+                Swal.fire({
+                    toast: true, position: 'top', icon: 'warning',
+                    title: 'Monto inválido', text: 'Por favor ingresa un valor positivo.',
+                    timer: 2000, showConfirmButton: false, background: '#1E293B', color: '#fff'
+                });
+                return;
+            }
+
+            // 3. Extract Values
+            const desc = descEl.value.trim() || 'Movimiento';
+            const type = typeInc && typeInc.checked ? 'income' : 'expense';
+            const focus = focusEl ? focusEl.value : 'Wants';
+            const category = catInput ? (catInput.value || 'General') : 'General';
+
+            // 4. Date Logic (Crucial for "Today" bug)
+            let dateIso = dateEl.value;
+            // Fallback to today if empty
+            if (!dateIso) {
+                const now = new Date();
+                dateIso = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+            }
+
+            // Append Time
+            const now = new Date();
+            const todayStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+
+            if (dateIso === todayStr) {
+                // It's today: Use CURRENT time to ensure correct sorting and "Today" label
+                dateIso = now.toISOString();
+            } else {
+                // It's another day: Force Noon to avoid Timezone shifts (e.g. becoming "Yesterday")
+                dateIso += 'T12:00:00';
+            }
+
+            // 5. Create Transaction Object
+            const newTxn = {
+                id: Date.now(),
+                amount: amount,
+                name: desc,
+                type: type,
+                category: category,
+                dateIso: dateIso,
+                budgetFocus: type === 'expense' ? focus : 'Income',
+                date: new Date(dateIso).toLocaleDateString() // Legacy field
+            };
+
+            // 6. Add to Global State
+            if (!appState.transactions) appState.transactions = [];
+            appState.transactions.unshift(newTxn);
+            console.log("✅ Transaction Added to State:", newTxn);
+
+            // 7. PERSIST TO STORAGE (The most important step!)
+            if (typeof saveState === 'function') {
+                saveState();
+                console.log("💾 State Saved to LocalStorage.");
+            } else {
+                console.error("❌ saveState function missing! Data will be lost on reload.");
+                localStorage.setItem('financeApp_State_V2', JSON.stringify(appState)); // Emergency Fallback
+            }
+
+            // 8. UI Feedback
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Guardado',
+                text: `${type === 'income' ? '+' : '-'}${formatCurrency(amount)}`,
+                background: '#0f111a',
+                color: '#fff',
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            // 9. Reset Form
+            amountEl.value = '';
+            descEl.value = '';
+            // Optional: Reset date or keep it? Keeping it is usually better for sequential entry.
+
+            // 10. Update UI Components
+            setTimeout(() => {
+                if (typeof renderWalletHistory === 'function') renderWalletHistory();
+                if (typeof renderMergedDashboard === 'function') renderMergedDashboard();
+                if (typeof renderWeeklyActivityChart === 'function') renderWeeklyActivityChart();
+                if (typeof updateMonthlyTotals === 'function') updateMonthlyTotals();
+            }, 50);
+
+        } catch (e) {
+            console.error("🔥 Critical Error adding transaction:", e);
+            Swal.fire({ icon: 'error', title: 'Error', text: e.message });
+        }
+    }
+</script>

@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona tu Perfil - AUREUS Home</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <!-- Shared variables -->
+    <style>
+        :root {
+            --bg-dark: #070708;
+            --text-white: #FAFAFA;
+            --primary-lime: #D4F458;
+            --secondary-lime: #b6d34b;
+            --accent-gold: #FFD700;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --glow-nutrition: rgba(212, 244, 88, 0.15);
+            --card-radius: 24px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* --- NOISE OVERLAY --- */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+        }
+
+        /* --- PARTICLE BACKGROUND --- */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-20vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 120%, rgba(212, 244, 88, 0.06) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 40%),
+                linear-gradient(to bottom, #070708 0%, #0a0a0c 100%);
+        }
+
+        .ambient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 10s infinite alternate ease-in-out;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            top: 10%;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--glow-nutrition), transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            bottom: 20%;
+            right: 15%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03), transparent 70%);
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+
+            100% {
+                transform: translateY(-40px) scale(1.1);
+            }
+        }
+
+        /* --- CONTAINER --- */
+        .selection-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 40px;
+            text-align: center;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+        }
+
+        .header-content {
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.8) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* TILT EFFECT CSS */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .tilt-content {
+            transform: translateZ(20px);
+        }
+
+        .highlight-text {
+            background: linear-gradient(to right, #D4F458, #b6d34b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(212, 244, 88, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- PROFILE GRID --- */
+        .profiles-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            perspective: 1000px;
+        }
+
+        /* Glass Profile Card Style */
+        .profile-card-glass {
+            position: relative;
+            width: 220px;
+            padding: 30px 20px 25px;
+            /* Top padding increased for avatar */
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            animation: fadeInUp 0.8s ease-out both;
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+            overflow: visible;
+            /* Allow avatar to pop if needed */
+        }
+
+        .profile-card-glass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--card-radius);
+            padding: 1px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 60%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            -webkit-mask-composite: xor;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .profile-card-glass:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .profile-card-glass:hover::before {
+            opacity: 1;
+        }
+
+        /* Avatar Styling */
+        .card-avatar-wrapper {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .card-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            filter: grayscale(80%) brightness(0.9);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-card-glass:hover .card-avatar {
+            filter: grayscale(0%) brightness(1);
+            border-color: var(--primary-lime);
+            box-shadow: 0 0 25px var(--glow-nutrition);
+            transform: scale(1.05);
+        }
+
+        /* Edit Overlay */
+        /* Edit Button Circle (on avatar) */
+        .edit-btn-circle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            z-index: 20;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .edit-btn-circle:hover {
+            background: #fff;
+            color: #000;
+            transform: scale(1.1) rotate(15deg);
+        }
+
+
+
+        /* Text Content */
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .profile-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: -0.5px;
+            text-align: center;
+        }
+
+        .profile-status {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-indicator {
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary-lime);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--primary-lime);
+        }
+
+        /* Add Profile Card */
+        .add-profile-card {
+            border-style: dashed;
+            border-width: 1px;
+            border-color: rgba(255, 255, 255, 0.2);
+            background: transparent;
+        }
+
+        .add-icon-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        .add-profile-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.4);
+            border-style: solid;
+        }
+
+        .add-profile-card:hover .add-icon-circle {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .add-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+        }
+
+        .add-profile-card:hover .add-label {
+            color: #fff;
+        }
+
+        /* Staggered Animation Delays */
+        .profiles-grid .profile-card-glass:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .profiles-grid .profile-card-glass:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .profiles-grid .profile-card-glass:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .profiles-grid .profile-card-glass:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        /* --- MANAGE BTN --- */
+        .manage-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 12px 32px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin-top: 40px;
+            font-family: inherit;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .manage-btn:hover {
+            color: #000;
+            border-color: var(--primary-lime);
+            background: var(--primary-lime);
+            box-shadow: 0 0 30px rgba(212, 244, 88, 0.4);
+            transform: translateY(-2px);
+            letter-spacing: 0.5px;
+        }
+
+        /* --- BACK BTN --- */
+        .btn-close-corner {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            text-decoration: none;
+            z-index: 50;
+        }
+
+        .btn-close-corner:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: rotate(-90deg);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-bg"></div>
+    <div class="particles-container" id="particles"></div>
+    <div class="noise-overlay"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <a href="#" class="btn-close-corner" title="Cerrar Sesión" onclick="handleLogoutMain(); return false;">
+        <i class="fa-solid fa-xmark"></i>
+    </a>
+
+
+
+    <style>
+        /* --- USER WIDGET (Top Right) --- */
+        .user-widget-wrapper {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            z-index: 100;
+        }
+
+        .user-pill-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 100px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-pill-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-pill-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .user-pill-status {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-lime);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-lime);
+        }
+
+        /* Popover */
+        .user-popover-glass {
+            position: absolute;
+            top: calc(100% + 15px);
+            right: 0;
+            width: 280px;
+            background: #0f0f12;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: popoverFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .user-popover-glass.active {
+            display: flex;
+        }
+
+        @keyframes popoverFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .popover-menu {
+            padding: 8px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .menu-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-item.logout {
+            color: #ff6b6b;
+        }
+
+        .menu-item.logout:hover {
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .logout-icon {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 4px 12px;
+        }
+
+        .popover-footer {
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-badge {
+            font-size: 11px;
+            color: #888;
+        }
+    </style>
+
+    <div class="selection-container">
+
+        <div class="header-content">
+            <h1 class="main-title"><span id="greetingText">Bienvenido</span> <br><span class="highlight-text">Selecciona
+                    tu perfil</span></h1>
+            <p class="subtitle">Continuar entrenamiento...</p>
+        </div>
+
+    </div>
+
+    <!-- STAGGERED ANIMATION DELAYS WILL BE HANDLED BY CSS nth-child -->
+    <div class="profiles-grid" id="profilesGrid">
+
+        <!-- Profile 1 (BlindSnk/Invitado/User1) -->
+        <div class="profile-card-glass" id="profile-user1" onclick="handleProfileInteract('user1', event)">
+            <div class="card-avatar-wrapper">
+                <img id="img-user1" src="assets/images/users/item_profile.png" class="card-avatar" alt="Invitado">
+                <div class="edit-btn-circle" onclick="openEditModal('user1'); event.stopPropagation();">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+            </div>
+            <div class="profile-info">
+                <span class="profile-name" id="name-user1">Invitado</span>
+                <span class="profile-status" id="status-user1"><span class="status-indicator"
+                        id="indicator-user1"></span> <span id="status-text-user1">Activo hace 2h</span></span>
+            </div>
+            <!-- Hidden inputs for data storage -->
+            <input type="hidden" id="color-user1" value="#D4F458">
+            <input type="file" id="file-user1" accept="image/*" style="display: none;"
+                onchange="updateProfileImage(event, 'user1')">
+        </div>
+
+        <!-- Profile 2 (Usuario 2) -->
+        <div class="profile-card-glass" id="profile-user2" onclick="handleProfileInteract('user2', event)">
+            <div class="card-avatar-wrapper">
+                <img id="img-user2" src="assets/images/users/item_profile.png" class="card-avatar" alt="Usuario 2">
+                <div class="edit-btn-circle" onclick="openEditModal('user2'); event.stopPropagation();">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+            </div>
+            <div class="profile-info">
+                <span class="profile-name" id="name-user2">Usuario 2</span>
+                <span class="profile-status" id="status-user2"><span class="status-indicator" id="indicator-user2"
+                        style="background-color: #3B82F6; box-shadow: 0 0 8px #3B82F6;"></span> <span
+                        id="status-text-user2">Nuevo</span></span>
+            </div>
+            <!-- Hidden inputs for data storage -->
+            <input type="hidden" id="color-user2" value="#3B82F6">
+            <input type="file" id="file-user2" accept="image/*" style="display: none;"
+                onchange="updateProfileImage(event, 'user2')">
+        </div>
+
+    </div>
+
+    <div class="actions-row" style="display: flex; gap: 20px; align-items: center; margin-top: 40px;">
+        <button class="manage-btn" onclick="toggleManageMode()">Administrar Perfiles</button>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal-overlay" id="editProfileModal">
+        <div class="modal-glass">
+            <button class="modal-close" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="modal-title">Editar Perfil</h2>
+
+            <div class="edit-avatar-section">
+                <div class="avatar-preview-large">
+                    <img id="edit-avatar-img" src="" alt="Profile">
+                    <div class="avatar-overlay" onclick="document.getElementById('edit-file-input').click()">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <input type="file" id="edit-file-input" accept="image/*" hidden onchange="previewEditImage(event)">
+            </div>
+
+            <div class="edit-form">
+                <div class="input-group">
+                    <label>Nombre del Perfil</label>
+                    <input type="text" id="edit-name-input" placeholder="Nombre">
+                </div>
+
+                <div class="input-group">
+                    <label>Estado (Subtítulo)</label>
+                    <input type="text" id="edit-status-input" placeholder="Ej. Activo hace 2h">
+                </div>
+
+                <div class="input-group">
+                    <label>Color del Tema</label>
+                    <div class="color-options">
+                        <div class="color-option active" style="--c: #D4F458;" onclick="selectColor('#D4F458', this)">
+                        </div>
+                        <div class="color-option" style="--c: #EF4444;" onclick="selectColor('#EF4444', this)"></div>
+                        <div class="color-option" style="--c: #3B82F6;" onclick="selectColor('#3B82F6', this)"></div>
+                        <div class="color-option" style="--c: #A855F7;" onclick="selectColor('#A855F7', this)"></div>
+                        <div class="color-option" style="--c: #F59E0B;" onclick="selectColor('#F59E0B', this)"></div>
+                        <div class="color-option" style="--c: #EC4899;" onclick="selectColor('#EC4899', this)"></div>
+                    </div>
+                    <input type="hidden" id="edit-color-input" value="#D4F458">
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+                    <button class="btn-save" onclick="saveProfileChanges()">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-glass {
+            background: #121214;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 40px 80px -12px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .modal-overlay.active .modal-glass {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .modal-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .edit-avatar-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar-preview-large {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            border-radius: 50%;
+            padding: 4px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .avatar-preview-large img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .avatar-preview-large:hover .avatar-overlay {
+            opacity: 1;
+        }
+
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-left: 4px;
+        }
+
+        .input-group input[type="text"] {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .input-group input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--c);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+        }
+
+        .color-option.active {
+            border-color: #fff;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px var(--c);
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        .btn-save {
+            background: #fff;
+            border: none;
+            color: #000;
+            padding: 14px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .btn-save:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+
+        .edit-avatar-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .avatar-preview-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            position: relative;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .avatar-preview-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .avatar-preview-large:hover .avatar-overlay {
+            opacity: 1;
+        }
+
+        .avatar-overlay i {
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-lime);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-save {
+            background: var(--primary-lime);
+            border: none;
+            color: #000;
+        }
+
+        .btn-save:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-delete {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+
+        .btn-delete:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        /* Managing State Styles */
+        .selection-container.managing .profile-card-glass {
+            animation: shake 2s infinite ease-in-out;
+        }
+
+        .selection-container.managing .profile-card-glass::after {
+            content: '\f303';
+            /* Fa-pen */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #fff;
+            border-radius: 24px;
+            backdrop-filter: blur(2px);
+            opacity: 1;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            25% {
+                transform: rotate(1deg);
+            }
+
+            75% {
+                transform: rotate(-1deg);
+            }
+        }
+    </style>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+
+
+    <script src="js/user-selection.js"></script>
+</body>
+
+</html>

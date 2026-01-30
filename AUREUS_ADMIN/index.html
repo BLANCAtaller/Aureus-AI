@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Admin | Panel de Control</title>
+    <link rel="icon" type="image/png" href="../assets/images/LOGO AUREUS.png">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/landing-styles.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+</head>
+
+<body>
+    <!-- Auth Guard Overlay (Hidden by default) -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="loader"></div>
+        <p>Verificando credenciales de administrador...</p>
+    </div>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="../assets/images/LOGO AUREUS.png" alt="AUREUS" class="sidebar-logo">
+                <span class="sidebar-title">ADMIN</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Usuarios</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Analíticas</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="adminLogoutBtn" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="page-title">Gestión de Usuarios</h1>
+                <div class="admin-profile">
+                    <span id="adminName">Admin User</span>
+                    <img src="../assets/images/users/item_profile.png" alt="Admin" id="adminAvatar"
+                        class="avatar-small">
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon users">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>Total Usuarios</h3>
+                        <p class="kpi-value" id="kpiTotalUsers">--</p>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon active">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>Pruebas Activas</h3>
+                        <p class="kpi-value" id="kpiActiveTrials">--</p>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-icon expired">
+                        <i class="fa-solid fa-user-xmark"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <h3>Pruebas Expiradas</h3>
+                        <p class="kpi-value" id="kpiExpiredTrials">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Toolbar & Search -->
+            <div class="table-toolbar">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="userSearch" placeholder="Buscar por email o nombre...">
+                </div>
+
+                <div class="filters">
+                    <select id="userFilter">
+                        <option value="all">Todos los Estados</option>
+                        <option value="trial">En Prueba</option>
+                        <option value="active">Suscrito</option>
+                        <option value="expired">Expirado</option>
+                    </select>
+                </div>
+
+                <button class="btn-export" id="exportBtn">
+                    <i class="fa-solid fa-file-csv"></i> Exportar CSV
+                </button>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Estado</th>
+                            <th>Inicio Prueba</th>
+                            <th>Fin Prueba</th>
+                            <th>Días Restantes</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Rows injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

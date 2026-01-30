@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS Nutrición AI - Food Logger</title>
+    <link rel="icon" type="image/png" href="images/logo.webp">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css?v=radar_v3">
+    <link rel="stylesheet" href="aiscan-results.css">
+    <link rel="stylesheet" href="card-styles.css">
+    <link rel="stylesheet" href="modal-styles.css">
+    <link rel="stylesheet" href="manual-entry-styles.css">
+    <link rel="stylesheet" href="fasting-styles.css">
+
+
+    <!-- Charts -->
+    <!-- Lazy Loader -->
+    <script src="../js/lazy-loader.js"></script>
+    <script>LazyLoader.loadAll(['chartjs', 'jspdf', 'autotable']);</script>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js"></script>
+    <script src="state_manager.js"></script>
+
+    <!-- Google Login -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <img src="images/logo.webp" alt="AUREUS" class="logo-img">
+                <div class="logo-text">
+                    <span class="brand">AUREUS</span>
+                    <span class="tagline">Clinical Nutrition</span>
+                </div>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <span data-i18n="nav.dashboard">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item active">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span data-i18n="nav.food_log">Food Log</span>
+                </a>
+                <a href="fasting-timer.html" class="nav-item special-timer">
+                    <i class="fa-solid fa-stopwatch"></i>
+                    <span data-i18n="nav.fasting_timer">Fasting Timer</span>
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <a href="meal-planner.html" class="nav-item">
+                    <i class="fa-regular fa-calendar-days"></i>
+                    <span data-i18n="nav.meal_planner">Meal Planner</span>
+                </a>
+                <a href="food-database.html" class="nav-item">
+                    <i class="fa-solid fa-apple-whole"></i>
+                    <span data-i18n="nav.food_database">Food Database</span>
+                </a>
+
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="settings.html" class="nav-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span data-i18n="nav.settings">Settings</span>
+                </a>
+
+                <div class="user-profile" id="userProfileBtn">
+                    <img src="images/users/item_profile.webp" alt="Profile" class="avatar" id="currentAvatar">
+                    <div class="user-info">
+                        <div class="user-name" id="currentUserName">Invitado</div>
+                        <div class="user-role">Pro Member</div>
+                    </div>
+                    <i class="fa-solid fa-ellipsis-vertical options-icon"></i>
+                </div>
+
+                <!-- User Switcher Popover moved out for global accessibility -->
+                <!-- User Switcher Popover (Managed by js/profile-hub.js) -->
+                <script src="../js/profile-hub.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        ProfileHub.init({ currentApp: 'fit' });
+                    });
+                </script>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- MOBILE TOP BAR (Logo + Hamburger) -->
+            <div class="mobile-top-bar">
+                <div class="mobile-brand-group">
+                    <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                    <div class="logo-text">
+                        <span class="brand" style="font-size: 16px;">AUREUS</span>
+                        <span class="tagline" style="font-size: 9px; margin-top: 0;">Clinical Nutrition</span>
+                    </div>
+                </div>
+                <!-- MOBILE HAMBURGER BUTTON -->
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+            <!-- Header -->
+            <header class="top-header">
+                <div class="greeting-container">
+                    <h1 data-i18n="food_log.title">Food Logger</h1>
+                    <div class="date-subtitle" data-i18n="food_log.subtitle">Track meals & monitor purine levels</div>
+                </div>
+                <div class="header-actions">
+                    <div class="date-selector-pill">
+                        <i id="btnPrevDate" class="fa-solid fa-chevron-left"></i>
+                        <span id="dateSelectorLabel"><i class="fa-regular fa-calendar"></i> Today</span>
+                        <i id="btnNextDate" class="fa-solid fa-chevron-right"></i>
+                    </div>
+                    <button id="globalSaveBtn" class="btn-save">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span data-i18n="header.save_changes">Save Changes</span>
+                    </button>
+                    <button id="btnDailyReport" class="btn-header-dark" title="Generate Daily Report">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>Report</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Food Logger Grid -->
+            <div class="food-logger-grid">
+                <!-- Left Column: Today's Log -->
+                <div class="logger-left-col">
+                    <!-- Today's Log -->
+                    <div class="card todays-log-card">
+                        <div class="card-header-row"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 data-i18n="food_log.todays_log">Today's Log</h3>
+                            <span id="currentDateDisplay"
+                                style="color: var(--text-gray); font-size: 14px; font-weight: 500;"></span>
+                        </div>
+
+                        <div class="log-timeline">
+                            <!-- Breakfast -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot yellow"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name" data-i18n="dashboard.breakfast">BREAKFAST</span>
+                                    </div>
+                                </div>
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="breakfast">
+                                        <span class="empty-text" data-i18n="food_log.nothing_logged">Nothing logged
+                                            yet</span>
+                                        <span class="add-text"><span data-i18n="food_log.add">Add</span> <span
+                                                data-i18n="dashboard.breakfast">BREAKFAST</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Lunch -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot green"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name" data-i18n="dashboard.lunch">LUNCH</span>
+                                    </div>
+                                </div>
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="lunch">
+                                        <span class="empty-text" data-i18n="food_log.nothing_logged">Nothing logged
+                                            yet</span>
+                                        <span class="add-text"><span data-i18n="food_log.add">Add</span> <span
+                                                data-i18n="dashboard.lunch">LUNCH</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dinner -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot gray"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name" data-i18n="dashboard.dinner">DINNER</span>
+                                    </div>
+                                </div>
+
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="dinner">
+                                        <span class="empty-text" data-i18n="food_log.nothing_logged">Nothing logged
+                                            yet</span>
+                                        <span class="add-text"><span data-i18n="food_log.add">Add</span> <span
+                                                data-i18n="dashboard.dinner">DINNER</span></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Snack / Drinks -->
+                            <div class="log-group">
+                                <div class="group-header">
+                                    <span class="dot purple"></span>
+                                    <div class="meal-title-row">
+                                        <span class="meal-name" data-i18n="dashboard.snack">SNACK / DRINKS</span>
+                                    </div>
+                                </div>
+
+                                <div class="log-items-container"
+                                    style="background:transparent; border:none; padding:0;">
+                                    <div class="empty-state-box btn-add-meal-dynamic" data-meal="snacks">
+                                        <span class="empty-text" data-i18n="food_log.nothing_logged">Nothing logged
+                                            yet</span>
+                                        <span class="add-text"><span data-i18n="food_log.add">Add</span> <span
+                                                data-i18n="dashboard.snack">Snack</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly History -->
+                    <!-- Weekly History (Renamed to Macros Breakdown) -->
+                    <div class="card weekly-macros-card" style="margin-bottom: 20px;">
+                        <div class="card-header-row" style="align-items: flex-start; margin-bottom: 24px;">
+                            <div class="header-left" style="display: flex; gap: 12px; align-items: center;">
+                                <div
+                                    style="width: 32px; height: 32px; background: rgba(250, 204, 21, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-chart-pie" style="color: #FACC15; font-size: 14px;"></i>
+                                </div>
+                                <div>
+                                    <h3 style="margin: 0; font-size: 16px; color: #fff;"
+                                        data-i18n="dashboard.macro_breakdown">Macros Breakdown</h3>
+                                    <span style="font-size: 12px; color: #a1a1aa;">Net Carbs limit: 25g/day</span>
+                                </div>
+                            </div>
+                            <div class="header-legend"
+                                style="display: flex; gap: 16px; font-size: 11px; color: #d4d4d8;">
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; background: #FF4081; border-radius: 50%;"></span>
+                                    <span data-i18n="dashboard.net_carbs">Net Carbs</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; background: #448AFF; border-radius: 50%;"></span>
+                                    <span data-i18n="dashboard.protein">Protein</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;"><span
+                                        style="width: 8px; height: 8px; background: #FFD740; border-radius: 50%;"></span>
+                                    <span data-i18n="dashboard.fat">Fat</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="weekly-chart-container" id="macrosChartContainer"
+                            style="height: 180px; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 10px;">
+                            <!-- Bars injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Context & Stats -->
+                <div class="logger-right-col">
+
+                    <!-- Total Consumed Large Ring -->
+                    <div class="card total-consumed-card">
+                        <div class="main-ring-wrapper">
+                            <svg class="progress-ring" width="220" height="220">
+                                <circle class="progress-ring__background" stroke="rgba(255,255,255,0.05)"
+                                    stroke-width="12" fill="transparent" r="90" cx="110" cy="110" />
+                                <circle class="progress-ring__circle" id="consumedProgressCircle"
+                                    stroke="var(--primary-lime)" stroke-width="12" stroke-linecap="round"
+                                    fill="transparent" r="90" cx="110" cy="110"
+                                    style="stroke-dasharray: 565.48; stroke-dashoffset: 565.48; filter: drop-shadow(0 0 8px var(--primary-lime));" />
+                            </svg>
+                            <div class="ring-center-content">
+                                <span class="label" data-i18n="dashboard.total_consumed">TOTAL CONSUMED</span>
+                                <span class="value" id="totalConsumedVal">0</span>
+                                <span class="unit">KCAL</span>
+                                <div id="calorieSurplusDisplay"
+                                    style="display: none; position: absolute; bottom: 0; right: 0; background: rgba(239, 68, 68, 0.2); color: #EF4444; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 700;">
+                                    +0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Macros -->
+                    <div class="card daily-macros-card">
+                        <div class="card-header-row">
+                            <h3 data-i18n="food_log.daily_macros">Daily Macros</h3>
+                            <span class="sub-link" id="dailyGoalLabel" style="cursor: pointer; transition: color 0.2s;"
+                                onmouseover="this.style.color='var(--primary-lime)'"
+                                onmouseout="this.style.color='var(--text-gray)'">Target: --</span>
+                        </div>
+                        <div class="mini-rings-row">
+                            <div class="mini-ring-item">
+                                <div class="ring-container yellow" style="--p:70">
+                                    <span>70%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">105g</span>
+                                    <span class="lbl" data-i18n="dashboard.fat">Fat</span>
+                                </div>
+                            </div>
+                            <div class="mini-ring-item">
+                                <div class="ring-container blue" style="--p:90">
+                                    <span>90%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">85g</span>
+                                    <span class="lbl" data-i18n="dashboard.protein">Prot</span>
+                                </div>
+                            </div>
+                            <div class="mini-ring-item">
+                                <div class="ring-container pink" style="--p:40">
+                                    <span>40%</span>
+                                </div>
+                                <div class="ring-info">
+                                    <span class="val">18g</span>
+                                    <span class="lbl" data-i18n="dashboard.net_carbs">Net Carb</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="calories-bar-row">
+                            <span class="lbl" data-i18n="dashboard.calories_remaining">CALORIES REMAINING</span>
+                            <div class="cals-val">
+                                <span class="big">550</span> kcal
+                            </div>
+                            <div class="mini-progress">
+                                <div class="bar-fill" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Macro Targets (Replicated from Settings) -->
+                    <div class="card macros-card-premium" style="margin-bottom: 20px;">
+                        <div class="card-header-simple">
+                            <span><i class="fa-solid fa-bullseye" style="color:#52525b; margin-right:8px;"></i><span
+                                    data-i18n="dashboard.macro_breakdown">MACRO TARGETS</span></span>
+                            <i class="fa-solid fa-chart-pie" style="color:#3f3f46;"></i>
+                        </div>
+
+                        <div class="chart-area-premium">
+                            <div class="chart-wrapper">
+                                <canvas id="foodLogMacroChart"></canvas>
+                                <div class="center-text">
+                                    <span class="label" data-i18n="dashboard.goal">TARGET</span>
+                                    <span class="val-big" id="targetCalsDisplay">2,247</span>
+                                    <span class="unit">kcal</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="legend-row">
+                            <div class="legend-item">
+                                <span class="pct text-yellow" id="targetFatPct">70%</span>
+                                <span class="lbl" data-i18n="dashboard.fat">FAT</span>
+                                <span class="val" id="targetFatGrams">87g</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="pct text-blue" id="targetProtPct">30%</span>
+                                <span class="lbl" data-i18n="dashboard.protein">PROTEIN</span>
+                                <span class="val" id="targetProtGrams">169g</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="pct text-pink" id="targetCarbPct">35%</span>
+                                <span class="lbl" data-i18n="dashboard.carbs">CARBS</span>
+                                <span class="val" id="targetCarbGrams">197g</span>
+                            </div>
+                        </div>
+
+                        <div class="goal-footer-box" id="goalFooterBox"
+                            style="cursor: pointer; transition: transform 0.2s;"
+                            onmouseover="this.style.transform='scale(1.02)'"
+                            onmouseout="this.style.transform='scale(1)'">
+                            <span class="goal-title" id="targetGoalTitle">GOAL: FAT LOSS</span>
+                            <span class="goal-sub" id="targetGoalSub">-500kcal daily deficit</span>
+                        </div>
+                    </div>
+
+
+                    <div class="card glycemic-card" id="glycemicCard"
+                        style="border: 1px solid rgba(255, 255, 255, 0.05); min-height: auto;">
+                        <div class="card-header-row">
+                            <h3 style="color: #fff;" data-i18n="food_log.glycemic_factor">Glycemic Factor</h3>
+                            <!-- Moved Info Button to float or inline, replaced main slot with Badge -->
+                            <div style="display: flex; align-items: center; gap: 8px;">
+
+                                <span id="glBadgeDisplay" class="badge-risk" style="display:none;"
+                                    data-i18n="food_log.gl_waiting">WAITING...</span>
+                            </div>
+                        </div>
+
+                        <!-- New Premium Gauge Layout -->
+                        <div class="risk-gauge-wrapper" id="glycemicGaugeWrapper">
+                            <div class="gauge-bar-container"
+                                style="height: 10px; background: rgba(255,255,255,0.03); border-radius: 10px; overflow: visible;">
+                                <div class="gauge-bar-gradient glycemic-gradient"
+                                    style="height: 100%; border-radius: 10px; width: 100%; position: absolute; top: 0; left: 0;">
+                                </div>
+                                <div class="gauge-marker" id="glGaugeMarker"
+                                    style="left: 0%; top: -8px; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);">
+                                    <div
+                                        style="width: 4px; height: 26px; background: #fff; border-radius: 2px; box-shadow: 0 0 15px rgba(255,255,255,0.5);">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="gauge-labels" style="margin-top: 15px;">
+                                <span data-i18n="food_log.gl_low"
+                                    style="color:rgba(161, 161, 170, 0.6); font-size:10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Baja</span>
+                                <span class="risk-value-center" id="glValueDisplay"
+                                    style="font-size: 16px; letter-spacing: -0.02em;">0 GL</span>
+                                <span data-i18n="food_log.gl_high"
+                                    style="color:rgba(161, 161, 170, 0.6); font-size:10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Alta</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Message (Styled like Uric Warning Box) -->
+                        <div id="glDynamicMessage" class="risk-warning-box"
+                            style="display:none; margin-top: 10px; margin-bottom: 20px;">
+                            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="warning-text"></div>
+                        </div>
+
+                        <!-- Manual Entry Action -->
+                        <div class="glucose-actions">
+                            <button id="btnToggleGlucoseInput" class="btn-glucose-entry">
+                                <i class="fa-solid fa-droplet" style="color:#EF4444;"></i>
+                                <span data-i18n="food_log.add_glucose">Glucose</span>
+                            </button>
+                        </div>
+
+                        <!-- Manual Entry Input Section (Collapsible) -->
+                        <div id="glucoseInputSection" class="glucose-input-section" style="display:none;">
+                            <div class="glucose-form-row">
+                                <div class="input-group">
+                                    <label data-i18n="food_log.blood_glucose">Value (mg/dL)</label>
+                                    <input type="number" id="glucoseValueInput" class="premium-input-mini"
+                                        placeholder="mg/dL" data-i18n="food_log.mg_dl">
+                                </div>
+                                <div class="input-group">
+                                    <label data-i18n="food_log.context">Context</label>
+                                    <select id="glucoseContextInput" class="premium-select-mini">
+                                        <option value="general" selected data-i18n="dashboard.total_consumed">General
+                                        </option>
+                                        <option value="fasting" data-i18n="food_log.fasting">Fasting</option>
+                                        <option value="post_prandial" data-i18n="food_log.post_prandial">Post-prandial
+                                            (2h)
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="glucose-form-row">
+                                <div class="input-group">
+                                    <label data-i18n="food_log.time">Time</label>
+                                    <input type="time" id="glucoseTimeInput" class="premium-input-mini">
+                                </div>
+                                <div class="input-group" style="flex:2;">
+                                    <label data-i18n="food_log.ingredients">Details</label>
+                                    <input type="text" id="glucoseDetailsInput" class="premium-input-mini"
+                                        placeholder="Mood, exercise, fasting...">
+                                </div>
+                            </div>
+                            <div class="glucose-form-actions">
+                                <button id="btnSaveGlucose" class="btn-save-mini" data-i18n="global.save">Save</button>
+                            </div>
+                        </div>
+
+                        <!-- History Section -->
+                        <div class="glucose-history-section">
+                            <div class="mini-chart-container" id="glucoseMiniChartContainer">
+                                <!-- SVG Chart will be rendered here -->
+                            </div>
+                            <div class="daily-readings-list" id="glucoseDailyList">
+                                <!-- List items rendered via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uric Acid Risk -->
+                    <div class="card uric-risk-card" style="border: 1px solid rgba(255, 255, 255, 0.05);">
+                        <div class="card-header-row">
+                            <h3 style="color: #fff;" data-i18n="food_log.uric_risk">Uric Acid Risk</h3>
+                        </div>
+
+                        <div class="risk-gauge-wrapper">
+                            <div class="gauge-bar-container">
+                                <div class="gauge-bar-gradient"></div>
+                                <div class="gauge-marker" style="left: 0%">
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </div>
+                            </div>
+                            <div class="gauge-labels">
+                                <span>Low</span>
+                                <span class="risk-value-center">0mg Purines</span>
+                                <span>Crit.</span>
+                            </div>
+                        </div>
+
+                        <div class="risk-warning-box" style="display: none;">
+                            <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="warning-text"></div>
+                        </div>
+                    </div>
+
+                    <!-- Hydration Card -->
+                    <div class="card-premium-dark" id="foodLogHydrationCard"
+                        style="min-height: 380px; display: flex; flex-direction: column; margin-top: 24px; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; background: #16181D; padding: 20px;">
+                        <div class="timer-header-row"
+                            style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center;">
+                            <div class="header-left-group" style="display: flex; align-items: center; gap: 12px;">
+                                <div class="icon-circle-blue"
+                                    style="width: 36px; height: 36px; background: rgba(59,130,246,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #3b82f6;">
+                                    <i class="fa-solid fa-droplet"></i>
+                                </div>
+                                <h3 style="margin:0; font-size: 18px; color: #fff;" data-i18n="fasting.hydration">
+                                    Hydration</h3>
+                            </div>
+                            <div class="header-right-val" id="logWaterValDisplay"
+                                style="font-size: 24px; font-weight: 700;">0 <small
+                                    style="font-size: 14px; color: #a1a1aa;">ml</small></div>
+                        </div>
+
+                        <div class="hydration-rect-container"
+                            style="flex: 1; display: flex; justify-content: center; padding: 20px 0;">
+                            <div class="water-rect-shape"
+                                style="width: 140px; height: 160px; background: #27272a; border-radius: 24px; position: relative; overflow: hidden; border: 2px solid #333;">
+                                <div class="water-rect-fill" id="logWaterFill"
+                                    style="position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: #3b82f6; transition: height 0.5s ease;">
+                                    <div class="water-rect-text" id="logWaterLabel"
+                                        style="position: absolute; width: 100%; text-align: center; bottom: 10px; font-size: 12px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
+                                        0% Goal</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="water-controls-row" style="display: flex; gap: 10px; margin-top: auto;">
+                            <button class="btn-water-pill" onclick="window.GlobalHydration.addWater(250)"
+                                style="flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #333; background: #27272a; color: #fff; cursor: pointer; transition: all 0.2s;">
+                                <i class="fa-solid fa-plus"></i> 250ml
+                            </button>
+                            <button class="btn-water-pill" onclick="window.GlobalHydration.addWater(500)"
+                                style="flex: 1; padding: 12px; border-radius: 30px; border: 1px solid #333; background: #27272a; color: #fff; cursor: pointer; transition: all 0.2s;">
+                                <i class="fa-solid fa-plus"></i> 500ml
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Quick Add Modal -->
+    <div id="quickAddModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-i18n="dashboard.quick_add">Quick Add Meal</h3>
+                <button class="close-modal" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-tabs">
+                <div class="tab-item tab-btn active" data-tab="favorites" data-i18n="food_log.favorites">Favorites</div>
+                <div class="tab-item tab-btn" data-tab="manual" data-i18n="food_log.manual_entry">Manual Entry</div>
+                <div class="tab-item tab-btn" data-tab="aiscan" data-i18n="food_log.ai_scan">AI Scan</div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Favorites Tab -->
+                <div id="tabFavorites" class="tab-content active">
+                    <div class="favorites-search-container">
+                        <input type="search" placeholder="Search favorites..." class="favorites-search-input">
+                    </div>
+                    <div id="favoritesList" class="favorites-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search favorites..." id="favSearchInput"
+                            data-i18n="food_log.search_placeholder">
+                    </div>
+                    <div class="fav-list" id="favListContainer">
+                        <!-- Injected via JS -->
+                    </div>
+                    <!-- Meal Context Selector -->
+                    <div class="meal-context-selector"
+                        style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 13px; color: #a1a1aa;" data-i18n="food_log.add_to_meal">Add to
+                            Meal:</span>
+                        <select id="mealContextSelect" class="premium-select">
+                            <option value="breakfast" data-i18n="dashboard.breakfast">Breakfast</option>
+                            <option value="lunch" data-i18n="dashboard.lunch">Lunch</option>
+                            <option value="dinner" data-i18n="dashboard.dinner">Dinner</option>
+                            <option value="snack" data-i18n="dashboard.snack">Snack</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Manual Entry Tab -->
+                <div class="tab-content" id="tabManual">
+                    <div class="manual-form-grid">
+                        <div class="form-group full-width food-name-pod">
+                            <label data-i18n="food_log.food_name">Food Name</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-bowl-food input-icon"></i>
+                                <input type="text" id="manualName" class="premium-input"
+                                    placeholder="e.g. Grilled Chicken Salad" data-i18n="food_log.food_name">
+                            </div>
+                        </div>
+                        <div class="form-group full-width calories-pod">
+                            <label data-i18n="food_log.calories">Calories</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-fire input-icon"></i>
+                                <input type="number" id="manualCals" class="premium-input" placeholder="0">
+                                <span class="unit-label">kcal</span>
+                            </div>
+                        </div>
+                        <div class="form-group purines-pod">
+                            <label data-i18n="food_log.purines">Purines</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-flask input-icon"></i>
+                                <input type="number" id="manualPurines" class="premium-input" placeholder="0">
+                                <span class="unit-label">mg</span>
+                            </div>
+                        </div>
+                        <div class="form-group carbs-pod">
+                            <label data-i18n="dashboard.net_carbs">Net Carbs</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-wheat-awn input-icon"></i>
+                                <input type="number" id="manualCarbs" class="premium-input" placeholder="0">
+                                <span class="unit-label">g</span>
+                            </div>
+                        </div>
+                        <div class="form-group fiber-pod">
+                            <label data-i18n="dashboard.fiber">Fiber</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-leaf input-icon"></i>
+                                <input type="number" id="manualFiber" class="premium-input" placeholder="0">
+                                <span class="unit-label">g</span>
+                            </div>
+                        </div>
+                        <div class="form-group fat-pod">
+                            <label data-i18n="dashboard.fat">Fat</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-droplet input-icon"></i>
+                                <input type="number" id="manualFat" class="premium-input" placeholder="0">
+                                <span class="unit-label">g</span>
+                            </div>
+                        </div>
+                        <div class="form-group protein-pod">
+                            <label data-i18n="dashboard.protein">Protein</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-dumbbell input-icon"></i>
+                                <input type="number" id="manualProtein" class="premium-input" placeholder="0">
+                                <span class="unit-label">g</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Glycemic Factor Manual Entry Redesigned -->
+                    <div class="glycemic-editor-container" style="margin-top: 16px; margin-bottom: 24px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <label class="section-label"
+                                style="margin-bottom: 0; font-weight: 700; font-size: 12px; color: #a1a1aa; letter-spacing: 0.08em; text-transform: uppercase;">Factor
+                                Glucémico</label>
+                            <span id="manualGLValueDisplay"
+                                style="font-weight: 800; font-size: 18px; color: #fff; letter-spacing: -0.02em;">0<small
+                                    style="font-size: 10px; margin-left: 2px; opacity: 0.5;">CG</small></span>
+                        </div>
+
+                        <div style="display: flex; gap: 20px; align-items: center;">
+                            <!-- GI Input -->
+                            <div style="width: 100px;">
+                                <label
+                                    style="font-size: 10px; margin-bottom: 8px; display: block; color: #71717a; font-weight: 600; text-transform: uppercase;">Índice
+                                    (IG)</label>
+                                <input type="number" id="manualGI" class="premium-input-mini" placeholder="0"
+                                    style="text-align: center; font-weight: 700;">
+                            </div>
+
+                            <!-- Mini Gauge Display -->
+                            <div style="flex: 1;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <span id="manualGLRiskLabel"
+                                        style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 0.02em;">Baja</span>
+                                    <div
+                                        style="font-size: 9px; color: #52525b; font-weight: 600; display: flex; gap: 6px;">
+                                        <span>0-10</span><span>11-19</span><span>20+</span>
+                                    </div>
+                                </div>
+                                <div
+                                    style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px; position: relative; overflow: hidden;">
+                                    <div id="manualGLGaugeFill"
+                                        style="width: 0%; height: 100%; background: #34d399; border-radius: 10px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 10px rgba(52, 211, 153, 0.3);">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INGREDIENTES Section for Manual Entry -->
+                    <div class="ingredients-editor-section manual-ingredients">
+                        <label class="section-label">INGREDIENTES</label>
+                        <div class="ingredients-grid" id="manualIngredientsGrid">
+                            <!-- Ingredient cards will be injected here -->
+                        </div>
+                        <button type="button" class="btn-add-ingredient" id="btnAddManualIng">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Añadir Ingrediente</span>
+                        </button>
+                    </div>
+
+                    <!-- Mini-Modal for Manual Entry Ingredients -->
+                    <div id="manualIngMiniModal" class="ingredient-mini-modal hidden">
+                        <div class="mini-modal-content">
+                            <div class="mini-modal-header">
+                                <span id="manualIngModalTitle">Añadir Ingrediente</span>
+                                <button type="button" class="close-mini-modal" id="closeManualIngModal">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <div class="mini-modal-body">
+                                <div class="input-group">
+                                    <label>Nombre del Ingrediente</label>
+                                    <input type="text" id="manualIngEditName" placeholder="ej: Carne de res">
+                                </div>
+                                <div class="input-group">
+                                    <label>Cantidad</label>
+                                    <input type="text" id="manualIngEditAmount" placeholder="ej: 150g, 2 rodajas">
+                                </div>
+                            </div>
+                            <div class="mini-modal-footer">
+                                <button type="button" class="btn-delete-ing" id="btnDeleteManualIng">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                <button type="button" class="btn-save-ing" id="btnSaveManualIng">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group"
+                        style="flex-direction: row; align-items: center; gap: 8px; margin-top: 10px; margin-bottom: 20px; cursor: pointer;">
+                        <input type="checkbox" id="chkSaveToDb"
+                            style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary-lime);">
+                        <label for="chkSaveToDb"
+                            style="margin: 0; font-size: 13px; color: var(--text-white); cursor: pointer; font-weight: 600;">Guardar
+                            en la base de datos de favoritos</label>
+                    </div>
+                    <button id="addManualBtn" class="btn-primary-action">Add Item</button>
+                </div>
+            </div>
+
+            <!-- AI Scan Tab -->
+            <div id="tabAIScan" class="tab-content">
+                <!-- Camera/Upload Section -->
+                <div id="scanInputSection" class="scan-section active">
+                    <div class="scan-options">
+                        <button class="btn-scan-option" id="btnTakePhoto">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Tomar Foto</span>
+                        </button>
+                        <button class="btn-scan-option" id="btnUploadPhoto">
+                            <i class="fa-solid fa-upload"></i>
+                            <span>Subir Imagen</span>
+                        </button>
+                    </div>
+
+                    <div class="ai-scan-help">
+                        <div class="help-header">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span>Sugerencias de fotos para mejor precisión:</span>
+                        </div>
+                        <ul class="help-list">
+                            <li>📸 Foto de un plato de comida completo</li>
+                            <li>🖼️ Captura de pantalla con nombre del plato</li>
+                            <li>📦 Foto de empaque con tabla nutricional</li>
+                            <li>🍗 Imágenes claras de cualquier alimento</li>
+                        </ul>
+                        <p class="help-note">
+                            <i class="fa-solid fa-circle-info"></i>
+                            La IA analiza automáticamente calorías, purinas, carbos, grasas y proteínas en ~5-10
+                            segundos.
+                        </p>
+                    </div>
+
+                    <input type="file" id="photoInput" accept="image/*" hidden>
+                    <div id="imagePreview" class="image-preview hidden"></div>
+                </div>
+
+                <!-- Processing Section -->
+                <div id="scanProcessingSection" class="scan-section hidden">
+                    <div class="loading-animation">
+                        <i class="fa-solid fa-brain fa-pulse"></i>
+                        <p>Analizando alimento con IA...</p>
+                        <div class="loading-bar">
+                            <div class="loading-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="scanResultsSection" class="scan-section hidden">
+                    <div class="scan-results">
+                        <!-- Premium Summary Card -->
+                        <div class="result-summary-card">
+                            <div id="scanResultImageThumb" class="result-thumb"></div>
+                            <div class="result-info">
+                                <h4 id="detectedFoodName">Cargando...</h4>
+                                <div class="confidence-wrapper">
+                                    <span class="confidence-badge" id="confidenceBadge">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Manual Adjustment Row -->
+                        <div class="manual-adjustment-container">
+                            <!-- Removed adjustment-status -->
+
+                            <p class="edit-label">o editar manualmente</p>
+
+                            <div class="adjustment-row">
+                                <div class="quantity-control">
+                                    <span class="ctrl-label">Cantidad</span>
+                                    <div class="ctrl-stepper">
+                                        <button id="btnDecreaseQty"><i class="fa-solid fa-minus"></i></button>
+                                        <!-- Removed scanQuantity number -->
+                                        <button id="btnIncreaseQty"><i class="fa-solid fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="calorie-control">
+                                    <span class="ctrl-label">calorías*</span>
+                                    <div class="cal-input-wrapper">
+                                        <input type="number" id="scanCalorieInput" value="0">
+                                        <span class="unit">calorías</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nutritional Summary Bar -->
+                        <div class="scan-nutrition-summary">
+                            <div class="nav-metric">
+                                <span class="label">Purinas</span>
+                                <span class="value" id="resPurines">-</span>
+                                <span class="unit">mg</span>
+                            </div>
+                            <div class="nav-metric">
+                                <span class="label">Carbos</span>
+                                <span class="value" id="resCarbs">-</span>
+                                <span class="unit">g</span>
+                            </div>
+                            <div class="nav-metric">
+                                <span class="label">Grasas</span>
+                                <span class="value" id="resFat">-</span>
+                                <span class="unit">g</span>
+                            </div>
+                            <div class="nav-metric">
+                                <span class="label">Proteínas</span>
+                                <span class="value" id="resProtein">-</span>
+                                <span class="unit">g</span>
+                            </div>
+                        </div>
+
+                        <!-- Ingredients Section -->
+                        <div class="ingredients-section">
+                            <h5>Ingredientes</h5>
+                            <div id="ingredientsGrid" class="ingredients-grid">
+                                <!-- Ingredients cards injected via JS -->
+                            </div>
+                        </div>
+
+                        <div class="result-actions">
+                            <div class="save-favorite-option">
+                                <input type="checkbox" id="chkSaveScannedAsFavorite" checked>
+                                <label for="chkSaveScannedAsFavorite">
+                                    <i class="fa-solid fa-star"></i>
+                                    Guardar en favoritos
+                                </label>
+                            </div>
+
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn-secondary-action" id="rescanBtn"
+                                    data-i18n="food_log.scan_again">Rescan</button>
+                                <button class="btn-primary-action" id="aiAddBtn" data-i18n="food_log.add_item">Add
+                                    Meal</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Core Logic moved to end of body -->
+
+
+    <!-- MOBILE NAVIGATION DRAWER -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo-group">
+                <img src="images/logo.webp" alt="Logo" class="mobile-logo-img">
+                <div class="logo-text">
+                    <span class="brand" style="font-size: 18px;">AUREUS</span>
+                    <span class="tagline" style="font-size: 11px; margin-top: 0;">Clinical Nutrition</span>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="drawerCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <nav class="drawer-nav">
+            <a href="index.html" class="drawer-item">
+                <i class="fa-solid fa-table-columns"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="food-log.html" class="drawer-item active">
+                <i class="fa-solid fa-utensils"></i>
+                <span>Food Log</span>
+            </a>
+            <a href="fasting-timer.html" class="drawer-item">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Fasting Timer</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="meal-planner.html" class="drawer-item">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span>Meal Planner</span>
+            </a>
+            <a href="food-database.html" class="drawer-item">
+                <i class="fa-solid fa-apple-whole"></i>
+                <span>Food Database</span>
+            </a>
+
+            <div class="drawer-divider"></div>
+
+            <a href="settings.html" class="drawer-item">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="drawer-user-profile" id="drawerUserProfileBtn">
+            <img src="images/users/item_profile.webp" alt="Profile" id="drawerAvatar">
+            <div class="d-user-info">
+                <div class="d-name" id="drawerUserName">Invitado</div>
+                <div class="d-role">Pro Member</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- === INGREDIENT SEARCH MODAL === -->
+    <div class="modal-overlay hidden" id="ingredientSearchModal">
+        <div class="modal-card mini-modal">
+            <div class="modal-header">
+                <h3>Buscar Ingrediente</h3>
+                <button class="modal-close" id="closeIngredientSearchBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="search-bar-mini">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="ingredientSearchInput" placeholder="Buscar en base de datos...">
+                </div>
+
+                <div id="ingredientSearchResults" class="mini-list-results">
+                    <!-- Results populated by JS -->
+                </div>
+
+                <div class="manual-entry-divider">o agregar manualmente</div>
+
+                <div class="manual-form-group">
+                    <input type="text" id="manualIngName" placeholder="Nombre (ej. Pan Blanco)">
+                    <input type="text" id="manualIngAmount" placeholder="Cant. (2 pz)">
+                </div>
+                <button class="btn-primary btn-add-manual" id="btnAddManualIngredient">
+                    <i class="fa-solid fa-plus"></i> Agregar Manualmente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- === INGREDIENT EDIT MODAL === -->
+    <div class="modal-overlay hidden" id="ingredientEditModal">
+        <div class="modal-card mini-modal">
+            <div class="modal-header">
+                <h3>Editar Ingrediente</h3>
+                <button class="modal-close" id="closeIngredientEditBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="edit-field-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editIngName" readonly class="input-readonly">
+                </div>
+                <div class="edit-field-group">
+                    <label>Cantidad / Descripción</label>
+                    <input type="text" id="editIngAmount" placeholder="Ej: 100g">
+                </div>
+            </div>
+            <div class="modal-footer split-actions">
+                <button class="btn-danger-text" id="btnDeleteIngredient">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                </button>
+                <button class="btn-primary" id="btnSaveIngredient">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Scripts -->
+
+
+
+    <script src="logo-base64.js"></script>
+    <script src="localization.js"></script>
+    <script src="food-data.js?v=8.1"></script>
+    <script src="food-log-renderer.js"></script>
+    <script src="global-sync.js"></script>
+    <script src="goal-modal.js"></script>
+</body>
+
+</html>
+
+<!-- === HYDRATION MANAGER MODAL === -->
+<div id="hydrationModal" class="modal-overlay hidden">
+    <div class="modal-content premium-modal"
+        style="max-width: 400px; background: #18181b; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; padding: 24px;">
+        <div class="modal-header"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <h3 style="margin: 0;">Hydration Log</h3>
+            <button class="close-modal" id="closeHydroModal"
+                style="background: none; border: none; color: #fff; font-size: 20px; cursor: pointer;"><i
+                    class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="hydro-summary-big" style="text-align: center; margin-bottom: 30px;">
+                <span id="hydroModalValue" style="font-size: 48px; font-weight: 800; color: #3b82f6;">0</span>
+                <small style="color: #a1a1aa; font-size: 16px;">/ <span id="hydroModalGoal">2,500</span> ml</small>
+            </div>
+
+            <div class="hydro-actions-grid"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px;">
+                <button class="btn-hydro-action" id="btnRemove250"
+                    style="padding: 16px; background: #27272a; border: none; border-radius: 16px; color: #ef4444; font-weight: 600; cursor: pointer;">
+                    <i class="fa-solid fa-minus"></i> 250ml
+                </button>
+                <button class="btn-hydro-action" id="btnAdd250"
+                    style="padding: 16px; background: #27272a; border: none; border-radius: 16px; color: #10b981; font-weight: 600; cursor: pointer;">
+                    <i class="fa-solid fa-plus"></i> 250ml
+                </button>
+                <button class="btn-hydro-action" id="btnRemove500"
+                    style="padding: 16px; background: #27272a; border: none; border-radius: 16px; color: #ef4444; font-weight: 600; cursor: pointer;">
+                    <i class="fa-solid fa-minus"></i> 500ml
+                </button>
+                <button class="btn-hydro-action" id="btnAdd500"
+                    style="padding: 16px; background: #27272a; border: none; border-radius: 16px; color: #10b981; font-weight: 600; cursor: pointer;">
+                    <i class="fa-solid fa-plus"></i> 500ml
+                </button>
+            </div>
+
+            <div class="input-group" style="margin-top: 20px;">
+                <label style="display: block; font-size: 12px; color: #a1a1aa; margin-bottom: 8px;">Custom Amount
+                    (ml)</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="customWaterInput" placeholder="e.g. 100" class="modern-input"
+                        style="flex: 1; background: #27272a; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; color: #fff;">
+                    <button class="btn-pill-white"
+                        style="padding: 10px 20px; background: #fff; color: #000; border-radius: 20px; border: none; font-weight: 600; cursor: pointer;"
+                        id="btnAddCustomWater">Add</button>
+                </div>
+            </div>
+
+            <div class="input-group"
+                style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                <label style="display: block; font-size: 12px; color: #a1a1aa; margin-bottom: 8px;">Daily Goal</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="customGoalInput" value="2500" class="modern-input"
+                        style="flex: 1; background: #27272a; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 12px; color: #fff;">
+                    <button class="btn-pill-dark"
+                        style="padding: 10px 20px; background: #000; color: #fff; border: 1px solid #333; border-radius: 20px; font-weight: 600; cursor: pointer;"
+                        id="btnSetGoal">Set</button>
+                </div>
+            </div>
+
+            <button class="btn-text-danger" id="btnResetWater"
+                style="margin-top: 20px; width: 100%; background: none; border: none; color: #ef4444; font-size: 13px; cursor: pointer;">Reset
+                Today's Log</button>
+        </div>
+    </div>
+</div>

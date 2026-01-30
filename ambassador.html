@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambassador Elite - AUREUS</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #030304;
+            --text-white: #FAFAFA;
+            --primary-lime: #D4F458;
+            --accent-gold: #FFD700;
+            --deep-purple: #6366f1;
+            --vibrant-violet: #a855f7;
+            --card-bg: rgba(10, 10, 15, 0.4);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glow-lime: rgba(212, 244, 88, 0.4);
+            --glow-purple: rgba(168, 85, 247, 0.3);
+            --bronze: #cd7f32;
+            --silver: #c0c0c0;
+            --gold: #ffd700;
+        }
+
+        @keyframes meshShift {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(5%, -10%) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-5%, 5%) scale(1.05);
+            }
+        }
+
+        @keyframes float3D {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        @keyframes neonPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 5px var(--glow-lime));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 20px var(--glow-lime));
+            }
+        }
+
+        @keyframes cardGlow {
+            from {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            to {
+                border-color: var(--primary-lime);
+            }
+        }
+
+        @keyframes dataPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0;
+                box-shadow: 0 0 0 0 rgba(212, 244, 88, 0.4);
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+                box-shadow: 0 0 40px 20px rgba(212, 244, 88, 0);
+            }
+        }
+
+        @keyframes beamFlow {
+            0% {
+                transform: scaleX(0);
+                opacity: 0;
+                transform-origin: left;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: scaleX(1);
+                opacity: 0;
+                transform-origin: left;
+            }
+        }
+
+        @keyframes circlePulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- CHROMATIC MESH BACKGROUND --- */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--bg-dark);
+            overflow: hidden;
+        }
+
+        .mesh-gradient {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212, 244, 88, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(255, 215, 0, 0.1) 0%, transparent 40%);
+            filter: blur(80px);
+            animation: meshShift 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+        }
+
+        .floating-orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glow-lime) 0%, transparent 70%);
+            opacity: 0.4;
+            z-index: -1;
+            filter: blur(60px);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px 120px 24px;
+            /* Aumentado para evitar recortes */
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+            gap: 20px;
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            transition: 0.4s;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary-lime);
+            box-shadow: 0 0 30px rgba(212, 244, 88, 0.2);
+            transform: scale(1.05);
+        }
+
+        .page-title {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, var(--primary-lime), var(--vibrant-violet));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(212, 244, 88, 0.3));
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn-pill-cta {
+            background: var(--text-white);
+            color: #030304;
+            /* Hardcoded bg-dark for SAFETY in case var is different context */
+            padding: 10px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pill-cta:hover {
+            transform: scale(1.05);
+            background: var(--primary-lime);
+            box-shadow: 0 0 20px rgba(212, 244, 88, 0.4);
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn-pill-cta {
+            background: var(--text-white);
+            color: #030304;
+            padding: 10px 20px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pill-cta:hover {
+            transform: scale(1.05);
+            background: var(--primary-lime);
+            box-shadow: 0 0 20px rgba(212, 244, 88, 0.4);
+        }
+
+        /* --- SPECTRAL GLASS CARDS --- */
+        .glass-card {
+            background: linear-gradient(135deg, rgba(20, 20, 25, 0.7) 0%, rgba(10, 10, 15, 0.3) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            padding: 40px;
+            backdrop-filter: blur(40px);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary-lime);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 40px rgba(212, 244, 88, 0.1);
+        }
+
+        /* Gradient Borders */
+        .glass-card.vibrant-border {
+            border: none;
+            padding: 2px;
+            background: linear-gradient(135deg, var(--primary-lime), var(--vibrant-violet), var(--accent-gold));
+        }
+
+        .vibrant-inner {
+            background: var(--bg-dark);
+            border-radius: 38px;
+            padding: 38px;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* --- DASHBOARD GRID --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 32px;
+        }
+
+        /* --- HERO BANNER (ULTRA SPECTRAL) --- */
+        .hero-banner {
+            grid-column: span 12;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, rgba(212, 244, 88, 0.15) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(255, 215, 0, 0.1) 100%);
+            padding: 40px 60px;
+        }
+
+        .rank-display {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .rank-icon-v3 {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--vibrant-violet), var(--deep-purple));
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 54px;
+            color: #fff;
+            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.4), inset 0 0 30px rgba(255, 255, 255, 0.2);
+            animation: float3D 6s infinite ease-in-out;
+        }
+
+        .rank-info h1 {
+            font-size: 64px;
+            font-weight: 900;
+            letter-spacing: -3px;
+            background: linear-gradient(to bottom, #fff 30%, var(--primary-lime));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+            margin-bottom: 5px;
+        }
+
+        /* --- LINEAGE CARD (REFERRER) --- */
+        .lineage-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            backdrop-filter: blur(20px);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lineage-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05) translateY(-5px);
+            border-color: var(--primary-lime);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(212, 244, 88, 0.1);
+        }
+
+        .lineage-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--primary-lime);
+            padding: 2px;
+            background: var(--bg-dark);
+            position: relative;
+        }
+
+        .lineage-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .lineage-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lineage-label {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--primary-lime);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .lineage-name {
+            font-size: 16px;
+            font-weight: 900;
+            color: #fff;
+        }
+
+        .lineage-pulse-active {
+            animation: lineagePulseGlow 1.5s infinite;
+            border-color: var(--primary-lime) !important;
+        }
+
+        @keyframes lineagePulseGlow {
+            0% {
+                box-shadow: 0 0 0px rgba(212, 244, 88, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(212, 244, 88, 0.4);
+            }
+
+            100% {
+                box-shadow: 0 0 0px rgba(212, 244, 88, 0);
+            }
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 100px;
+            border: 1px solid rgba(212, 244, 88, 0.3);
+            color: var(--primary-lime);
+            font-weight: 800;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .stats-summary {
+            display: flex;
+            gap: 80px;
+        }
+
+        .stat-item-premium {
+            text-align: center;
+        }
+
+        .stat-item-premium h2 {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff, var(--primary-lime));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(212, 244, 88, 0.4);
+        }
+
+        .stat-item-premium p {
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 800;
+            margin-top: 5px;
+            letter-spacing: 2px;
+        }
+
+        /* --- ROADMAP OF LIGHT --- */
+        .roadmap-card {
+            grid-column: span 8;
+        }
+
+        .roadmap-item-v3 {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 35px;
+            border-radius: 35px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 25px;
+            transition: 0.4s;
+        }
+
+        .roadmap-item-v3.active {
+            background: linear-gradient(90deg, rgba(212, 244, 88, 0.1) 0%, rgba(168, 85, 247, 0.05) 100%);
+            border-color: var(--primary-lime);
+            box-shadow: 0 0 40px rgba(212, 244, 88, 0.1);
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .active .step-circle {
+            background: var(--primary-lime);
+            color: #000;
+            box-shadow: 0 0 25px var(--primary-lime);
+        }
+
+        .completed .step-circle {
+            background: var(--vibrant-violet);
+            color: #fff;
+            box-shadow: 0 0 25px var(--vibrant-violet);
+        }
+
+        .roadmap-text h4 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .active .roadmap-text h4 {
+            color: var(--primary-lime);
+            text-shadow: 0 0 20px rgba(212, 244, 88, 0.5);
+        }
+
+        /* --- CHROMATIC CHART (FUNCTIONAL) --- */
+        .impact-card {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-visual {
+            height: 250px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 40px 20px 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background Grid */
+        .chart-grid {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 40px 20px 30px 20px;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .grid-line {
+            width: 100%;
+            height: 1px;
+            background: #fff;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bar-glow {
+            width: 100%;
+            border-radius: 12px 12px 6px 6px;
+            background: linear-gradient(to top, var(--deep-purple), var(--primary-lime));
+            box-shadow: 0 0 20px rgba(212, 244, 88, 0.2);
+            position: relative;
+            height: 0;
+            /* Start at 0 for animation */
+            transition: height 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s;
+            cursor: pointer;
+        }
+
+        .bar-glow:hover {
+            filter: brightness(1.3) drop-shadow(0 0 15px var(--primary-lime));
+        }
+
+        .bar-day {
+            margin-top: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .bar-container:hover .bar-day {
+            color: var(--primary-lime);
+            transform: scale(1.2);
+        }
+
+        /* Tooltip */
+        .chart-tooltip {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100%);
+            background: var(--primary-lime);
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 900;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .bar-container:hover .chart-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-120%);
+        }
+
+        .chart-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--primary-lime);
+        }
+
+
+        /* --- REFERRAL CORE (COMPACT) --- */
+        .sharing-section {
+            grid-column: span 12;
+            position: relative;
+        }
+
+        .referral-core {
+            background: radial-gradient(circle at center, rgba(168, 85, 247, 0.1) 0%, rgba(99, 102, 241, 0.05) 50%, #050508 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            border-radius: 50px;
+            padding: 50px 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* The Energy Core Visual */
+        .energy-core-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .core-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border: 1px solid var(--primary-lime);
+            border-radius: 50%;
+            opacity: 0;
+            animation: circlePulse 4s infinite;
+        }
+
+        .referral-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .big-code {
+            font-family: 'Outfit', sans-serif;
+            font-size: 54px;
+            font-weight: 900;
+            letter-spacing: 10px;
+            margin: 25px 0;
+            background: linear-gradient(to right, var(--primary-lime), #fff, var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 25px rgba(212, 244, 88, 0.4));
+            transition: 0.4s;
+        }
+
+        .referral-core:hover .big-code {
+            transform: scale(1.02);
+            filter: drop-shadow(0 0 40px rgba(212, 244, 88, 0.6));
+        }
+
+        .btn-chromatic {
+            background: linear-gradient(135deg, var(--primary-lime) 0%, var(--accent-gold) 100%);
+            height: 55px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            color: #000;
+            box-shadow: 0 12px 25px rgba(212, 244, 88, 0.25);
+            transition: 0.4s;
+            padding: 0 40px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-chromatic:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+            box-shadow: 0 25px 50px rgba(212, 244, 88, 0.4);
+        }
+
+        /* Pulse Beam */
+        .pulse-beam {
+            position: absolute;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-lime), transparent);
+            border-radius: 100px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 100;
+        }
+
+        .eco-label {
+            margin-top: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .eco-label span {
+            color: var(--primary-lime);
+        }
+
+
+
+        .toast {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%) translateY(200px);
+            /* Aumentado a 200px para ocultar por completo */
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid var(--primary-lime);
+            padding: 20px 40px;
+            border-radius: 100px;
+            color: #fff;
+            z-index: 10000;
+            backdrop-filter: blur(20px);
+            font-weight: 800;
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 0 50px rgba(212, 244, 88, 0.3);
+        }
+
+        .toast.active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes circlePulse {
+            0% {
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+                border-width: 2px;
+            }
+
+            50% {
+                opacity: 0.3;
+                border-width: 1px;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+                border-width: 0px;
+            }
+        }
+
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 1024px) {
+            nav {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+
+            .dashboard-grid {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .hero-banner {
+                flex-direction: column;
+                gap: 40px;
+                padding: 40px 20px;
+            }
+
+            .stats-summary {
+                gap: 40px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* ECOSYSTEM ADDITIONS */
+        @keyframes targetingShimmer {
+            0% {
+                box-shadow: 0 0 10px rgba(212, 244, 88, 0.2);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(212, 244, 88, 0.5);
+                border-color: var(--primary-lime);
+            }
+
+            100% {
+                box-shadow: 0 0 10px rgba(212, 244, 88, 0.2);
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .targeting-shimmer {
+            animation: targetingShimmer 2s infinite ease-in-out !important;
+        }
+
+        @keyframes statBounce {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+                filter: brightness(1.2);
+            }
+        }
+
+        .stat-react-bounce {
+            animation: statBounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .roadmap-highlight {
+            background: linear-gradient(90deg, rgba(168, 85, 247, 0.2) 0%, rgba(212, 244, 88, 0.1) 100%) !important;
+            border-color: var(--vibrant-violet) !important;
+            transform: scale(1.02);
+            transition: 0.3s;
+        }
+
+        .bar-target-highlight {
+            filter: brightness(1.5) drop-shadow(0 0 20px var(--primary-lime)) !important;
+            transform: scaleY(1.05) !important;
+        }
+
+        @media (max-width: 1100px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .roadmap-card,
+            .impact-card,
+            .leaderboard-section {
+                grid-column: span 12;
+            }
+
+            .leader-flex {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .stats-summary {
+                gap: 40px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .big-code {
+                font-size: 42px;
+                letter-spacing: 5px;
+            }
+
+            .social-pill-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-canvas">
+        <div class="mesh-gradient"></div>
+        <div class="floating-orb" style="top: 10%; right: 10%;"></div>
+        <div class="floating-orb"
+            style="bottom: 10%; left: 10%; background: radial-gradient(circle, var(--glow-purple) 0%, transparent 70%);">
+        </div>
+    </div>
+
+    <div class="container">
+        <nav>
+            <a href="dashboard-select.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i> Volver al Portal
+            </a>
+            <div class="page-title">Ambassador Elite</div>
+
+            <!-- RELOCATED: REFERRER IDENTITY (LINEAGE) -->
+            <div class="lineage-card" id="referrer-identity"
+                onclick="AUREUS_Ecosystem.dispatch('REFERRER_SYNC', { event: event })">
+                <div class="lineage-avatar">
+                    <img src="/C:/Users/jmrod/.gemini/antigravity/brain/0929d7b7-46f1-4f78-8dd6-28d402cc034b/referrer_avatar_premium_1769355077230.png"
+                        alt="Mentor">
+                </div>
+                <div class="lineage-info">
+                    <span class="lineage-label">Simbiosis de Origen</span>
+                    <h4 class="lineage-name">Valentina R.</h4>
+                </div>
+            </div>
+
+            <!-- Added Login Button -->
+            <a href="login.html" class="btn-pill-cta">
+                Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </a>
+        </nav>
+
+        <div class="dashboard-grid">
+            <!-- HERO BANNER -->
+            <div class="glass-card hero-banner">
+                <div class="rank-display">
+                    <div class="rank-icon-v3"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="rank-info">
+                        <div class="stat-badge">Diplomacia de Élite</div>
+                        <h1>Giovanni <span style="font-weight: 300; opacity: 0.6;">(Silver)</span></h1>
+                    </div>
+                </div>
+                <div class="stats-summary">
+                    <div class="stat-item-premium" id="stat-allies">
+                        <h2>4</h2>
+                        <p>Aliados Registrados</p>
+                    </div>
+                    <div class="stat-item-premium" id="stat-months">
+                        <h2>6.5</h2>
+                        <p>Meses de Recompensa</p>
+                    </div>
+                    <div class="stat-item-premium" id="stat-rank">
+                        <h2
+                            style="background: linear-gradient(to bottom, #fff, var(--vibrant-violet)); -webkit-background-clip: text; background-clip: text;">
+                            #124</h2>
+                        <p>Rango Mundial</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ROADMAP OF LIGHT -->
+            <div class="glass-card roadmap-card">
+                <h3 style="font-size: 32px; font-weight: 900; margin-bottom: 30px;">
+                    <i class="fa-solid fa-map-location-dot" style="color: var(--primary-lime);"></i>
+                    Expedición de Recompensas
+                </h3>
+
+                <div class="roadmap-item-v3 completed" id="roadmap-node-1">
+                    <div class="step-circle">1</div>
+                    <div class="roadmap-text">
+                        <h4>Grado Bronce: Iniciador</h4>
+                        <p>Estatus completado con éxito. Has desbloqueado el primer nodo de tiempo (+1 mes).</p>
+                    </div>
+                    <i class="fa-solid fa-circle-check"
+                        style="margin-left: auto; font-size: 32px; color: var(--vibrant-violet);"></i>
+                </div>
+
+                <div class="roadmap-item-v3 active" id="roadmap-node-2">
+                    <div class="step-circle">2</div>
+                    <div class="roadmap-text">
+                        <h4>Grado Plata: Embajador en Alza</h4>
+                        <p>Progreso actual: 80%. Invita a 1 amigo más para desbloquear +1.5 meses adicionales.</p>
+                    </div>
+                    <div style="margin-left: auto; text-align: right;">
+                        <span
+                            style="display: block; font-size: 32px; font-weight: 900; color: var(--primary-lime); text-shadow: 0 0 20px var(--glow-lime);">4
+                            / 5</span>
+                        <span
+                            style="font-size: 13px; font-weight: 800; color: #fff; opacity: 0.9; background: rgba(212, 244, 88, 0.2); padding: 4px 10px; border-radius: 6px;">FALTA
+                            1</span>
+                    </div>
+                </div>
+
+                <div class="roadmap-item-v3" style="opacity: 0.3;" id="roadmap-node-3">
+                    <div class="step-circle">3</div>
+                    <div class="roadmap-text">
+                        <h4>Grado Oro: Visionario de Red</h4>
+                        <p>Desbloquea este nodo con 15 amigos. Incluye acceso Beta a AUREUS Intelligence.</p>
+                    </div>
+                    <i class="fa-solid fa-lock" style="margin-left: auto; font-size: 24px;"></i>
+                </div>
+            </div>
+
+            <!-- IMPACT CHART -->
+            <div class="glass-card impact-card">
+                <h3 style="font-size: 22px; font-weight: 900; margin-bottom: 20px;">Frecuencia de Influencia</h3>
+                <div class="chart-visual">
+                    <div class="chart-grid">
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                        <div class="grid-line"></div>
+                    </div>
+
+                    <div class="bar-container" data-node="roadmap-node-1">
+                        <div class="chart-tooltip">12 Impactos (Nodo 1)</div>
+                        <div class="bar-glow" data-height="42%"></div>
+                        <span class="bar-day">L</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-1">
+                        <div class="chart-tooltip">18 Impactos (Nodo 1)</div>
+                        <div class="bar-glow" data-height="68%"></div>
+                        <span class="bar-day">M</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-1">
+                        <div class="chart-tooltip">15 Impactos (Nodo 1)</div>
+                        <div class="bar-glow" data-height="55%"></div>
+                        <span class="bar-day">M</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-2">
+                        <div class="chart-tooltip">28 Impactos (Nodo 2)</div>
+                        <div class="bar-glow" data-height="92%"
+                            style="background: linear-gradient(to top, var(--vibrant-violet), var(--primary-lime));">
+                        </div>
+                        <span class="bar-day">J</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-2">
+                        <div class="chart-tooltip">19 Impactos (Nodo 2)</div>
+                        <div class="bar-glow" data-height="70%"></div>
+                        <span class="bar-day">V</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-2">
+                        <div class="chart-tooltip">8 Impactos (Nodo 2)</div>
+                        <div class="bar-glow" data-height="35%"></div>
+                        <span class="bar-day">S</span>
+                    </div>
+                    <div class="bar-container" data-node="roadmap-node-2">
+                        <div class="chart-tooltip">Hoy (Nodo 2)</div>
+                        <div class="bar-glow" data-height="88%"></div>
+                        <span class="bar-day">D</span>
+                    </div>
+                </div>
+                <div
+                    style="margin-top: 30px; padding: 30px; border-radius: 35px; background: linear-gradient(135deg, rgba(212, 244, 88, 0.1), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                    <p
+                        style="font-size: 12px; font-weight: 800; color: var(--primary-lime); text-transform: uppercase;">
+                        Promedio de Conversión</p>
+                    <h4 style="font-size: 42px; font-weight: 900; margin-top: 5px;"><span
+                            id="conversionCounter">0.0</span>%</h4>
+                </div>
+            </div>
+
+            <!-- REFERRAL CORE (COMPACT GENERATOR) -->
+            <div class="glass-card sharing-section referral-core" id="impactGenerator">
+                <div class="energy-core-bg">
+                    <div class="core-ring" style="width: 150px; height: 150px; animation-delay: 0s;"></div>
+                    <div class="core-ring" style="width: 250px; height: 250px; animation-delay: 1s;"></div>
+                </div>
+
+                <div class="referral-content">
+                    <div class="stat-badge"
+                        style="background: var(--primary-lime); color: #000; border: none; font-size: 10px; padding: 6px 15px;">
+                        Elite Access Code</div>
+                    <div class="big-code" id="refCode">AUREUS-GIO-2026</div>
+
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                        <button class="btn btn-chromatic" onclick="copyAndPulse(event)">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Copiar Código con Energía
+                        </button>
+                        <p class="eco-label"><i class="fa-solid fa-circle-nodes"></i> Tu actividad alimenta tu
+                            <span>Gráfica de Influencia Global</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Component -->
+    <div class="toast" id="chromaToast">
+        <i class="fa-solid fa-sparkles" style="color: var(--primary-lime);"></i>
+        <span id="toastContent">Mensaje Crómatico</span>
+    </div>
+
+    <script>
+        // --- AUREUS ECOSYSTEM ENGINE ---
+        const AUREUS_Ecosystem = {
+            state: {
+                lastAction: null,
+                sharingActive: false
+            },
+
+            dispatch(action, data = {}) {
+                this.state.lastAction = action;
+                console.log(`[Ecosystem] Action: ${action}`, data);
+
+                switch (action) {
+                    case 'REFERRAL_COPIED':
+                        this.handleReferralCopied(data.event);
+                        break;
+                    case 'HOVER_ROADMAP':
+                        this.handleRoadmapHover(data.nodeId, true);
+                        break;
+                    case 'LEAVE_ROADMAP':
+                        this.handleRoadmapHover(data.nodeId, false);
+                        break;
+                    case 'HOVER_CHART':
+                        this.handleChartHover(data.nodeId, true);
+                        break;
+                    case 'LEAVE_CHART':
+                        this.handleChartHover(data.nodeId, false);
+                        break;
+                    case 'REFERRER_SYNC':
+                        this.handleReferrerSync(data.event);
+                        break;
+                    case 'REFERRER_ACTIVATE_STATS':
+                        this.handleReferrerActivateStats();
+                        break;
+                }
+            },
+
+            handleReferrerSync(e) {
+                const card = document.getElementById('referrer-identity');
+                card.classList.add('lineage-pulse-active');
+
+                showToast("Sincronizando linaje con Valentina R...");
+
+                // Pulse to Stats
+                const statsRect = document.getElementById('stat-allies').getBoundingClientRect();
+                const cardRect = e.currentTarget.getBoundingClientRect();
+                createBeam(cardRect, statsRect);
+
+                setTimeout(() => {
+                    card.classList.remove('lineage-pulse-active');
+                    AUREUS_Ecosystem.dispatch('REFERRER_ACTIVATE_STATS');
+                }, 1000);
+            },
+
+            handleReferrerActivateStats() {
+                const stats = ['stat-allies', 'stat-rank'];
+                stats.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.remove('stat-react-bounce');
+                        void el.offsetWidth;
+                        el.classList.add('stat-react-bounce');
+                    }
+                });
+            },
+
+            handleReferralCopied(e) {
+                // 1. Visual Beams
+                triggerGlobalPulse(e);
+
+                // 2. Stat Reactions
+                const stats = ['stat-allies', 'stat-months'];
+                stats.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.remove('stat-react-bounce');
+                        void el.offsetWidth; // Trigger reflow
+                        el.classList.add('stat-react-bounce');
+                    }
+                });
+
+                // 3. Roadmap Shimmer (Targeting)
+                const activeNode = document.getElementById('roadmap-node-2');
+                if (activeNode) {
+                    activeNode.classList.add('targeting-shimmer');
+                    setTimeout(() => activeNode.classList.remove('targeting-shimmer'), 5000);
+                }
+
+                // 4. Web Share native integration
+                this.tryNativeShare();
+            },
+
+            handleRoadmapHover(nodeId, isHover) {
+                const nodes = document.querySelectorAll(`[data-node="${nodeId}"]`);
+                nodes.forEach(node => {
+                    const bar = node.querySelector('.bar-glow');
+                    if (isHover) bar.classList.add('bar-target-highlight');
+                    else bar.classList.remove('bar-target-highlight');
+                });
+            },
+
+            handleChartHover(nodeId, isHover) {
+                const roadmapNode = document.getElementById(nodeId);
+                if (roadmapNode) {
+                    if (isHover) roadmapNode.classList.add('roadmap-highlight');
+                    else roadmapNode.classList.remove('roadmap-highlight');
+                }
+            },
+
+            tryNativeShare() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'AUREUS Elite Access',
+                        text: 'Únete a AUREUS con mi código de élite: AUREUS-GIO-2026',
+                        url: window.location.href
+                    }).catch(err => console.log('Share canceled or failed', err));
+                }
+            }
+        };
+
+        // Start Animations & Listeners
+        window.addEventListener('DOMContentLoaded', () => {
+            initChartAnimations();
+            animateCounter('conversionCounter', 12.4, 2000);
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Roadmap Hovering
+            document.querySelectorAll('.roadmap-item-v3').forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    AUREUS_Ecosystem.dispatch('HOVER_ROADMAP', { nodeId: item.id });
+                });
+                item.addEventListener('mouseleave', () => {
+                    AUREUS_Ecosystem.dispatch('LEAVE_ROADMAP', { nodeId: item.id });
+                });
+            });
+
+            // Chart Hovering
+            document.querySelectorAll('.bar-container').forEach(bar => {
+                const targetNode = bar.dataset.node;
+                if (!targetNode) return;
+                bar.addEventListener('mouseenter', () => {
+                    AUREUS_Ecosystem.dispatch('HOVER_CHART', { nodeId: targetNode });
+                });
+                bar.addEventListener('mouseleave', () => {
+                    AUREUS_Ecosystem.dispatch('LEAVE_CHART', { nodeId: targetNode });
+                });
+            });
+        }
+
+        function initChartAnimations() {
+            const bars = document.querySelectorAll('.bar-glow');
+            bars.forEach((bar, index) => {
+                setTimeout(() => {
+                    bar.style.height = bar.dataset.height;
+                }, 200 * index);
+            });
+        }
+
+        function animateCounter(id, target, duration) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = (progress * target).toFixed(1);
+                obj.innerHTML = current;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        function triggerGlobalPulse(e) {
+            const beam = document.createElement('div');
+            beam.className = 'pulse-beam';
+
+            const startRect = e.currentTarget.getBoundingClientRect();
+            const graphCard = document.querySelector('.impact-card');
+            const roadmapCard = document.querySelector('.roadmap-card');
+
+            const endRectGraph = graphCard.getBoundingClientRect();
+            const endRectRoadmap = roadmapCard.getBoundingClientRect();
+
+            // Pulse to Graph
+            createBeam(startRect, endRectGraph);
+            // Pulse to Roadmap
+            setTimeout(() => createBeam(startRect, endRectRoadmap), 100);
+        }
+
+        function createBeam(startRect, endRect) {
+            const beam = document.createElement('div');
+            beam.className = 'pulse-beam';
+            beam.style.top = (startRect.top + startRect.height / 2) + 'px';
+            beam.style.left = (startRect.left + startRect.width / 2) + 'px';
+            beam.style.width = '150px';
+            document.body.appendChild(beam);
+
+            beam.animate([
+                { transform: `translate(0, 0) scaleX(0.5)`, opacity: 0.8 },
+                { transform: `translate(${(endRect.left - startRect.left + 50)}px, ${(endRect.top - startRect.top + 50)}px) scaleX(2)`, opacity: 0 }
+            ], {
+                duration: 800,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            }).onfinish = () => beam.remove();
+        }
+
+        function copyAndPulse(e) {
+            const code = document.getElementById('refCode').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast("¡Código de Élite copiado! Inyectando impacto...");
+                AUREUS_Ecosystem.dispatch('REFERRAL_COPIED', { event: e });
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('chromaToast');
+            const content = document.getElementById('toastContent');
+            content.innerText = msg;
+            toast.classList.add('active');
+            setTimeout(() => toast.classList.remove('active'), 4000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - AUREUS</title>
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <link rel="stylesheet" href="css/login-premium.css">
+</head>
+
+<body>
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <img src="assets/images/LOGO AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+            <span class="nav-brand-text-pill">AUREUS</span>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrition AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación de comidas</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos y ahorros</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn" data-i18n="nav.login"
+                style="display: none;">Iniciar Sesión</a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    <div class="login-visual">
+        <div class="visual-bg"></div>
+        <div class="visual-content">
+            <div class="visual-logo-container">
+                <img src="assets/images/logo-finance.svg" alt="AUREUS Finance Logo" class="visual-logo"
+                    title="Finance OS">
+                <img src="AUREUS FIT AI/images/logo.png" alt="AUREUS Nutrición Logo" class="visual-logo"
+                    title="Nutrition AI">
+            </div>
+            <h1 class="visual-title">Tu Salud y Finanzas<br>en <span class="text-highlight">Sincronía.</span></h1>
+            <p class="visual-quote">"La plataforma definitiva para quienes buscan la excelencia en cada aspecto de su
+                vida."</p>
+        </div>
+    </div>
+
+    <div class="login-form-container">
+        <div class="form-header">
+            <h2 class="form-title">Bienvenido</h2>
+            <p class="form-subtitle">Ingresa a tu Finance OS & Health Dashboard</p>
+        </div>
+
+        <div class="social-buttons">
+            <button class="btn-social" type="button" onclick="handleGoogleSignIn()">
+                <i class="fa-brands fa-google"></i> Continuar con Google
+            </button>
+            <button class="btn-social" type="button" disabled style="opacity: 0.5; cursor: not-allowed;">
+                <i class="fa-brands fa-apple"></i> Continuar con Apple
+            </button>
+        </div>
+
+        <div class="divider">o usa tu email</div>
+
+        <form id="loginForm" onsubmit="handleAuth(event)">
+            <div class="input-group">
+                <input type="email" id="username" class="input-field" placeholder=" " required>
+                <label class="input-label-floating">Email</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" class="input-field" placeholder=" " required>
+                <label class="input-label-floating">Contraseña</label>
+            </div>
+
+            <div class="remember-forgot-row">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="rememberEmail">
+                    <span class="checkmark"></span>
+                    Recordar mi correo
+                </label>
+                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;">¿Olvidaste tu
+                    contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn-submit">Iniciar Sesión</button>
+            <p id="error-msg"
+                style="color: #ff4d4d; font-size: 14px; margin-top: 10px; display: none; text-align: center;">
+                Credenciales incorrectas.</p>
+        </form>
+
+        <div class="form-footer">
+            <p class="auth-toggle-text">¿No tienes cuenta? <a class="auth-toggle-link"
+                    onclick="toggleAuthMode()">Regístrate aquí</a></p>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="nav-brand-pill">
+                <img src="assets/images/LOGO AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+                <span class="nav-brand-text-pill">AUREUS</span>
+            </div>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Mobile Apps Accordion -->
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    <a href="fit-ai-info.html" class="mobile-app-link">
+                        <img src="AUREUS FIT AI/images/logo.png" class="mobile-app-logo">
+                        AUREUS Nutrición AI
+                    </a>
+                    <a href="finance-os-info.html" class="mobile-app-link">
+                        <img src="assets/images/logo-finance.svg" class="mobile-app-logo">
+                        AUREUS Finance OS
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="pricing.html#faq" data-i18n="nav.faq">FAQ</a>
+            <a href="pricing.html#contact" data-i18n="nav.contact">Contacto</a>
+        </nav>
+        <a href="login.html" class="btn-drawer-cta" id="drawerAuthBtn" data-i18n="nav.login">Iniciar Sesión</a>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <!-- Landing Script for Navbar -->
+    <script src="js/landing-script.js"></script>
+
+    <script>
+        // Redirect if already logged in (Supabase version)
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                // Ensure profile exists before redirecting
+                updateLocalUser(session.user);
+                window.location.href = 'user-selection.html';
+            }
+        });
+
+        function updateLocalUser(user) {
+            localStorage.setItem('aureus_active_user', JSON.stringify({
+                name: user.user_metadata.full_name || user.email.split('@')[0],
+                email: user.email,
+                id: user.id,
+                avatar: user.user_metadata.avatar_url || 'assets/images/users/item_profile.png'
+            }));
+        }
+
+        // Load remembered email on page load
+        (function loadRememberedEmail() {
+            const savedEmail = localStorage.getItem('aureus_remembered_email');
+            const rememberCheckbox = document.getElementById('rememberEmail');
+            const emailInput = document.getElementById('username');
+
+            if (savedEmail) {
+                emailInput.value = savedEmail;
+                rememberCheckbox.checked = true;
+            }
+        })();
+
+        // Auth Mode Toggle
+        let isLoginMode = true;
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const formTitle = document.querySelector('.form-title');
+            const formSubtitle = document.querySelector('.form-subtitle');
+            const submitBtn = document.querySelector('.btn-submit');
+            const toggleText = document.querySelector('.auth-toggle-text');
+
+            if (isLoginMode) {
+                formTitle.textContent = 'Bienvenido';
+                formSubtitle.textContent = 'Ingresa a tu Finance OS & Health Dashboard';
+                submitBtn.textContent = 'Iniciar Sesión';
+                toggleText.innerHTML = '¿No tienes cuenta? <a class="auth-toggle-link" onclick="toggleAuthMode()">Regístrate aquí</a>';
+                // Show remember me
+                document.querySelector('.remember-forgot-row').style.display = 'flex';
+            } else {
+                formTitle.textContent = 'Crea tu cuenta';
+                formSubtitle.textContent = 'Comienza tu viaje hacia la excelencia';
+                submitBtn.textContent = 'Registrarse';
+                toggleText.innerHTML = '¿Ya tienes cuenta? <a class="auth-toggle-link" onclick="toggleAuthMode()">Inicia Sesión</a>';
+                // Hide remember me for simplicity in signup
+                document.querySelector('.remember-forgot-row').style.display = 'none';
+            }
+        }
+
+        // Combined Auth Handler
+        async function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.querySelector('.btn-submit');
+
+            // Disable button during login
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Iniciando...';
+
+            // Save or remove remembered email based on checkbox
+            const rememberCheckbox = document.getElementById('rememberEmail');
+            if (rememberCheckbox.checked) {
+                localStorage.setItem('aureus_remembered_email', email);
+            } else {
+                localStorage.removeItem('aureus_remembered_email');
+            }
+
+            if (isLoginMode) {
+                // LOGIN LOGIC
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (data.user) {
+                    updateLocalUser(data.user);
+                    await syncProfile(data.user);
+                    window.location.href = 'user-selection.html';
+                } else {
+                    handleAuthError(error, btn, errorMsg);
+                }
+            } else {
+                // SIGN UP LOGIC
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: email.split('@')[0], // Default name from email
+                            avatar_url: ''
+                        }
+                    }
+                });
+
+                if (error) {
+                    handleAuthError(error, btn, errorMsg);
+                } else {
+                    // Check if session is established or confirmation needed
+                    if (data.session) {
+                        updateLocalUser(data.user);
+                        await syncProfile(data.user);
+                        window.location.href = 'user-selection.html';
+                    } else {
+                        // Email confirmation needed
+                        btn.disabled = false;
+                        btn.innerHTML = 'Registrarse';
+                        errorMsg.textContent = '✓ Registro exitoso! Por favor verifica tu email.';
+                        errorMsg.style.display = 'block';
+                        errorMsg.style.color = '#22c55e';
+                    }
+                }
+            }
+        }
+
+        function handleAuthError(error, btn, errorMsg) {
+            btn.disabled = false;
+            btn.innerHTML = isLoginMode ? 'Iniciar Sesión' : 'Registrarse';
+
+            // Show user-friendly error
+            let msg = 'Credenciales incorrectas.';
+            if (error) {
+                if (error.status === 400) msg = 'Email o contraseña incorrectos.';
+                else if (error.status === 429) msg = 'Demasiados intentos. Espera unos minutos.';
+                else msg = error.message;
+            }
+
+            errorMsg.textContent = msg;
+            errorMsg.style.display = 'block';
+
+            // Shake effect
+            btn.style.transform = 'translateX(10px)';
+            setTimeout(() => btn.style.transform = 'translateX(-10px)', 100);
+            setTimeout(() => btn.style.transform = 'translateX(0)', 200);
+        }
+
+
+        async function syncProfile(user) {
+            const { error } = await supabaseClient
+                .from('profiles')
+                .upsert({
+                    id: user.id,
+                    full_name: user.user_metadata.full_name || user.email.split('@')[0],
+                    avatar_url: user.user_metadata.avatar_url || 'assets/images/users/item_profile.png',
+                    updated_at: new Date().toISOString()
+                });
+            if (error) console.error("Error syncing profile:", error);
+        }
+
+        // Forgot Password (Supabase version)
+        async function handleForgotPassword() {
+            const email = document.getElementById('username').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+
+            if (!email) {
+                errorMsg.textContent = 'Ingresa tu email primero para recuperar la contraseña.';
+                errorMsg.style.display = 'block';
+                errorMsg.style.color = '#fbbf24'; // Yellow warning color
+                document.getElementById('username').focus();
+                return;
+            }
+
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                redirectTo: window.location.origin + '/reset-password.html',
+            });
+
+            if (!error) {
+                errorMsg.textContent = '✓ Se ha enviado un email para recuperar tu contraseña.';
+                errorMsg.style.display = 'block';
+                errorMsg.style.color = '#22c55e'; // Green success color
+            } else {
+                errorMsg.textContent = 'Error: ' + error.message;
+                errorMsg.style.display = 'block';
+                errorMsg.style.color = '#ff4d4d'; // Red error color
+            }
+        }
+
+        // Google Sign-In (Supabase version)
+        async function handleGoogleSignIn() {
+            const { data, error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + '/user-selection.html'
+                }
+            });
+
+            if (error) {
+                console.error('Google sign-in error:', error);
+                alert('Error al iniciar sesión con Google: ' + error.message);
+            }
+        }
+
+        // Registration (removed)
+    </script>
+</body>
+
+</html>

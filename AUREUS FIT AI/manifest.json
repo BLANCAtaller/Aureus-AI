@@ -1,0 +1,21 @@
+{
+    "name": "AUREUS Nutrición AI",
+    "short_name": "AUREUS",
+    "description": "Clinical Nutrition & Fit OS. Your personal AI health companion.",
+    "start_url": "/food-log.html",
+    "display": "standalone",
+    "background_color": "#09090b",
+    "theme_color": "#D4F458",
+    "icons": [
+        {
+            "src": "images/logo.webp",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "images/logo.webp",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

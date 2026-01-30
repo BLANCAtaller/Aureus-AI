@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUREUS - Nutrición Clínica & Finanzas Inteligentes</title>
+    <meta name="description"
+        content="AUREUS: Tu suite completa de bienestar. Seguimiento de nutrición clínica + control financiero inteligente. Prueba gratis 14 días.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="AUREUS - Nutrición Clínica & Finanzas Inteligentes">
+    <meta property="og:description"
+        content="La suite más completa para tu salud física y financiera. 2 apps premium por solo $50 MXN/mes.">
+    <meta property="og:image" content="assets/images/LOGO%20AUREUS.png">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/LOGO%20AUREUS.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <link rel="stylesheet" href="css/core-tech.css">
+    <link rel="stylesheet" href="css/synergy.css">
+    <link rel="stylesheet" href="css/academy.css">
+    <link rel="stylesheet" href="css/personas.css">
+    <link rel="stylesheet" href="css/showcase.css">
+</head>
+
+<body>
+    <!-- Micro Grid Background -->
+    <div class="micro-grid-overlay"></div>
+
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+            <span class="nav-brand-text-pill">AUREUS</span>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrition AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación de comidas</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos y ahorros</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn" data-i18n="nav.login">Iniciar Sesión <i
+                    class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-glow"></div>
+        <!-- Video Background -->
+        <div class="hero-visual">
+            <div class="hero-visual-abstract">
+                <video autoplay loop muted playsinline class="abstract-art">
+                    <source src="AUREUS FINANCE AI/videos/Scene_a_highbudget_1080p_202601211353.mp4" type="video/mp4">
+                </video>
+                <div class="abstract-glow"></div>
+            </div>
+        </div>
+        <!-- Content on top -->
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span data-i18n="hero.badge">2 Apps Premium • 1 Precio Increíble</span>
+                </div>
+                <h1 class="hero-title">
+                    <span data-i18n="hero.title_1">Tu Bienestar</span>
+                    <span class="highlight" data-i18n="hero.title_2">Total.</span>
+                </h1>
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    Nutrición clínica + Finanzas inteligentes. La suite completa que necesitas para optimizar tu salud
+                    física y financiera.
+                </p>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label" data-i18n="hero.stat_1">Alimentos</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">14</span>
+                        <span class="stat-label" data-i18n="hero.stat_2">Días Gratis</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-number">$50</span>
+                        <span class="stat-label" data-i18n="hero.stat_3">MXN/mes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="social-proof">
+        <div class="proof-container">
+            <p data-i18n="proof.text">Diseñado para profesionales de salud y cualquier persona comprometida con su
+                bienestar</p>
+            <div class="proof-icons">
+                <div class="proof-icon"><i class="fa-solid fa-user-doctor"></i> <span
+                        data-i18n="proof.doctors">Nutricionistas</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-person-running"></i> <span
+                        data-i18n="proof.athletes">Atletas</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-heart-pulse"></i> <span
+                        data-i18n="proof.health">Pacientes</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-briefcase"></i> <span
+                        data-i18n="proof.professionals">Profesionales</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-dumbbell"></i> <span
+                        data-i18n="proof.gyms">Gimnasios</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-droplet"></i> <span
+                        data-i18n="proof.diabetics">Diabéticos</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-rocket"></i> <span
+                        data-i18n="proof.entrepreneurs">Emprendedores</span></div>
+                <div class="proof-icon"><i class="fa-solid fa-people-roof"></i> <span
+                        data-i18n="proof.families">Familias</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="features.tag">Características</span>
+                <h2 class="section-title" data-i18n="features.title">Todo lo que necesitas para <span
+                        class="highlight">optimizar tu vida</span></h2>
+                <p class="section-subtitle" data-i18n="features.subtitle">Herramientas poderosas diseñadas con precisión
+                    clínica y la mejor experiencia de usuario.</p>
+            </div>
+
+            <!-- Relocated Bundle Section -->
+            <div class="apps-showcase" style="margin-bottom: 80px;">
+                <div class="app-card app-fit">
+                    <div class="app-card-glow fit-glow"></div>
+                    <div class="app-icon-large">
+                        <img src="AUREUS FIT AI/images/logo.png" alt="AUREUS Nutrición AI">
+                    </div>
+                    <h3>AUREUS Nutrición AI</h3>
+                    <span class="app-tagline" data-i18n="apps.fit_tagline">Nutrición Clínica</span>
+                    <ul class="app-features-list">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_1">Seguimiento de macros y
+                                calorías</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_2">Timer de ayuno
+                                intermitente</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_3">Planificador de
+                                comidas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_4">Base de datos 500+
+                                alimentos</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_5">Control glucémico y
+                                purinas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.fit_6">Reportes PDF
+                                profesionales</span></li>
+                    </ul>
+                </div>
+
+                <div class="apps-plus">
+                    <div class="plus-circle">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+
+                <div class="app-card app-finance">
+                    <div class="app-card-glow finance-glow"></div>
+                    <div class="app-icon-large">
+                        <img src="assets/images/logo-finance.svg" alt="AUREUS Finance OS">
+                    </div>
+                    <h3>AUREUS Finance OS</h3>
+                    <span class="app-tagline" data-i18n="apps.finance_tagline">Sistema Operativo Financiero</span>
+                    <ul class="app-features-list">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_1">Seguimiento de saldo
+                                total</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_2">Gestión de ahorros y
+                                deudas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_3">Calendario financiero con
+                                recordatorios</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_4">Comparativa mensual
+                                ingresos/gastos</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_5">Sincronización en la
+                                nube</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="apps.finance_6">Exportar/Importar
+                                Excel</span></li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <!-- Core Technology Section 🛡️ -->
+            <div class="core-tech-container">
+                <div class="core-tech-header">
+                    <span class="section-tag-small" data-i18n="tech.tag_small">Potencia Invisible</span>
+                    <h3 class="core-tech-title" data-i18n="tech.title">Tecnología Core <span
+                            class="highlight">AUREUS</span></h3>
+                </div>
+
+                <div class="core-tech-grid" id="coreTech">
+                    <!-- Tech 1: AI Engine -->
+                    <div class="tech-card">
+                        <div class="tech-card-glow ai-glow"></div>
+                        <div class="tech-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h4 data-i18n="tech.ai_title">Motor de IA Clínico</h4>
+                        <p data-i18n="tech.ai_desc">Algoritmos entrenados con data médica real para recomendaciones
+                            precisas y seguras.</p>
+                    </div>
+
+                    <!-- Tech 2: Security -->
+                    <div class="tech-card">
+                        <div class="tech-card-glow sec-glow"></div>
+                        <div class="tech-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h4 data-i18n="tech.sec_title">Seguridad Bancaria</h4>
+                        <p data-i18n="tech.sec_desc">Encriptación AES-256 de extremo a extremo. Tus datos son solo
+                            tuyos.</p>
+                    </div>
+
+                    <!-- Tech 3: Sync -->
+                    <div class="tech-card">
+                        <div class="tech-card-glow sync-glow"></div>
+                        <div class="tech-icon"><i class="fa-solid fa-rotate"></i></div>
+                        <h4 data-i18n="tech.sync_title">Sync Universal</h4>
+                        <p data-i18n="tech.sync_desc">Sincronización instantánea entre móvil, tablet y web. Empieza
+                            aquí, termina allá.</p>
+                    </div>
+
+                    <!-- Tech 4: Offline -->
+                    <div class="tech-card">
+                        <div class="tech-card-glow off-glow"></div>
+                        <div class="tech-icon"><i class="fa-solid fa-wifi"></i></div>
+                        <h4 data-i18n="tech.off_title">Modo Offline Smart</h4>
+                        <p data-i18n="tech.off_desc">La app funciona 100% sin internet. Los datos se suben cuando
+                            recuperas conexión.</p>
+                    </div>
+
+                    <!-- Tech 5: Reports -->
+                    <div class="tech-card">
+                        <div class="tech-card-glow rep-glow"></div>
+                        <div class="tech-icon"><i class="fa-solid fa-file-contract"></i></div>
+                        <h4 data-i18n="tech.rep_title">Reportes Pro</h4>
+                        <p data-i18n="tech.rep_desc">Exporta tu historial en formatos listos para tu nutriólogo o
+                            contador (PDF/XLS).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works (Relocated) -->
+    <section class="how-it-works">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="how.tag">Cómo Funciona</span>
+                <h2 class="section-title" data-i18n="how.title">Comienza en <span class="highlight">3 simples
+                        pasos</span></h2>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <h3 data-i18n="how.step1_title">Regístrate</h3>
+                    <p data-i18n="how.step1_desc">Crea tu cuenta y obtén 14 días de prueba gratis. Sin tarjeta de
+                        crédito.</p>
+                </div>
+
+                <div class="step-connector">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <h3 data-i18n="how.step2_title">Personaliza</h3>
+                    <p data-i18n="how.step2_desc">Configura tus metas de nutrición, ayuno y finanzas según tus
+                        necesidades.</p>
+                </div>
+
+                <div class="step-connector">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 data-i18n="how.step3_title">Transforma</h3>
+                    <p data-i18n="how.step3_desc">Monitorea tu progreso y alcanza tus objetivos de salud y finanzas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- AUREUS Academy Section 🎓 -->
+    <section class="academy-section">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="academy.tag">AUREUS Academy</span>
+                <h2 class="section-title" data-i18n="academy.title">Mastery <span class="highlight">Center</span></h2>
+            </div>
+            <div class="academy-grid">
+                <article class="academy-card">
+                    <div class="academy-image finance-bg">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div class="academy-content">
+                        <span class="academy-cat" data-i18n="academy.cat1">Finanzas</span>
+                        <h4 data-i18n="academy.card1_title">El Arte del "Zero-Based Budgeting"</h4>
+                        <p data-i18n="academy.card1_desc">Cómo asignar cada peso a un propósito para eliminar la
+                            ansiedad financiera.</p>
+                        <a href="assets/documents/mastery-center/ZeroBasedBudgeting.pdf" target="_blank"
+                            class="academy-link"><span data-i18n="academy.read_more">Leer más</span> <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="academy-card">
+                    <div class="academy-image nutrition-bg">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="academy-content">
+                        <span class="academy-cat" data-i18n="academy.cat2">Nutrición</span>
+                        <h4 data-i18n="academy.card2_title">Ayuno Intermitente y Productividad</h4>
+                        <p data-i18n="academy.card2_desc">Sincroniza tu ventana de alimentación para maximizar tu
+                            enfoque mental.</p>
+                        <a href="assets/documents/mastery-center/Nutrición_Ayuno_Claridad_Mental.pdf" target="_blank"
+                            class="academy-link"><span data-i18n="academy.read_more">Leer más</span> <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="academy-card">
+                    <div class="academy-image metabolic-bg">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <div class="academy-content">
+                        <span class="academy-cat" data-i18n="academy.cat3">Wealth</span>
+                        <h4 data-i18n="academy.card3_title">Dominio Metabólico: La Arquitectura de la Salud</h4>
+                        <p data-i18n="academy.card3_desc">Una guía técnica sobre TMB, Ayuno Intermitente, Keto y
+                            Nutrición Celular.</p>
+                        <a href="assets/documents/mastery-center/Silently_generating_a_super_concise_title_based_on_the_themes_o1.pdf"
+                            target="_blank" class="academy-link"><span data-i18n="academy.read_more">Leer más</span>
+                            <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+        </div>
+    </section>
+
+
+    <!-- Integrations Marquee 👑 -->
+    <section class="integrations-marquee">
+        <p class="marquee-label">Se integra con tus apps favoritas</p>
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <!-- Set 1 -->
+                <div class="marquee-item"><i class="fa-brands fa-apple"></i> Apple Health</div>
+                <div class="marquee-item"><i class="fa-brands fa-google"></i> Google Fit</div>
+                <div class="marquee-item"><i class="fa-solid fa-ring"></i> Oura</div>
+                <div class="marquee-item"><i class="fa-solid fa-heart-pulse"></i> Fitbit</div>
+                <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> BBVA</div>
+                <div class="marquee-item"><i class="fa-solid fa-credit-card"></i> Santander</div>
+                <div class="marquee-item"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</div>
+                <!-- Set 2 (Duplicate for seamless loop) -->
+                <div class="marquee-item"><i class="fa-brands fa-apple"></i> Apple Health</div>
+                <div class="marquee-item"><i class="fa-brands fa-google"></i> Google Fit</div>
+                <div class="marquee-item"><i class="fa-solid fa-ring"></i> Oura</div>
+                <div class="marquee-item"><i class="fa-solid fa-heart-pulse"></i> Fitbit</div>
+                <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> BBVA</div>
+                <div class="marquee-item"><i class="fa-solid fa-credit-card"></i> Santander</div>
+                <div class="marquee-item"><i class="fa-solid fa-file-invoice-dollar"></i> Contabilidad</div>
+                <!-- Set 3 (Extra for wider screens) -->
+                <div class="marquee-item"><i class="fa-brands fa-apple"></i> Apple Health</div>
+                <div class="marquee-item"><i class="fa-brands fa-google"></i> Google Fit</div>
+                <div class="marquee-item"><i class="fa-solid fa-ring"></i> Oura</div>
+                <div class="marquee-item"><i class="fa-solid fa-heart-pulse"></i> Fitbit</div>
+                <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> BBVA</div>
+                <div class="marquee-item"><i class="fa-solid fa-credit-card"></i> Santander</div>
+                <div class="marquee-item"><i class="fa-solid fa-chart-line"></i> GBM+</div>
+                <div class="marquee-item"><i class="fa-brands fa-bitcoin"></i> Bitso</div>
+                <!-- Set 4 (Extra for seamless animation) -->
+                <div class="marquee-item"><i class="fa-brands fa-apple"></i> Apple Health</div>
+                <div class="marquee-item"><i class="fa-brands fa-google"></i> Google Fit</div>
+                <div class="marquee-item"><i class="fa-solid fa-ring"></i> Oura</div>
+                <div class="marquee-item"><i class="fa-solid fa-heart-pulse"></i> Fitbit</div>
+                <div class="marquee-item"><i class="fa-solid fa-building-columns"></i> BBVA</div>
+                <div class="marquee-item"><i class="fa-solid fa-credit-card"></i> Santander</div>
+                <div class="marquee-item"><i class="fa-solid fa-chart-line"></i> GBM+</div>
+                <div class="marquee-item"><i class="fa-brands fa-bitcoin"></i> Bitso</div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+    <!-- Download CTA Section 🚀 -->
+    <section class="download-cta">
+        <div class="cta-glow-container">
+            <div class="cta-glow cta-glow-1"></div>
+            <div class="cta-glow cta-glow-2"></div>
+        </div>
+        <div class="section-container">
+            <div class="cta-premium-card">
+                <span class="section-tag" data-i18n="cta.tag">Comienza Hoy</span>
+                <h2 class="cta-title" data-i18n="cta.title">¿Listo para retomar el <span class="highlight">control
+                        total</span>?</h2>
+                <p class="cta-text" data-i18n="cta.desc">Toma hoy la decisión que transformará tu salud y tus finanzas
+                    para siempre con la suite AUREUS.</p>
+                <div class="cta-actions">
+                    <button class="btn-cta-premium" onclick="openPlatformModal()">
+                        <span class="btn-shine"></span>
+                        <i class="fa-solid fa-rocket"></i> <span data-i18n="cta.btn">Comenzar Ahora</span>
+                    </button>
+                    <p class="cta-trust-text" data-i18n="cta.trust">Pruébalo gratis • Sin compromisos</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Selection Modal 📲 -->
+    <div class="platform-modal-overlay" id="platformModal">
+        <div class="platform-modal">
+            <button class="modal-close" onclick="closePlatformModal()" aria-label="Cerrar modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title">Elige tu Plataforma</h2>
+                <p class="modal-subtitle">Sincronización instantánea en todos tus dispositivos.</p>
+            </div>
+
+            <div class="platform-options">
+                <!-- Mobile Option -->
+                <div class="platform-card" id="card-mobile">
+                    <div class="card-glow"></div>
+                    <div class="platform-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <div class="platform-content">
+                        <h3>Apps Móviles</h3>
+                        <p class="platform-desc">La experiencia completa en la palma de tu mano.</p>
+
+                        <div class="store-badges">
+                            <button class="btn-store">
+                                <i class="fa-brands fa-apple"></i>
+                                <div class="btn-store-text">
+                                    <span>Download on the</span>
+                                    <strong>App Store</strong>
+                                </div>
+                            </button>
+                            <button class="btn-store">
+                                <i class="fa-brands fa-google-play"></i>
+                                <div class="btn-store-text">
+                                    <span>GET IT ON</span>
+                                    <strong>Google Play</strong>
+                                </div>
+                            </button>
+                        </div>
+
+                        <ul class="platform-features">
+                            <li><i class="fa-solid fa-bell"></i> Notificaciones en Tiempo Real</li>
+                            <li><i class="fa-solid fa-camera"></i> Escaneo Inteligente de Recibos</li>
+                            <li><i class="fa-solid fa-cloud-arrow-down"></i> Sincronización Offline</li>
+                            <li><i class="fa-solid fa-fingerprint"></i> Acceso Biométrico Seguro</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Web Option -->
+                <div class="platform-card highlight-card" id="card-web">
+                    <div class="card-glow"></div>
+                    <div class="platform-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <div class="platform-content">
+                        <h3>Web App</h3>
+                        <p class="platform-desc">Análisis profundo y gestión avanzada desde tu desktop.</p>
+
+                        <button class="btn-launch-web" onclick="window.location.href='login.html'">
+                            <span class="btn-shine"></span>
+                            <span>Lanzar Web App</span>
+                            <i class="fa-solid fa-arrow-right-long"></i>
+                        </button>
+
+                        <ul class="platform-features">
+                            <li><i class="fa-solid fa-chart-pie"></i> Dashboards y Analytics Avanzados</li>
+                            <li><i class="fa-solid fa-file-export"></i> Exportación de Reportes PDF/Excel</li>
+                            <li><i class="fa-solid fa-layer-group"></i> Gestión Masiva de Datos</li>
+                            <li><i class="fa-solid fa-shield-halved"></i> Seguridad de Grado Bancario</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <p><i class="fa-solid fa-lock"></i> Tu información está protegida con encriptación de extremo a extremo.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="footer-logo">
+                <span class="footer-brand-text">AUREUS</span>
+                <p class="footer-tagline" data-i18n="footer.tagline">Tu bienestar, simplificado.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="footer.product">Producto</h4>
+                    <a href="#features" data-i18n="nav.features">Características</a>
+                    <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+                    <a href="pricing.html#faq" data-i18n="nav.faq">FAQ</a>
+                    <a href="blog.html" data-i18n="footer.link_blog">Blog</a>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.apps">Aplicaciones</h4>
+                    <a href="fit-ai-info.html" data-i18n="footer.link_nutrition">AUREUS Nutrición AI</a>
+                    <a href="finance-os-info.html" data-i18n="footer.link_finance">AUREUS Finance OS</a>
+                    <a href="programa-embajadores.html" data-i18n="footer.link_ambassadors">Embajadores</a>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <a href="https://www.instagram.com/aureus_fit_ai/" class="social-link" target="_blank"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 AUREUS. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+        </div>
+    </footer>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+        <div class="drawer-header">
+            <div class="logo">
+                <img src="assets/images/LOGO_AUREUS_V2.png" alt="Aureus Logo" class="nav-logo-pill">
+                <span>AUREUS</span>
+            </div>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="#features" data-i18n="nav.features">Características</a>
+
+            <!-- Mobile Apps Accordion -->
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    <a href="fit-ai-info.html" class="mobile-app-link">
+                        <img src="AUREUS FIT AI/images/logo.png" class="mobile-app-logo">
+                        AUREUS Nutrición AI
+                    </a>
+                    <a href="finance-os-info.html" class="mobile-app-link">
+                        <img src="assets/images/logo-finance.svg" class="mobile-app-logo">
+                        AUREUS Finance OS
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="pricing.html#faq" data-i18n="nav.faq">FAQ</a>
+            <a href="pricing.html#contact" data-i18n="nav.contact">Contacto</a>
+        </nav>
+        <a href="login.html" class="btn-drawer-cta" id="drawerAuthBtn" data-i18n="nav.login">Iniciar Sesión</a>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/landing-script.js"></script>
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

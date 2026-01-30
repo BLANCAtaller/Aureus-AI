@@ -1,0 +1,32 @@
+{
+  "firestore": {
+    "database": "(default)",
+    "location": "us-east4",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.exe",
+      "**/*.dll",
+      "**/*.so",
+      "**/*.dylib",
+      "**/*.bat",
+      "**/*.sh",
+      "**/*.jar",
+      "**/*.zip",
+      "**/*.rar",
+      "**/*.7z",
+      "**/*.psd",
+      "**/*.ai",
+      "**/*.sketch",
+      "**/*.fig",
+      "**/Thumbs.db",
+      "**/*.DS_Store"
+    ]
+  }
+}

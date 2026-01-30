@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+    <defs>
+        <linearGradient id="premiumGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#bf953f" />
+            <stop offset="25%" style="stop-color:#fcf6ba" />
+            <stop offset="50%" style="stop-color:#b38728" />
+            <stop offset="75%" style="stop-color:#fcf6ba" />
+            <stop offset="100%" style="stop-color:#aa771c" />
+        </linearGradient>
+        <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.5" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+    </defs>
+
+    <g filter="url(#logoGlow)">
+        <!-- Outer Circle -->
+        <circle cx="50" cy="50" r="46" stroke="url(#premiumGold)" stroke-width="2.5" />
+
+        <!-- Vertical Line -->
+        <line x1="50" y1="4" x2="50" y2="96" stroke="url(#premiumGold)" stroke-width="1.5" />
+
+        <!-- Horizontal Line -->
+        <line x1="4" y1="50" x2="96" y2="50" stroke="url(#premiumGold)" stroke-width="1.5" opacity="0.5" />
+
+        <!-- Seed of Life Pattern (6 overlapping circles) -->
+        <!-- Center: (50, 50), Radius: 23 -->
+        <circle cx="50" cy="27" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+        <circle cx="50" cy="73" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+        <circle cx="30" cy="38.5" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+        <circle cx="70" cy="38.5" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+        <circle cx="30" cy="61.5" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+        <circle cx="70" cy="61.5" r="23" stroke="url(#premiumGold)" stroke-width="1.5" />
+
+        <!-- Inner Decorative Arcs -->
+        <circle cx="50" cy="50" r="28" stroke="url(#premiumGold)" stroke-width="1" opacity="0.6" />
+
+        <!-- Central Core Circle -->
+        <circle cx="50" cy="50" r="6" fill="url(#premiumGold)" />
+        <circle cx="50" cy="50" r="10" stroke="url(#premiumGold)" stroke-width="1.5" />
+    </g>
+</svg>

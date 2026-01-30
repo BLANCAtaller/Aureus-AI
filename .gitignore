@@ -1,0 +1,7 @@
+# Exclude large backups and archives
+**/*.zip
+**/_ARCHIVE/**
+**/node_modules/**
+.firebase/
+firebase-debug.log
+temp.txt

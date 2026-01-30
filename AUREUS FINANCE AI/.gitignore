@@ -1,0 +1,23 @@
+
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+*.tmp
+
+# Backups and Zips
+*.zip
+backup_*/
+backups/
+AUREUS_FINAL_UPLOAD_v3/
+DEPLOY_READY/
+AUREUS_CLOUDFLARE_*/
+AUREUS_AI_BACKUP_*/
+
+# Historical backups
+*_backup*.html
+*_backup*.js
+index_backup*.html
+chart_component_backup*.js
+index_auto_save_backup.html

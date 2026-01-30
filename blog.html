@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | AUREUS - Nutrición Clínica & Finanzas Inteligentes</title>
+    <meta name="description"
+        content="Explora artículos sobre nutrición clínica, salud financiera, mentalidad de éxito y actualizaciones de la suite AUREUS.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Blog | AUREUS">
+    <meta property="og:description"
+        content="Contenido premium para optimizar tu salud y tus finanzas. Suscríbete a nuestro newsletter.">
+    <meta property="og:image" content="assets/images/LOGO AUREUS.png">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/LOGO AUREUS.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <link rel="stylesheet" href="css/blog-styles.css">
+    <link rel="stylesheet" href="css/personas.css">
+</head>
+
+<body>
+    <!-- Micro Grid Background -->
+    <div class="micro-grid-overlay"></div>
+
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+                <span class="nav-brand-text-pill">AUREUS</span>
+            </a>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos e inversiones</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" data-i18n="nav.pricing">Precios</a>
+            <a href="blog.html" class="active" data-i18n="nav.blog">Blog</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn" data-i18n="nav.login">Iniciar Sesión <i
+                    class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Blog Hero -->
+    <section class="blog-hero">
+        <div class="section-container">
+            <div class="section-header" style="text-align: center; margin-bottom: 40px;">
+                <span class="category-badge">Blog</span>
+                <h1 class="featured-title" data-i18n="blog.title">Últimas Noticias</h1>
+            </div>
+        </div>
+
+        <!-- User Personas Section (Moved from Landing) -->
+        <div class="personas-section" style="padding: 80px 0; background: transparent;">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="blog.subtitle">Diseñado para <span class="highlight">Tu Estilo de
+                        Vida</span></h2>
+            </div>
+            <div class="personas-grid">
+                <div class="persona-card entrepreneur">
+                    <div class="persona-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 data-i18n="blog.persona_entrepreneurs">Entrepreneurs</h3>
+                    <p data-i18n="blog.persona_entrepreneurs_desc">Separa finanzas personales y de negocio. Controla tu
+                        flujo de caja y maximiza tu rendimiento
+                        mental y
+                        fiscal.</p>
+                </div>
+                <div class="persona-card family">
+                    <div class="persona-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3 data-i18n="blog.persona_families">Familias</h3>
+                    <p data-i18n="blog.persona_families_desc">Planifica el futuro de los tuyos. Presupuestos compartidos
+                        y menús saludables para todos en casa.
+                    </p>
+                </div>
+                <div class="persona-card performer">
+                    <div class="persona-icon"><i class="fa-solid fa-bolt"></i></div>
+                    <h3 data-i18n="blog.persona_performers">High Performers</h3>
+                    <p data-i18n="blog.persona_performers_desc">Optimiza cada aspecto de tu biología y economía. La
+                        herramienta definitiva para quienes no
+                        aceptan
+                        límites.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Grid Section -->
+        <section class="blog-section">
+            <div class="section-container">
+                <div class="blog-filters">
+                    <button class="filter-btn active" data-i18n="blog.filter_all">Todos</button>
+                    <button class="filter-btn" data-i18n="blog.filter_nutrition">Nutrición</button>
+                    <button class="filter-btn" data-i18n="blog.filter_finance">Finanzas</button>
+                    <button class="filter-btn" data-i18n="blog.filter_mindset">Mentalidad</button>
+                    <button class="filter-btn" data-i18n="blog.filter_updates">Updates</button>
+                </div>
+
+                <div class="section-header" style="margin-bottom: 40px; margin-top: 60px;">
+                    <h2 class="featured-title" style="font-size: 32px;" data-i18n="blog.recent_articles">Artículos
+                        Recientes</h2>
+                </div>
+
+                <div class="blog-grid" id="main-blog-grid">
+                    <!-- Mastery Card 1 -->
+                    <a href="assets/documents/mastery-center/Nutrición_Ayuno_Claridad_Mental.pdf" target="_blank"
+                        class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/images/blog/fasting.png" alt="Nutrición y Ayuno">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_nutrition">Nutrición</span>
+                                <h3 class="card-title" data-i18n="blog.card1_title">Ayuno Intermitente y Claridad Mental
+                                </h3>
+                                <div class="card-meta">
+                                    <span>24 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Mastery Card 2 -->
+                    <a href="assets/documents/mastery-center/ZeroBasedBudgeting.pdf" target="_blank"
+                        class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/images/blog/compound.png" alt="Control Financiero">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_finance">Finanzas</span>
+                                <h3 class="card-title" data-i18n="blog.card2_title">El Arte del Control Financiero</h3>
+                                <div class="card-meta">
+                                    <span>24 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Mastery Card 3 -->
+                    <a href="assets/documents/mastery-center/unnamed%20(1).png" target="_blank" class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/documents/mastery-center/unnamed%20(1).png"
+                                    alt="Presupuesto Base Cero">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_finance">Finanzas</span>
+                                <h3 class="card-title" data-i18n="blog.card3_title">Presupuesto Base Cero: Infografía
+                                </h3>
+                                <div class="card-meta">
+                                    <span>24 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_infographic">Infographic</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Mastery Card 4 -->
+                    <a href="assets/documents/mastery-center/Silently_generating_a_super_concise_title_based_on_the_themes_o1.pdf"
+                        target="_blank" class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="https://images.unsplash.com/photo-1620121692029-d088224ddc74?auto=format&fit=crop&q=80&w=600"
+                                    alt="Neurociencia">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_mindset">Mentalidad</span>
+                                <h3 class="card-title" data-i18n="blog.card4_title">Domina tu Dopamina: Neurociencia
+                                </h3>
+                                <div class="card-meta">
+                                    <span>24 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Blog Card 3 (Upgraded to Mastery) -->
+                    <a href="assets/documents/mastery-center/Optimización_Metabólica_Nutrición_Estratégica.pdf"
+                        target="_blank" class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/images/blog/discipline.png" alt="Mindset">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_mindset">Mentalidad</span>
+                                <h3 class="card-title" data-i18n="blog.card5_title">La Disciplina se Entrena: De los
+                                    Macros a tu Bienestar</h3>
+                                <div class="card-meta">
+                                    <span>20 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Blog Card 4 (Upgraded to Mastery) -->
+                    <a href="assets/documents/mastery-center/Metabolic_Precision_Control.pdf" target="_blank"
+                        class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/images/blog/purine.png" alt="Nutrition Science">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_nutrition">Nutrición</span>
+                                <h3 class="card-title" data-i18n="blog.card6_title">Control de Purinas: Prevención
+                                    proactiva con IA</h3>
+                                <div class="card-meta">
+                                    <span>15 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                    <!-- Blog Card 5 (Upgraded to Mastery) -->
+                    <a href="assets/documents/mastery-center/Fondo_de_Emergencia_Corporal_Estrategia_Aureus.pdf"
+                        target="_blank" class="blog-card-link">
+                        <article class="blog-card mastery-card">
+                            <div class="card-image-wrap">
+                                <img src="assets/images/blog/budget.png" alt="Economy">
+                                <div class="mastery-badge"><i class="fa-solid fa-crown"></i></div>
+                            </div>
+                            <div class="card-content">
+                                <span class="category-badge" data-i18n="blog.filter_finance">Finanzas</span>
+                                <h3 class="card-title" data-i18n="blog.card7_title">Fondo de Emergencia: Tu Escudo de
+                                    Tranquilidad</h3>
+                                <div class="card-meta">
+                                    <span>10 Ene, 2026</span>
+                                    <span class="meta-dot"></span>
+                                    <span data-i18n="blog.card_resource">Resource</span>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+
+                </div>
+
+                <!-- Footer Newsletter -->
+                <div class="footer-newsletter">
+                    <h2 class="newsletter-title" data-i18n="blog.newsletter_title">Optimiza tu bandeja de entrada</h2>
+                    <p class="newsletter-desc" data-i18n="blog.newsletter_desc">Recibe los mejores consejos de nutrición
+                        clínica y finanzas
+                        inteligentes. Sin spam, solo valor.</p>
+                    <div class="newsletter-inline" style="max-width: 500px; margin-left: auto; margin-right: auto;">
+                        <input type="email" placeholder="ejemplo@correo.com" class="newsletter-input"
+                            data-i18n-placeholder="blog.newsletter_placeholder">
+                        <button class="btn-pill-cta">Quiero optimizarme</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="footer-logo">
+                    <span class="footer-brand-text">AUREUS</span>
+                    <p class="footer-tagline" data-i18n="footer.tagline">Tu bienestar, simplificado.</p>
+                </div>
+
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.product">Producto</h4>
+                        <a href="index.html#features" data-i18n="footer.link_features">Características</a>
+                        <a href="pricing.html" data-i18n="footer.link_pricing">Precios</a>
+                        <a href="pricing.html#faq" data-i18n="footer.link_faq">FAQ</a>
+                        <a href="blog.html" data-i18n="footer.link_blog">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4 data-i18n="footer.apps">Aplicaciones</h4>
+                        <a href="fit-ai-info.html" data-i18n="footer.link_nutrition">AUREUS Nutrición AI</a>
+                        <a href="finance-os-info.html" data-i18n="footer.link_finance">AUREUS Finance OS</a>
+                        <a href="programa-embajadores.html" data-i18n="footer.link_ambassadors">Embajadores</a>
+                    </div>
+                </div>
+
+                <div class="footer-social">
+                    <a href="https://www.instagram.com/aureus_fit_ai/" class="social-link" target="_blank"><i
+                            class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 AUREUS. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+            </div>
+        </footer>
+
+        <!-- Supabase SDK -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="js/supabase-config.js"></script>
+        <script src="js/landing-script.js"></script>
+</body>
+
+</html>

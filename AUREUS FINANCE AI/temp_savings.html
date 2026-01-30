@@ -1,0 +1,62 @@
+<!-- SAVINGS VIEW -->
+<section id="view-savings" class="hidden animate-fade-in space-y-6">
+    <!-- Header: Net Worth -->
+    <div class="bg-dark-800 rounded-[2rem] p-8 border border-white/5 shadow-2xl relative overflow-hidden group">
+        <div
+            class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-indigo-500/10 opacity-50 group-hover:opacity-100 transition duration-700">
+        </div>
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+            <div>
+                <h2 class="text-slate-400 font-bold uppercase tracking-widest text-xs mb-2">Total Net Worth</h2>
+                <div class="flex items-baseline gap-4">
+                    <h1 id="savings-net-worth" class="text-5xl md:text-6xl font-black text-white tracking-tighter">$0.00
+                    </h1>
+                    <div
+                        class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/20 flex items-center gap-1">
+                        <i data-lucide="trending-up" class="w-3 h-3 text-emerald-400"></i>
+                        <span class="text-emerald-400 font-bold text-xs">+ $450 this month</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <div
+                    class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-indigo-500 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                    <i data-lucide="wallet" class="w-8 h-8 text-white"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Grid (Bento) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Asset Allocation (Span 4) -->
+        <div class="lg:col-span-4 space-y-4">
+            <div class="flex items-center justify-between px-2">
+                <h3 class="text-white font-bold text-lg">Asset Allocation</h3>
+                <button onclick="addSavingsAsset()"
+                    class="p-2 rounded-lg bg-dark-700 hover:bg-white/10 text-slate-400 hover:text-white transition">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <div id="savings-assets-list" class="space-y-3">
+                <!-- Assets injected here -->
+            </div>
+        </div>
+
+        <!-- Right: Goals & Targets (Span 8) -->
+        <div class="lg:col-span-8 space-y-4">
+            <div class="flex items-center justify-between px-2">
+                <h3 class="text-white font-bold text-lg">Goals & Targets</h3>
+                <button onclick="addSavingsGoal()"
+                    class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold uppercase tracking-wider border border-indigo-500/20">
+                    <i data-lucide="plus" class="w-3 h-3"></i> Nuevo Objetivo
+                </button>
+            </div>
+
+            <div id="savings-goals-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Goals injected here -->
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Precios | AUREUS - Nutrición Clínica & Finanzas Inteligentes</title>
+    <meta name="description"
+        content="AUREUS Suite: 2 apps premium por un solo precio. Nutrición clínica + finanzas inteligentes. Prueba gratis 14 días.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Precios | AUREUS">
+    <meta property="og:description"
+        content="La suite más completa para tu salud física y financiera. 2 apps premium por solo $50 MXN/mes.">
+    <meta property="og:image" content="assets/images/LOGO AUREUS.png">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/LOGO AUREUS.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/landing-styles.css">
+    <link rel="stylesheet" href="css/synergy.css">
+    <link rel="stylesheet" href="css/roadmap-premium.css">
+    <link rel="stylesheet" href="css/blog-styles.css">
+</head>
+
+<body>
+    <!-- Micro Grid Background -->
+    <div class="micro-grid-overlay"></div>
+
+    <!-- Floating Pill Navigation -->
+    <nav class="navbar-pill" id="navbar">
+        <div class="nav-brand-pill">
+            <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="nav-logo-pill">
+                <span class="nav-brand-text-pill">AUREUS</span>
+            </a>
+        </div>
+
+        <div class="nav-links-pill" id="navLinks">
+            <a href="index.html#features" data-i18n="nav.features">Características</a>
+
+            <!-- Aplicaciones Dropdown -->
+            <div class="nav-dropdown">
+                <button class="nav-dropdown-trigger" data-i18n="nav.apps">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="nav-dropdown-menu">
+                    <a href="fit-ai-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon fit-icon">
+                            <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Nutrición AI</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_fit_desc">Nutrición clínica, macros,
+                                ayuno y planificación</span>
+                        </div>
+                    </a>
+                    <a href="finance-os-info.html" class="dropdown-item">
+                        <div class="dropdown-item-icon finance-icon">
+                            <img src="assets/images/logo-finance.svg" alt="Finance OS" class="dropdown-item-logo">
+                        </div>
+                        <div class="dropdown-item-content">
+                            <span class="dropdown-item-title">AUREUS Finance OS</span>
+                            <span class="dropdown-item-desc" data-i18n="nav.apps_finance_desc">Control financiero,
+                                presupuestos e inversiones</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <a href="pricing.html" class="active" data-i18n="nav.pricing">Precios</a>
+            <a href="blog.html" data-i18n="nav.blog">Blog</a>
+        </div>
+
+        <div class="nav-actions-pill">
+            <button class="lang-toggle-pill" id="langToggle" title="Switch Language">
+                <span id="currentLang">ES</span>
+            </button>
+            <a href="login.html" class="btn-pill-cta" id="navAuthBtn" data-i18n="nav.login">Iniciar Sesión <i
+                    class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            <button class="mobile-menu-btn-pill" id="mobileMenuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Synergy Section (Moved from Landing) -->
+    <div class="synergy-container" id="synergy" style="margin-top: 120px; margin-bottom: 60px;">
+        <div class="synergy-header">
+            <span class="section-tag" data-i18n="synergy.tag">Sinergia Exclusiva</span>
+            <h3 class="synergy-title" data-i18n="synergy.title">Ecosistema <span class="highlight">Conectado</span></h3>
+            <p class="synergy-subtitle" data-i18n="synergy.subtitle">Tu salud física y financiera están
+                entrelazadas. AUREUS es el puente que las optimiza en tiempo real.</p>
+        </div>
+
+        <div class="synergy-cards">
+            <div class="synergy-card">
+                <div class="card-icon-small"><i class="fa-solid fa-leaf"></i></div>
+                <p data-i18n="synergy.card1"><strong>Alimentación Consciente:</strong> Menos gasto en
+                    ultraprocesados = Más ahorro para tu futuro.</p>
+            </div>
+            <div class="synergy-card">
+                <div class="card-icon-small"><i class="fa-solid fa-heart-circle-check"></i></div>
+                <p data-i18n="synergy.card2"><strong>Longevidad Financiera:</strong> Mejor salud hoy =
+                    Menores gastos médicos y seguros mañana.</p>
+            </div>
+            <div class="synergy-card">
+                <div class="card-icon-small"><i class="fa-solid fa-brain"></i></div>
+                <p data-i18n="synergy.card3"><strong>Mentalidad de Éxito:</strong> La disciplina en tus
+                    macros se traduce en disciplina en tus finanzas.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="pricing.tag">Precios Increíbles</span>
+                <h2 class="section-title" data-i18n="pricing.title">Un precio que <span class="highlight">te
+                        sorprenderá</span></h2>
+                <p class="section-subtitle" data-i18n="pricing.subtitle">Ambas aplicaciones por menos de lo que pagas
+                    por un café.</p>
+            </div>
+
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <span class="plan-name" data-i18n="pricing.individual">Individual</span>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">50</span>
+                            <span class="period">MXN<span data-i18n="pricing.per_month">/mes</span></span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f1">AUREUS Nutrición AI
+                                completo</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f2">AUREUS Finance OS
+                                completo</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f3">1 usuario</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f4">Todas las
+                                características</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f5">Actualizaciones
+                                incluidas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f6">Soporte por email</span></li>
+                    </ul>
+                    <a href="login.html" class="btn-pricing" data-i18n="pricing.cta">Comenzar Prueba Gratis</a>
+                    <p class="pricing-note" data-i18n="pricing.note">14 días gratis • Cancela cuando quieras</p>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="popular-badge" data-i18n="pricing.popular">MÁS POPULAR</div>
+                    <div class="pricing-header">
+                        <span class="plan-name" data-i18n="pricing.couples">Parejas</span>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount">75</span>
+                            <span class="period">MXN<span data-i18n="pricing.per_month">/mes</span></span>
+                        </div>
+                        <span class="savings" data-i18n="pricing.savings">Ahorra $25/mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f1">AUREUS Nutrición AI
+                                completo</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f2">AUREUS Finance OS
+                                completo</span></li>
+                        <li><i class="fa-solid fa-star"></i> <span data-i18n="pricing.f7">2 usuarios</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f4">Todas las
+                                características</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="pricing.f5">Actualizaciones
+                                incluidas</span></li>
+                        <li><i class="fa-solid fa-star"></i> <span data-i18n="pricing.f8">Soporte prioritario</span>
+                        </li>
+                    </ul>
+                    <a href="login.html" class="btn-pricing primary" data-i18n="pricing.cta">Comenzar Prueba Gratis</a>
+                    <p class="pricing-note" data-i18n="pricing.note">14 días gratis • Cancela cuando quieras</p>
+                </div>
+            </div>
+
+            <div class="platforms-coming">
+                <p><i class="fa-solid fa-globe"></i> <span data-i18n="pricing.web">Disponible en Web</span></p>
+                <p class="coming-soon"><i class="fa-brands fa-apple"></i> <i class="fa-brands fa-android"></i> <span
+                        data-i18n="pricing.coming">iOS
+                        & Android próximamente</span></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Included Section -->
+    <section class="included-features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="pricing.included_tag">Un precio, todo incluido</span>
+                <h2 class="section-title" data-i18n="pricing.included_title">Acceso completo a <span class="highlight">2
+                        apps premium</span></h2>
+            </div>
+
+            <div class="features-two-col">
+                <!-- FIT AI Features -->
+                <div class="feature-app-card app-fit">
+                    <div class="feature-app-header">
+                        <img src="AUREUS FIT AI/images/logo.png" alt="Nutrición AI" class="feature-app-logo">
+                        <h3 data-i18n="footer.link_nutrition">AUREUS Nutrición AI</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_1">Seguimiento
+                                ilimitado de macros y calorías</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_2">Control de ácido
+                                úrico y purinas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_3">Timer de ayuno
+                                intermitente</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_4">Planificador de
+                                comidas semanal</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_5">Base de datos de
+                                alimentos premium</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_6">Análisis de progreso
+                                y tendencias</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.fit_7">Sincronización en la
+                                nube</span></li>
+                    </ul>
+                </div>
+
+                <!-- Finance OS Features -->
+                <div class="feature-app-card app-finance">
+                    <div class="feature-app-header">
+                        <img src="assets/images/logo-finance.svg" alt="Finance OS" class="feature-app-logo">
+                        <h3 data-i18n="footer.link_finance">AUREUS Finance OS</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_1">Dashboard de
+                                patrimonio neto</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_2">Presupuestos
+                                inteligentes adaptativos</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_3">Metas de ahorro
+                                personalizadas</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_4">Gestión de
+                                deudas (Snowball/Avalanche)</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_5">Tracker de
+                                inversiones</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_6">Control de
+                                suscripciones</span></li>
+                        <li><i class="fa-solid fa-check"></i> <span data-i18n="features_list.finance_7">Reportes y
+                                análisis financieros</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Pay Section -->
+    <section class="why-pay-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title" data-i18n="pricing.whypay_title">¿Por qué pagar por <span
+                        class="highlight">AUREUS</span>?</h2>
+                <p class="section-subtitle" data-i18n="pricing.whypay_subtitle">Invertir en ti mismo siempre es la mejor
+                    decisión.</p>
+            </div>
+
+            <div class="why-pay-grid">
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <h3 data-i18n="pricing.noads_title">Sin anuncios, nunca</h3>
+                    <p data-i18n="pricing.noads_desc">Tu experiencia siempre limpia y enfocada en lo que importa. No
+                        verás publicidad que interrumpa tu
+                        flujo.</p>
+                </div>
+
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h3 data-i18n="pricing.privacy_title">Tus datos son tuyos</h3>
+                    <p data-i18n="pricing.privacy_desc">Nunca vendemos tu información financiera o de salud. Tu
+                        privacidad es nuestra prioridad absoluta.
+                    </p>
+                </div>
+
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 data-i18n="pricing.dev_title">Desarrollo constante</h3>
+                    <p data-i18n="pricing.dev_desc">Nuevas funciones cada mes. Tu suscripción financia mejoras continuas
+                        que tú decides con tu
+                        feedback.</p>
+                </div>
+
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 data-i18n="pricing.support_title">Soporte real</h3>
+                    <p data-i18n="pricing.support_desc">Un equipo dedicado a ayudarte. Respuestas rápidas y humanas, no
+                        chatbots genéricos.</p>
+                </div>
+
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </div>
+                    <h3 data-i18n="pricing.sync_title">Sync Universal</h3>
+                    <p data-i18n="pricing.sync_desc">Tu progreso te sigue a donde vayas. Empieza en tu laptop, termina
+                        en tu móvil. Todo sincronizado
+                        al instante.</p>
+                </div>
+
+                <div class="why-pay-card">
+                    <div class="why-pay-icon">
+                        <i class="fa-solid fa-file-export"></i>
+                    </div>
+                    <h3 data-i18n="pricing.reports_title">Reportes Profesionales</h3>
+                    <p data-i18n="pricing.reports_desc">Exporta tu data en PDF o Excel. Comparte tus avances con tu
+                        nutriólogo o contador en segundos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="pricing.faq_tag">Preguntas Frecuentes</span>
+                <h2 class="section-title" data-i18n="pricing.faq_title">¿Tienes <span
+                        class="highlight">preguntas</span>?</h2>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q1">¿Qué incluye la suscripción?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a1">Tu suscripción incluye acceso completo a AUREUS Nutrición AI
+                            (nutrición clínica)
+                            y AUREUS Finance OS (control financiero). Ambas aplicaciones con todas sus características
+                            premium.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q2">¿Cómo funciona la prueba gratuita?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a2">Tienes 14 días para probar todas las funciones sin compromiso. No
+                            necesitas
+                            tarjeta de crédito para registrarte. Si te gusta, puedes suscribirte después.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q3">¿Puedo cancelar en cualquier momento?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a3">Sí, puedes cancelar tu suscripción cuando quieras. Sin contratos,
+                            sin
+                            penalizaciones. Tu acceso continúa hasta el final del período pagado.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q4">¿Es segura mi información personal?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a4">Absolutamente. Usamos encriptación de grado bancario para proteger
+                            tus
+                            datos. Tu información nunca se comparte con terceros.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q5">¿Cuándo estarán disponibles las apps móviles?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a5">Estamos trabajando activamente en las versiones para iOS y
+                            Android. Los
+                            suscriptores actuales tendrán acceso automático cuando se lancen.</p>
+                    </div>
+                </div>
+
+                <!-- New FAQ Items -->
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q6">¿Necesito ser miembro de un gimnasio?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a6">No. AUREUS Nutrición AI adapta tus planes a tu estilo de vida, ya
+                            sea que entrenes en casa, gimnasio o no entrenes.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q7">¿Necesito comprar equipo especial?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a7">No. AUREUS se adapta a tu entorno. Puedes entrenar en gimnasio, en
+                            casa con equipo básico o solo con tu peso corporal.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span data-i18n="pricing.faq_q8">¿Puedo compartir mi cuenta?</span>
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p data-i18n="pricing.faq_a8">La suscripción Individual es personal. El plan Parejas permite dos
+                            cuentas independientes vinculadas para una gestión compartida.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Development Roadmap Section 🚀 -->
+    <section class="roadmap-section" id="roadmap">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag" data-i18n="roadmap.tag">Nuestra Visión</span>
+                <h2 class="section-title" data-i18n="roadmap.title">Hoja de Ruta <span class="highlight">AUREUS
+                        2026</span></h2>
+                <p class="section-subtitle" data-i18n="roadmap.subtitle">Estamos construyendo el ecosistema de bienestar
+                    más completo del mundo.
+                </p>
+            </div>
+        </div>
+        <!-- Roadmap Wrapper moved out of container for full width -->
+        <div class="roadmap-wrapper">
+            <div class="roadmap-track">
+                <!-- Step 1 -->
+                <div class="roadmap-step active">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 01</span>
+                            <span class="step-quarter">Q1 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step1_title">Versiones Web Premium</h3>
+                        <p data-i18n="roadmap.step1_desc">Optimización total de la plataforma web, nuevas
+                            visualizaciones y sincronización cloud.
+                        </p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="roadmap-step active">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 02</span>
+                            <span class="step-quarter">Q2 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step2_title">Chase the Rabbit</h3>
+                        <p data-i18n="roadmap.step2_desc">Lanzamiento de Salud Psicológica: El tercer pilar del
+                            bienestar integral.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-brain"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="roadmap-step next">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 03</span>
+                            <span class="step-quarter">Q3 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step3_title">Apps Móviles</h3>
+                        <p data-i18n="roadmap.step3_desc">Lanzamiento oficial en App Store y Google Play con
+                            notificaciones inteligentes.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-mobile-screen"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="roadmap-step next">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 04</span>
+                            <span class="step-quarter">Q4 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step4_title">AUREUS AI Coach</h3>
+                        <p data-i18n="roadmap.step4_desc">Entrenador personal basado en IA que analiza tus hábitos en
+                            tiempo real.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-robot"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="roadmap-step next">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 05</span>
+                            <span class="step-quarter">Q1 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step5_title">Banca Global</h3>
+                        <p data-i18n="roadmap.step5_desc">Sincronización automática con instituciones financieras de
+                            todo el mundo.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-building-columns"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="roadmap-step future">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 06</span>
+                            <span class="step-quarter">Q2 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step6_title">Análisis Predictivo</h3>
+                        <p data-i18n="roadmap.step6_desc">Proyecciones basadas en IA sobre tu patrimonio y tendencias de
+                            salud.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-chart-pie"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 7 -->
+                <div class="roadmap-step future">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 07</span>
+                            <span class="step-quarter">Q3 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step7_title">Family Hub</h3>
+                        <p data-i18n="roadmap.step7_desc">Herramientas compartidas para familias: finanzas conjuntas y
+                            metas grupales.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-users-viewfinder"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 8 -->
+                <div class="roadmap-step future">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 08</span>
+                            <span class="step-quarter">Q4 2026</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step8_title">Ecosistema Total</h3>
+                        <p data-i18n="roadmap.step8_desc">La integración final de los pilares del bienestar en una sola
+                            experiencia fluida.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-infinity"></i></div>
+                    </div>
+                </div>
+
+                <!-- Step 9 -->
+                <div class="roadmap-step future">
+                    <div class="step-card">
+                        <div class="step-header">
+                            <span class="step-number"><span data-i18n="roadmap.step_label">Paso</span> 09</span>
+                            <span class="step-quarter">2028+</span>
+                        </div>
+                        <h3 data-i18n="roadmap.step9_title">Gemelo Digital AUREUS</h3>
+                        <p data-i18n="roadmap.step9_desc">Tu réplica virtual evolutiva. Simula decisiones de salud y
+                            finanzas para ver su impacto antes
+                            de tomarlas.</p>
+                        <div class="step-icon-bottom"><i class="fa-solid fa-fingerprint"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Beta Registration Section (Premium Card Style) -->
+    <section class="blog-hero" id="beta" style="padding: 100px 0; background: transparent;">
+        <div class="section-container">
+            <div class="featured-post" style="box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);">
+                <div class="featured-image-container">
+                    <video autoplay loop muted playsinline class="featured-video">
+                        <source src="AUREUS FINANCE AI/videos/Scene_a_highbudget_1080p_202601211403.mp4"
+                            type="video/mp4">
+                    </video>
+                </div>
+                <div class="featured-content">
+                    <span class="category-badge" data-i18n="beta.badge">Updates</span>
+                    <h1 class="featured-title" data-i18n="beta.title">Acceso Anticipado: Beta Exclusiva AUREUS 2.0</h1>
+                    <p class="featured-excerpt" data-i18n="beta.desc">Únete al grupo selecto de usuarios fundadores.
+                        Optimiza tu salud y
+                        finanzas antes que nadie con nuestra nueva suite integral.</p>
+
+                    <div class="newsletter-inline">
+                        <form action="https://formspree.io/f/xvgzbrkw" method="POST" id="pricingBetaForm"
+                            style="display: contents;">
+                            <input type="email" name="email" placeholder="Tu correo electrónico"
+                                class="newsletter-input" required data-i18n-placeholder="beta.placeholder">
+                            <!-- Hidden Fields for Organization -->
+                            <input type="hidden" name="_subject" value="Nuevo registro Beta (Desde Pricing)">
+                            <input type="hidden" name="source" value="pricing_footer_section">
+
+                            <button type="submit" class="btn-pill-cta">
+                                <span data-i18n="beta.btn">Unirse a la Beta</span>
+                            </button>
+                        </form>
+                    </div>
+                    <p id="pricingBetaMsg" style="margin-top: 10px; font-size: 14px; display: none;"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inline Script for Pricing Beta Form -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('pricingBetaForm');
+            const msg = document.getElementById('pricingBetaMsg');
+
+            if (form) {
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const btn = form.querySelector('button');
+                    const originalText = btn.innerHTML;
+
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: new FormData(form),
+                            headers: { 'Accept': 'application/json' }
+                        });
+
+                        if (response.ok) {
+                            msg.style.display = 'block';
+                            msg.style.color = '#D4F458';
+                            msg.innerHTML = '<i class="fa-solid fa-check"></i> ¡Estás en la lista! Revisa tu correo.';
+                            form.reset();
+                        } else {
+                            msg.style.display = 'block';
+                            msg.style.color = '#ff5f56';
+                            msg.textContent = 'Hubo un problema. Intenta de nuevo.';
+                        }
+                    } catch (err) {
+                        msg.style.display = 'block';
+                        msg.style.color = '#ff5f56';
+                        msg.textContent = 'Error de conexión.';
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+
+                        setTimeout(() => {
+                            msg.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="footer-logo">
+                <span class="footer-brand-text">AUREUS</span>
+                <p class="footer-tagline" data-i18n="footer.tagline">Tu bienestar, simplificado.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4 data-i18n="footer.product">Producto</h4>
+                    <a href="index.html#features" data-i18n="footer.link_features">Características</a>
+                    <a href="pricing.html" data-i18n="footer.link_pricing">Precios</a>
+                    <a href="pricing.html#faq" data-i18n="footer.link_faq">FAQ</a>
+                    <a href="blog.html" data-i18n="footer.link_blog">Blog</a>
+                </div>
+                <div class="footer-column">
+                    <h4 data-i18n="footer.apps">Aplicaciones</h4>
+                    <a href="fit-ai-info.html" data-i18n="footer.link_nutrition">AUREUS Nutrición AI</a>
+                    <a href="finance-os-info.html" data-i18n="footer.link_finance">AUREUS Finance OS</a>
+                    <a href="programa-embajadores.html" data-i18n="footer.link_ambassadors">Embajadores</a>
+                </div>
+            </div>
+
+            <div class="footer-social">
+                <a href="https://www.instagram.com/aureus_fit_ai/" class="social-link" target="_blank"><i
+                        class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 AUREUS. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+    <div class="mobile-nav-drawer" id="mobileDrawer">
+        <div class="drawer-header">
+            <img src="assets/images/LOGO%20AUREUS.png" alt="AUREUS" class="drawer-logo">
+            <span>AUREUS</span>
+            <button class="drawer-close" id="drawerClose">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <nav class="drawer-nav">
+            <a href="index.html#features">Características</a>
+            <div class="mobile-dropdown">
+                <button class="mobile-dropdown-trigger">
+                    Aplicaciones <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="mobile-dropdown-content">
+                    <a href="fit-ai-info.html" class="mobile-app-link">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        AUREUS Nutrición AI
+                    </a>
+                    <a href="finance-os-info.html" class="mobile-app-link">
+                        <i class="fa-solid fa-chart-line"></i>
+                        AUREUS Finance OS
+                    </a>
+                </div>
+            </div>
+            <a href="pricing.html" class="active">Precios</a>
+            <a href="login.html" class="btn-drawer-cta" id="drawerAuthBtn">Iniciar Sesión</a>
+        </nav>
+    </div>
+
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/landing-script.js"></script>
+</body>
+
+</html>
